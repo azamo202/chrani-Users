@@ -11,7 +11,7 @@ const Contact = () => {
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Message sent — we'll be in touch shortly.");
+    toast.success(t("contact.form.success"));
     setForm({ name: "", email: "", message: "" });
   };
 
@@ -19,7 +19,7 @@ const Contact = () => {
     <>
       <section className="border-b border-border/60 bg-muted/30">
         <div className="container-wide py-12 lg:py-16">
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">Contact</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">{t("nav.contact")}</p>
           <h1 className="mt-2 font-display text-4xl font-bold sm:text-5xl">{t("contact.title")}</h1>
           <p className="mt-3 max-w-2xl text-muted-foreground">{t("contact.subtitle")}</p>
         </div>
@@ -64,15 +64,15 @@ const Contact = () => {
         </div>
 
         <form onSubmit={onSubmit} className="rounded-2xl border border-border bg-card p-8">
-          <h3 className="font-display text-2xl font-bold">Send a message</h3>
-          <p className="mt-2 text-sm text-muted-foreground">We typically reply within one business day.</p>
+          <h3 className="font-display text-2xl font-bold">{t("contact.form.title")}</h3>
+          <p className="mt-2 text-sm text-muted-foreground">{t("contact.form.subtitle")}</p>
 
           <div className="mt-6 space-y-4">
             <input
               required
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
-              placeholder="Your name"
+              placeholder={t("contact.form.name")}
               className="w-full rounded-md border border-input bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
             />
             <input
@@ -80,7 +80,7 @@ const Contact = () => {
               type="email"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
-              placeholder="Email address"
+              placeholder={t("contact.form.email")}
               className="w-full rounded-md border border-input bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
             />
             <textarea
@@ -88,11 +88,11 @@ const Contact = () => {
               rows={5}
               value={form.message}
               onChange={(e) => setForm({ ...form, message: e.target.value })}
-              placeholder="How can we help?"
+              placeholder={t("contact.form.message")}
               className="w-full resize-none rounded-md border border-input bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
             />
             <button className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary-glow">
-              <Send className="h-4 w-4" /> Send message
+              <Send className="h-4 w-4 rtl:rotate-180" /> {t("contact.form.submit")}
             </button>
           </div>
         </form>

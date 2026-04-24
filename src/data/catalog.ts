@@ -30,9 +30,9 @@ export interface Brand {
 export const categories: Category[] = [
   { id: "refrigerators", name: "Refrigerators", description: "Precision cooling, elegant design.", image: "https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=1200&q=80" },
   { id: "washers", name: "Washing Machines", description: "Whisper-quiet, deeply effective.", image: "https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=1200&q=80" },
-  { id: "ovens", name: "Ovens & Cooking", description: "Restaurant-grade in your kitchen.", image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&q=80" },
+  { id: "ovens", name: "Ovens & Cooking", description: "Restaurant-grade in your kitchen.", image: "https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=1200&q=80" },
   { id: "dishwashers", name: "Dishwashers", description: "Spotless results, every cycle.", image: "https://images.unsplash.com/photo-1581622558663-b2e33377dfb2?w=1200&q=80" },
-  { id: "ac", name: "Air Conditioners", description: "Climate, perfectly tuned.", image: "https://images.unsplash.com/photo-1631545308456-c8f3a8e25c5b?w=1200&q=80" },
+  { id: "ac", name: "Air Conditioners", description: "Climate, perfectly tuned.", image: "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=1200&q=80" },
   { id: "tv", name: "Televisions", description: "Cinematic clarity at home.", image: "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=1200&q=80" },
 ];
 
@@ -87,7 +87,7 @@ export const products: Product[] = [
     price: 2890,
     brand: "atelier",
     category: "ovens",
-    images: [img("photo-1556909114-f6e7ad7d3136"), img("photo-1556909114-44c0a72d7d4f"), img("photo-1574269910231-bc508bcb40c1")],
+    images: [img("photo-1626806787461-102c1bfaaea1"), img("photo-1610557892470-55d9e80c0bce"), img("photo-1604335079877-83c8a8c4cae6")],
     isFeatured: true,
   },
   {
@@ -115,7 +115,7 @@ export const products: Product[] = [
     price: 1280,
     brand: "vega",
     category: "ac",
-    images: [img("photo-1631545308456-c8f3a8e25c5b"), img("photo-1632935190508-bcd72d0f8a4c"), img("photo-1535914254981-b5012eebbd15")],
+    images: [img("photo-1626806787461-102c1bfaaea1"), img("photo-1610557892470-55d9e80c0bce"), img("photo-1604335079877-83c8a8c4cae6")],
     isFeatured: true,
   },
   {
@@ -233,9 +233,9 @@ export const manuals = [
 ];
 
 export const tutorials = [
-  { id: "t1", title: "Setting up your Chrani Pro 900", youtubeId: "dQw4w9WgXcQ" },
-  { id: "t2", title: "Lumen X7 — first wash", youtubeId: "ScMzIvxBSi4" },
-  { id: "t3", title: "Atelier Duet — sous-vide basics", youtubeId: "kXYiU_JCYtU" },
+  { id: "t1", title: "Setting up your Chrani Pro 900", youtubeId: "EFuX20k1qFI" },
+  { id: "t2", title: "Lumen X7 — first wash", youtubeId: "EFuX20k1qFI" },
+  { id: "t3", title: "Atelier Duet — sous-vide basics", youtubeId: "EFuX20k1qFI" },
 ];
 
 export const WHATSAPP_NUMBER = "9647500000000"; // placeholder

@@ -70,7 +70,7 @@ const Home = () => {
           <div className="relative animate-fade-in hidden md:block">
             <div className="absolute -inset-8 rounded-full bg-primary/20 blur-3xl" />
             <img
-              src="/3.png"
+              src="/3.webp"
               alt="Premium kitchen showcase"
               className="relative w-full rounded-2xl object-cover shadow-elegant aspect-[4/5]"
             />

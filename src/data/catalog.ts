@@ -58,7 +58,7 @@ export const products: Product[] = [
     price: 4200,
     brand: "chrani",
     category: "refrigerators",
-    images: [img("photo-1571175443880-49e1d25b2bc5"), img("photo-1584568694244-14fbdf83bd30"), img("photo-1556910103-1c02745aae4d")],
+    images: [img("photo-1571175443880-49e1d25b2bc5"), img("photo-1584568694244-14fbdf83bd30")],
     isFeatured: true,
   },
   {
@@ -72,7 +72,7 @@ export const products: Product[] = [
     price: 1490,
     brand: "lumen",
     category: "washers",
-    images: [img("photo-1626806787461-102c1bfaaea1"), img("photo-1610557892470-55d9e80c0bce"), img("photo-1604335079877-83c8a8c4cae6")],
+    images: [img("photo-1626806787461-102c1bfaaea1"), img("photo-1610557892470-55d9e80c0bce")],
     isFeatured: true,
     isNew: true,
   },
@@ -87,7 +87,7 @@ export const products: Product[] = [
     price: 2890,
     brand: "atelier",
     category: "ovens",
-    images: [img("photo-1626806787461-102c1bfaaea1"), img("photo-1610557892470-55d9e80c0bce"), img("photo-1604335079877-83c8a8c4cae6")],
+    images: [img("photo-1626806787461-102c1bfaaea1"), img("photo-1610557892470-55d9e80c0bce")],
     isFeatured: true,
   },
   {
@@ -101,8 +101,7 @@ export const products: Product[] = [
     price: 1650,
     brand: "noir",
     category: "dishwashers",
-    images: [img("photo-1581622558663-b2e33377dfb2"), img("photo-1584568694244-14fbdf83bd30"), img("photo-1556910103-1c02745aae4d")],
-    isNew: true,
+    images: [img("photo-1581622558663-b2e33377dfb2"), img("photo-1584568694244-14fbdf83bd30"),]
   },
   {
     id: "vega-ac-inverter",
@@ -115,7 +114,7 @@ export const products: Product[] = [
     price: 1280,
     brand: "vega",
     category: "ac",
-    images: [img("photo-1626806787461-102c1bfaaea1"), img("photo-1610557892470-55d9e80c0bce"), img("photo-1604335079877-83c8a8c4cae6")],
+    images: [img("photo-1626806787461-102c1bfaaea1"), img("photo-1610557892470-55d9e80c0bce")],
     isFeatured: true,
   },
   {
@@ -129,7 +128,7 @@ export const products: Product[] = [
     price: 2490,
     brand: "chrani",
     category: "tv",
-    images: [img("photo-1593359677879-a4bb92f829d1"), img("photo-1461151304267-38535e780c79"), img("photo-1571415060716-baff5f717068")],
+    images: [img("photo-1593359677879-a4bb92f829d1"), img("photo-1461151304267-38535e780c79")],
     isFeatured: true,
     isNew: true,
   },

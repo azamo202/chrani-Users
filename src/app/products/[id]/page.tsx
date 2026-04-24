@@ -11,7 +11,7 @@ import { ProductCard } from "@/components/ProductCard";
 
 const ProductDetail = () => {
   const { id } = useParams() as { id: string };
-  const { t } = useI18n();
+  const { t, dir } = useI18n();
   const router = useRouter();
   const product = visibleProducts.find((p) => p.id === id);
   const [activeImage, setActiveImage] = useState(0);
@@ -81,7 +81,7 @@ const ProductDetail = () => {
 
           <div className="mt-8 flex items-baseline gap-3">
             <span className="font-display text-4xl font-bold">${product.price.toLocaleString()}</span>
-            <span className="text-sm text-muted-foreground">incl. VAT</span>
+            <span className="text-sm text-muted-foreground">{t("product.vat")}</span>
           </div>
 
           <a
@@ -96,9 +96,9 @@ const ProductDetail = () => {
 
           <div className="mt-8 grid grid-cols-3 gap-4 border-t border-border pt-6">
             {[
-              { icon: ShieldCheck, label: "Warranty" },
-              { icon: Truck, label: "Free delivery" },
-              { icon: Award, label: "Premium service" },
+              { icon: ShieldCheck, label: t("warranty") },
+              { icon: Truck, label: t("delivery") },
+              { icon: Award, label: t("service") },
             ].map((item) => (
               <div key={item.label} className="flex flex-col items-center gap-1.5 text-center">
                 <item.icon className="h-5 w-5 text-primary" />
@@ -111,7 +111,7 @@ const ProductDetail = () => {
 
       {/* TABS */}
       <section className="container-wide pb-16">
-        <Tabs defaultValue="description" className="mt-8">
+        <Tabs defaultValue="description" className="mt-8" dir={dir}>
           <TabsList className="grid w-full max-w-xl grid-cols-3">
             <TabsTrigger value="description">{t("product.description")}</TabsTrigger>
             <TabsTrigger value="specs">{t("product.specs")}</TabsTrigger>
@@ -119,7 +119,7 @@ const ProductDetail = () => {
           </TabsList>
 
           <TabsContent value="description" className="mt-8">
-            <div className="prose max-w-3xl text-base leading-relaxed text-muted-foreground">
+            <div className="prose max-w-3xl text-base leading-relaxed text-muted-foreground text-start">
               <p>{product.longDescription}</p>
             </div>
           </TabsContent>
@@ -129,7 +129,7 @@ const ProductDetail = () => {
               {Object.entries(product.specs).map(([k, v]) => (
                 <div key={k} className="flex items-center justify-between gap-4 px-5 py-4">
                   <dt className="text-sm font-medium text-muted-foreground">{k}</dt>
-                  <dd className="text-sm font-semibold">{v}</dd>
+                  <dd className="text-sm font-semibold text-end">{v}</dd>
                 </div>
               ))}
             </div>
@@ -139,7 +139,7 @@ const ProductDetail = () => {
             <ul className="grid max-w-3xl gap-3 sm:grid-cols-2">
               {product.features.map((f) => (
                 <li key={f} className="flex items-start gap-3 rounded-lg border border-border p-4">
-                  <span className="mt-1 inline-block h-2 w-2 rounded-full bg-primary" />
+                  <span className="mt-1 inline-block h-2 w-2 shrink-0 rounded-full bg-primary" />
                   <span className="text-sm">{f}</span>
                 </li>
               ))}
@@ -152,7 +152,7 @@ const ProductDetail = () => {
       {related.length > 0 && (
         <section className="bg-muted/40 py-16">
           <div className="container-wide">
-            <h2 className="font-display text-2xl font-bold sm:text-3xl">You may also like</h2>
+            <h2 className="font-display text-2xl font-bold sm:text-3xl">{t("product.related")}</h2>
             <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {related.map((p) => (
                 <ProductCard key={p.id} product={p} />

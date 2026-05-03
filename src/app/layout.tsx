@@ -9,10 +9,21 @@ import { Footer } from "@/components/layout/Footer";
 // We maintain the same font classes the user had in tailwind config if needed, 
 // or simply let Tailwind handle it since we will just import global CSS.
 
-export const metadata: Metadata = {
-  title: "Chrani Catalog",
-  description: "Product catalog",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const cookieStore = await cookies();
+  const lang = (cookieStore.get("chrani-lang")?.value || "en") as "en" | "ar" | "ku";
+
+  const companyNames = {
+    en: "CHRANI COMPANY FOR GENERAL TRADING IMP. & EXP. LTD",
+    ar: "شركة چراني للتجارة العامة استيراد و تصدير المحدودة",
+    ku: "کۆمپانیای چرانی بۆ بازرگانی گشتی و ھاوردە و ھەناردە / سنوردار",
+  };
+
+  return {
+    title: companyNames[lang] || companyNames.en,
+    description: "Product catalog",
+  };
+}
 
 export default async function RootLayout({
   children,

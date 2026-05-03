@@ -7,6 +7,7 @@ export type Lang = "en" | "ar" | "ku";
 type Dict = Record<string, string>;
 const dictionaries: Record<Lang, Dict> = {
   en: {
+    "company.name": "CHRANI COMPANY FOR GENERAL TRADING IMP. & EXP. LTD",
     "nav.home": "Home",
     "nav.products": "Products",
     "nav.support": "Support",
@@ -44,7 +45,7 @@ const dictionaries: Record<Lang, Dict> = {
     "support.videos": "Video Tutorials",
     "support.centers": "Service Centers",
     "support.download": "Download PDF",
-    "about.title": "About Chrani",
+    "about.title": "About CHRANI COMPANY FOR GENERAL TRADING IMP. & EXP. LTD",
     "about.subtitle": "Crafting premium living since 1985.",
     "about.history": "Our History",
     "about.vision": "Our Vision",
@@ -68,6 +69,7 @@ const dictionaries: Record<Lang, Dict> = {
     "contact.phone": "Phone",
     "contact.email": "Email",
     "contact.address": "Address",
+    "contact.address.value": "Sendore Way Road, Duhok, Iraq",
     "contact.social": "Follow us",
     "contact.form.title": "Send a message",
     "contact.form.subtitle": "We typically reply within one business day.",
@@ -86,6 +88,7 @@ const dictionaries: Record<Lang, Dict> = {
   },
 
   ar: {
+    "company.name": "شركة چراني للتجارة العامة استيراد و تصدير المحدودة",
     "nav.home": "الرئيسية",
     "nav.products": "المنتجات",
     "nav.support": "الدعم",
@@ -123,7 +126,7 @@ const dictionaries: Record<Lang, Dict> = {
     "support.videos": "فيديوهات تعليمية",
     "support.centers": "مراكز الخدمة",
     "support.download": "تحميل PDF",
-    "about.title": "عن شراني",
+    "about.title": "عن شركة چراني للتجارة العامة استيراد و تصدير المحدودة",
     "about.subtitle": "نصنع الفخامة منذ 1985.",
     "about.history": "تاريخنا",
     "about.vision": "رؤيتنا",
@@ -147,6 +150,7 @@ const dictionaries: Record<Lang, Dict> = {
     "contact.phone": "الهاتف",
     "contact.email": "البريد الإلكتروني",
     "contact.address": "العنوان",
+    "contact.address.value": "العراق – دهوك – شارع طريق سندور",
     "contact.social": "تابعنا",
     "contact.form.title": "أرسل رسالة",
     "contact.form.subtitle": "نرد عادةً خلال يوم عمل واحد.",
@@ -165,6 +169,7 @@ const dictionaries: Record<Lang, Dict> = {
 
   },
   ku: {
+    "company.name": "کۆمپانیای چرانی بۆ بازرگانی گشتی و ھاوردە و ھەناردە / سنوردار",
     "warranty": "گرەنتی ١٠ ساڵە",
     "delivery": "گەیاندنی خۆڕایی",
     "service": "خزمەتگوزاری نایاب",
@@ -205,7 +210,7 @@ const dictionaries: Record<Lang, Dict> = {
     "support.videos": "ڤیدیۆی فێرکاری",
     "support.centers": "ناوەندی خزمەتگوزاری",
     "support.download": "PDF دابگرە",
-    "about.title": "دەربارەی چرانی",
+    "about.title": "دەربارەی کۆمپانیای چرانی بۆ بازرگانی گشتی و ھاوردە و ھەناردە / سنوردار",
     "about.subtitle": "دروستکردنی ژیانی پرێمیۆم لە 1985 ەوە.",
     "about.history": "مێژوومان",
     "about.vision": "بینینمان",
@@ -229,6 +234,7 @@ const dictionaries: Record<Lang, Dict> = {
     "contact.phone": "تەلەفۆن",
     "contact.email": "ئیمەیڵ",
     "contact.address": "ناونیشان",
+    "contact.address.value": "عێراق – دهۆک – شەقامی ڕێگای سێندۆڕ",
     "contact.social": "شوێنمان بکە",
     "contact.form.title": "نامەیەک بنێرە",
     "contact.form.subtitle": "بە زۆری لە ماوەی یەک ڕۆژی کارکردندا وەڵام دەدەینەوە.",

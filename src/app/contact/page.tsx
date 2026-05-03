@@ -1,6 +1,6 @@
 "use client";
 
-import { Phone, Mail, MapPin, Facebook, Instagram, Youtube, Send } from "lucide-react";
+import { Phone, MapPin, Facebook, Instagram, Youtube, Send } from "lucide-react";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -28,9 +28,8 @@ const Contact = () => {
       <section className="container-wide grid gap-12 py-16 lg:grid-cols-[1fr_1.2fr]">
         <div className="space-y-6">
           {[
-            { icon: Phone, label: t("contact.phone"), value: "+964 750 000 0000", href: "tel:+9647500000000" },
-            { icon: Mail, label: t("contact.email"), value: "hello@chrani.example", href: "mailto:hello@chrani.example" },
-            { icon: MapPin, label: t("contact.address"), value: "100m Road, Erbil, Iraq" },
+            { icon: Phone, label: t("contact.phone"), value: "009647504454864", href: "tel:009647504454864" },
+            { icon: MapPin, label: t("contact.address"), value: t("contact.address.value"), href: "https://maps.app.goo.gl/JYvsYCgmY46uafK46" },
           ].map((c) => (
             <div key={c.label} className="flex items-start gap-4 rounded-xl border border-border bg-card p-5">
               <div className="grid h-11 w-11 place-items-center rounded-lg bg-primary/10 text-primary">
@@ -39,7 +38,14 @@ const Contact = () => {
               <div>
                 <p className="text-xs uppercase tracking-wider text-muted-foreground">{c.label}</p>
                 {c.href ? (
-                  <a href={c.href} className="mt-1 block font-medium hover:text-primary">{c.value}</a>
+                  <a 
+                    href={c.href} 
+                    target={c.href.startsWith("http") ? "_blank" : undefined}
+                    rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                    className="mt-1 block font-medium hover:text-primary"
+                  >
+                    {c.value}
+                  </a>
                 ) : (
                   <p className="mt-1 font-medium">{c.value}</p>
                 )}
@@ -103,7 +109,7 @@ const Contact = () => {
         <div className="overflow-hidden rounded-2xl border border-border">
           <iframe
             title="Chrani location"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d51297.51!2d44.0091!3d36.1911!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x400722cb9f4bb471%3A0x6db67aedaf26ec46!2sErbil!5e0!3m2!1sen!2siq!4v1700000000000"
+            src="https://maps.google.com/maps?q=Sendore+Way+Road,+Duhok,+Iraq&t=&z=15&ie=UTF8&iwloc=&output=embed"
             className="h-[420px] w-full border-0"
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"

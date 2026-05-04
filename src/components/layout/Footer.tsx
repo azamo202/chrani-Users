@@ -1,11 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { Facebook, Instagram, Youtube, Mail, Phone, MapPin } from "lucide-react";
+import { Facebook, Instagram, Youtube, Mail, Phone, MapPin, Twitter } from "lucide-react";
 import { useI18n } from "@/i18n/I18nProvider";
+import { ApiStoreSettings } from "@/types/api";
 const logo = "/chrani-logo.png";
 
-export const Footer = () => {
+interface FooterProps {
+  settings: ApiStoreSettings | null;
+}
+
+export const Footer = ({ settings }: FooterProps) => {
   const { t } = useI18n();
   return (
     <footer className="mt-24 bg-brand-black text-white">
@@ -17,16 +22,21 @@ export const Footer = () => {
           </Link>
           <p className="mt-4 max-w-xs text-sm text-white/60">{t("footer.tagline")}</p>
           <div className="mt-6 flex gap-3">
-            {[Facebook, Instagram, Youtube].map((Icon, i) => (
-              <a
-                key={i}
-                href="#"
-                className="grid h-9 w-9 place-items-center rounded-full border border-white/15 transition hover:border-primary hover:text-primary"
-                aria-label="social"
-              >
-                <Icon className="h-4 w-4" />
+            {settings?.facebook_url && (
+              <a href={settings.facebook_url} target="_blank" rel="noopener noreferrer" className="grid h-9 w-9 place-items-center rounded-full border border-white/15 transition hover:border-primary hover:text-primary">
+                <Facebook className="h-4 w-4" />
               </a>
-            ))}
+            )}
+            {settings?.instagram_url && (
+              <a href={settings.instagram_url} target="_blank" rel="noopener noreferrer" className="grid h-9 w-9 place-items-center rounded-full border border-white/15 transition hover:border-primary hover:text-primary">
+                <Instagram className="h-4 w-4" />
+              </a>
+            )}
+            {settings?.youtube_url && (
+              <a href={settings.youtube_url} target="_blank" rel="noopener noreferrer" className="grid h-9 w-9 place-items-center rounded-full border border-white/15 transition hover:border-primary hover:text-primary">
+                <Youtube className="h-4 w-4" />
+              </a>
+            )}
           </div>
         </div>
 
@@ -47,9 +57,15 @@ export const Footer = () => {
             {t("footer.contact")}
           </h4>
           <ul className="mt-5 space-y-3 text-sm text-white/60">
-            <li className="flex items-start gap-2"><Phone className="h-4 w-4 mt-0.5 text-primary" /> +964 750 000 0000</li>
-            <li className="flex items-start gap-2"><Mail className="h-4 w-4 mt-0.5 text-primary" /> hello@chrani.example</li>
-            <li className="flex items-start gap-2"><MapPin className="h-4 w-4 mt-0.5 text-primary" /> 100m Road, Erbil</li>
+            {settings?.phone_numbers?.[0] && (
+              <li className="flex items-start gap-2"><Phone className="h-4 w-4 mt-0.5 text-primary" /> {settings.phone_numbers[0]}</li>
+            )}
+            {settings?.contact_email && (
+              <li className="flex items-start gap-2"><Mail className="h-4 w-4 mt-0.5 text-primary" /> {settings.contact_email}</li>
+            )}
+            {settings?.address && (
+              <li className="flex items-start gap-2"><MapPin className="h-4 w-4 mt-0.5 text-primary" /> {settings.address['en'] || "Erbil"}</li>
+            )}
           </ul>
         </div>
 

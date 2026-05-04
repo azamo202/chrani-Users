@@ -5,6 +5,9 @@ import { cookies } from "next/headers";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { CompareFloatingBar } from "@/components/compare/CompareFloatingBar";
+import { fetchApi } from "@/lib/api";
+import { ApiStoreSettings } from "@/types/api";
 
 // We maintain the same font classes the user had in tailwind config if needed, 
 // or simply let Tailwind handle it since we will just import global CSS.
@@ -34,6 +37,13 @@ export default async function RootLayout({
   const lang = (cookieStore.get("chrani-lang")?.value || "en") as "en" | "ar" | "ku";
   const dir = lang === "ar" || lang === "ku" ? "rtl" : "ltr";
 
+  let storeSettings: ApiStoreSettings | null = null;
+  try {
+    storeSettings = await fetchApi<ApiStoreSettings>("/api/site/store-settings", { next: { revalidate: 3600 } });
+  } catch (error) {
+    console.error("Failed to fetch store settings:", error);
+  }
+
   return (
     <html lang={lang} dir={dir} suppressHydrationWarning>
       <body>
@@ -43,7 +53,8 @@ export default async function RootLayout({
             <main className="flex-1">
               {children}
             </main>
-            <Footer />
+            <Footer settings={storeSettings} />
+            <CompareFloatingBar />
           </div>
         </Providers>
       </body>

@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 
 import Link from "next/link";
 import { ApiProduct } from "@/types/api";
@@ -17,14 +18,15 @@ export const ProductCard = ({ product, className }: Props) => {
   const { lang } = useI18n();
   const compared = isCompared(product.id);
 
-  const handleCompare = (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent navigating to the product page
-    
-    // Sort images to find primary
-    const primaryImage = product.images.length > 0 
-      ? product.images.sort((a, b) => Number(b.is_primary) - Number(a.is_primary))[0].url
-      : "/fallback-image.png";
+  const primaryImage = React.useMemo(() => {
+    if (!product.images || product.images.length === 0) return "https://placehold.co/600x400/f3f4f6/6b7280?text=No+Image";
+    // Find primary without mutating the original array
+    const primary = product.images.find(img => img.is_primary);
+    return primary ? primary.url : product.images[0].url;
+  }, [product.images]);
 
+  const handleCompare = (e: React.MouseEvent) => {
+    e.preventDefault(); 
     toggleProduct({
       id: product.id,
       name: product.name,
@@ -33,10 +35,6 @@ export const ProductCard = ({ product, className }: Props) => {
       category: product.category.name,
     });
   };
-
-  const primaryImage = product.images.length > 0 
-    ? product.images.sort((a, b) => Number(b.is_primary) - Number(a.is_primary))[0].url
-    : "/fallback-image.png";
 
   return (
     <Link

@@ -101,7 +101,7 @@ export const HomePageClient = ({ sections, categories }: HomePageClientProps) =>
                 className="group relative block aspect-[3/4] overflow-hidden rounded-2xl"
               >
                 <img
-                  src={cat.image || "/fallback-category.png"}
+                  src={cat.image || "https://placehold.co/600x800/f3f4f6/6b7280?text=Category"}
                   alt={cat.name[lang] || cat.name['en'] || "Category"}
                   loading="lazy"
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"

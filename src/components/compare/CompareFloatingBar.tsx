@@ -46,28 +46,38 @@ export const CompareFloatingBar = () => {
           </div>
           <div className="hidden flex-col sm:flex">
             <span className="text-xs font-medium text-muted-foreground">
-              {selectedProducts.length}/4 Selected
+              {selectedProducts.length}/4 {t("compare.selected")}
             </span>
             <button
               onClick={clearCompare}
               className="text-left text-[10px] uppercase tracking-wider text-primary hover:underline"
             >
-              Clear All
+              {t("compare.clear")}
             </button>
           </div>
         </div>
 
-        <Link
-          href="/compare"
-          className={cn(
-            "flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-lg transition-all hover:scale-105 hover:bg-primary/90",
-            selectedProducts.length < 2 && "pointer-events-none opacity-50 grayscale"
-          )}
-        >
-          <GitCompare className="h-4 w-4" />
-          <span className="hidden sm:inline">Compare Now</span>
-          <span className="inline sm:hidden">Compare</span>
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/compare"
+            className={cn(
+              "flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-lg transition-all hover:scale-105 hover:bg-primary/90",
+              selectedProducts.length < 2 && "pointer-events-none opacity-50 grayscale"
+            )}
+          >
+            <GitCompare className="h-4 w-4" />
+            <span className="hidden sm:inline">{t("compare.now")}</span>
+            <span className="inline sm:hidden">{t("compare.short")}</span>
+          </Link>
+          
+          <button
+            onClick={clearCompare}
+            className="grid h-10 w-10 place-items-center rounded-full bg-muted/50 text-muted-foreground transition hover:bg-destructive hover:text-destructive-foreground"
+            title={t("compare.clear")}
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
       </div>
     </div>
   );

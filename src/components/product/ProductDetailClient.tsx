@@ -1,33 +1,40 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ChevronLeft, MessageCircle, ShieldCheck, Truck, Award } from "lucide-react";
 import { useI18n } from "@/i18n/I18nProvider";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProductCard } from "@/components/ProductCard";
-import { ApiProduct } from "@/types/api";
-
-const WHATSAPP_NUMBER = "9647500000000";
+import { ApiProduct, ApiStoreSettings } from "@/types/api";
 
 interface ProductDetailClientProps {
   product: ApiProduct;
   related?: ApiProduct[];
+  settings?: ApiStoreSettings | null;
 }
 
-export const ProductDetailClient = ({ product, related = [] }: ProductDetailClientProps) => {
+export const ProductDetailClient = ({ product, related = [], settings }: ProductDetailClientProps) => {
   const { t, lang, dir } = useI18n();
   const [activeImage, setActiveImage] = useState(0);
+  const [currentUrl, setCurrentUrl] = useState("");
+
+  useEffect(() => {
+    setCurrentUrl(window.location.href);
+  }, []);
 
   const productName = product.name[lang] || product.name['en'];
   const productDescription = product.description?.[lang] || product.description?.['en'] || "";
   const brandName = product.brand?.name || "";
   const categoryName = product.category?.name[lang] || product.category?.name['en'] || "";
 
+  const whatsappNumber = settings?.whatsapp || "+9647504454864";
+  // إزالة أي رموز غير رقمية (مثل علامة الزائد + أو المسافات) لضمان عمل رابط الواتساب
+  const cleanWhatsappNumber = whatsappNumber.replace(/[^0-9]/g, "");
   const whatsappText = encodeURIComponent(
-    `Hello, I would like to inquire about the product: ${productName} - Model: ${product.model_number}`
+    `${t("product.whatsappInquiry")}\n${currentUrl}\n\n${productName}\n${t("product.model")}: ${product.model_number}\n\n${productDescription}`
   );
-  const whatsappHref = `https://wa.me/${WHATSAPP_NUMBER}?text=${whatsappText}`;
+  const whatsappHref = `https://wa.me/${cleanWhatsappNumber}?text=${whatsappText}`;
 
   const imageUrls = product.images.length > 0 
     ? product.images.sort((a, b) => Number(b.is_primary) - Number(a.is_primary)).map(i => i.url)
@@ -79,7 +86,6 @@ export const ProductDetailClient = ({ product, related = [] }: ProductDetailClie
           <p className="mt-3 text-sm text-muted-foreground">
             {t("product.model")}: <span className="font-medium text-foreground">{product.model_number}</span>
           </p>
-          <p className="mt-6 text-base text-muted-foreground leading-relaxed">{productDescription}</p>
 
           <a
             href={whatsappHref}
@@ -111,14 +117,28 @@ export const ProductDetailClient = ({ product, related = [] }: ProductDetailClie
         <Tabs defaultValue="description" className="mt-8" dir={dir}>
           <TabsList className="grid w-full max-w-xl grid-cols-3">
             <TabsTrigger value="description">{t("product.description")}</TabsTrigger>
-            <TabsTrigger value="specs">{t("product.specs")}</TabsTrigger>
             <TabsTrigger value="features">{t("product.features")}</TabsTrigger>
+            <TabsTrigger value="specs">{t("product.specs")}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="description" className="mt-8">
             <div className="prose max-w-3xl text-base leading-relaxed text-muted-foreground text-start">
               <p>{productDescription}</p>
             </div>
+          </TabsContent>
+
+          <TabsContent value="features" className="mt-8">
+            <ul className="grid max-w-3xl gap-3 sm:grid-cols-2">
+              {product.features?.map((f, idx) => (
+                <li key={idx} className="flex items-start gap-3 rounded-lg border border-border p-4">
+                  <span className="mt-1 inline-block h-2 w-2 shrink-0 rounded-full bg-primary" />
+                  <span className="text-sm">{f}</span>
+                </li>
+              ))}
+              {!product.features?.length && (
+                <li className="text-sm text-muted-foreground p-4">No features available.</li>
+              )}
+            </ul>
           </TabsContent>
 
           <TabsContent value="specs" className="mt-8">
@@ -141,20 +161,6 @@ export const ProductDetailClient = ({ product, related = [] }: ProductDetailClie
                 <div className="p-5 text-sm text-muted-foreground">No specifications available.</div>
               )}
             </div>
-          </TabsContent>
-
-          <TabsContent value="features" className="mt-8">
-            <ul className="grid max-w-3xl gap-3 sm:grid-cols-2">
-              {product.features?.map((f, idx) => (
-                <li key={idx} className="flex items-start gap-3 rounded-lg border border-border p-4">
-                  <span className="mt-1 inline-block h-2 w-2 shrink-0 rounded-full bg-primary" />
-                  <span className="text-sm">{f}</span>
-                </li>
-              ))}
-              {!product.features?.length && (
-                <li className="text-sm text-muted-foreground p-4">No features available.</li>
-              )}
-            </ul>
           </TabsContent>
         </Tabs>
       </section>

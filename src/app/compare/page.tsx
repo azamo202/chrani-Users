@@ -22,16 +22,18 @@ interface ApiProduct {
 
 export default function ComparePage() {
   const { selectedProducts, removeProduct } = useCompare();
-  const { t, lang } = useI18n();
+  const { t, lang, dir } = useI18n();
   const [showDifferencesOnly, setShowDifferencesOnly] = useState(false);
 
   // Fetch data
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["compareProducts", selectedProducts.map(p => p.id)],
+    queryKey: ["compareProducts", selectedProducts.map(p => p.id), lang],
     queryFn: async () => {
       if (selectedProducts.length === 0) return { data: [] };
       const qs = selectedProducts.map(p => `ids[]=${p.id}`).join("&");
-      const res = await fetch(`https://chranicatalog-premium.onrender.com/api/site/products/compare?${qs}`);
+      const res = await fetch(`https://chranicatalog-premium.onrender.com/api/site/products/compare?${qs}&locale=${lang}&lang=${lang}`, {
+        headers: { "Accept-Language": lang }
+      });
       if (!res.ok) throw new Error("Failed to fetch compare data");
       return res.json() as Promise<{ data: ApiProduct[] }>;
     },
@@ -106,30 +108,30 @@ export default function ComparePage() {
         <div className="mb-6 rounded-full bg-primary/10 p-6">
           <Box className="h-12 w-12 text-primary" />
         </div>
-        <h1 className="font-display text-3xl font-bold">Compare Products</h1>
+        <h1 className="font-display text-3xl font-bold">{t("compare.title")}</h1>
         <p className="mt-2 max-w-md text-muted-foreground">
-          You haven't selected any products to compare yet. Add products from the catalog to see their features side-by-side.
+          {t("compare.empty")}
         </p>
         <Link
           href="/products"
           className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 font-semibold text-primary-foreground transition-all hover:bg-primary/90"
         >
-          <ArrowLeft className="h-4 w-4" /> Browse Catalog
+          <ArrowLeft className="h-4 w-4 rtl:rotate-180" /> {t("cta.browse")}
         </Link>
       </div>
     );
   }
 
   return (
-    <div className="container-wide py-10 lg:py-16">
+    <div className="container-wide py-10 lg:py-16" dir={dir}>
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <Link href="/products" className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground">
-            <ArrowLeft className="h-4 w-4" /> Back to Catalog
+            <ArrowLeft className="h-4 w-4 rtl:rotate-180" /> {t("cta.browse")}
           </Link>
-          <h1 className="mt-4 font-display text-3xl font-bold sm:text-4xl">Product Comparison</h1>
+          <h1 className="mt-4 font-display text-3xl font-bold sm:text-4xl">{t("compare.title")}</h1>
           <p className="mt-2 text-muted-foreground">
-            Comparing {selectedProducts.length} {selectedProducts.length === 1 ? "product" : "products"}
+            {selectedProducts.length} {t("nav.products")}
           </p>
         </div>
         
@@ -140,7 +142,7 @@ export default function ComparePage() {
             onCheckedChange={setShowDifferencesOnly}
           />
           <label htmlFor="differences" className="cursor-pointer text-sm font-medium">
-            Highlight differences
+            {t("compare.highlight")}
           </label>
         </div>
       </div>
@@ -175,7 +177,7 @@ export default function ComparePage() {
                       <X className="h-4 w-4" />
                     </button>
                     <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-muted/30">
-                      <img src={imgUrl} alt={product.name[lang] || product.name['en']} className="h-full w-full object-contain p-2 mix-blend-multiply dark:mix-blend-normal" />
+                      {imgUrl && <img src={imgUrl} alt={product.name[lang] || product.name['en']} className="h-full w-full object-contain p-2 mix-blend-multiply dark:mix-blend-normal" />}
                     </div>
                     <div className="mt-4 text-center">
                       <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
@@ -192,7 +194,7 @@ export default function ComparePage() {
               {Array.from({ length: Math.max(0, 4 - products.length) }).map((_, i) => (
                 <div key={`empty-${i}`} className="hidden flex-col items-center justify-center rounded-2xl border border-dashed border-border/60 bg-muted/10 p-4 opacity-50 lg:flex">
                   <Box className="mb-2 h-8 w-8 text-muted-foreground/30" />
-                  <span className="text-xs font-medium text-muted-foreground">Add Product</span>
+                  <span className="text-xs font-medium text-muted-foreground">{t("compare.add")}</span>
                 </div>
               ))}
             </div>

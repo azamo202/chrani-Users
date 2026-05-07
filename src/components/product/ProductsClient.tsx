@@ -2,13 +2,14 @@
 
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { SlidersHorizontal, X } from "lucide-react";
+import { SlidersHorizontal, X, Search } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useI18n } from "@/i18n/I18nProvider";
 import { ProductCard } from "@/components/ProductCard";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
 import { fetchApi } from "@/lib/api";
 import { ApiCategory, ApiBrand, ApiProduct, ApiResponse } from "@/types/api";
 
@@ -18,7 +19,7 @@ interface ProductsClientProps {
 }
 
 const Products = ({ initialCategories, initialBrands }: ProductsClientProps) => {
-  const { t, lang } = useI18n();
+  const { t, lang, dir } = useI18n();
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -26,32 +27,44 @@ const Products = ({ initialCategories, initialBrands }: ProductsClientProps) => 
   // URL state
   const initialCategorySlug = searchParams.get("category_slug");
   const initialBrandId = searchParams.get("brand_id");
+  const initialSearch = searchParams.get("search") || "";
 
   const [selectedBrands, setSelectedBrands] = useState<string[]>(initialBrandId ? [initialBrandId] : []);
   const [selectedCats, setSelectedCats] = useState<string[]>(initialCategorySlug ? [initialCategorySlug] : []);
+  const [searchQuery, setSearchQuery] = useState(initialSearch);
+  const [debouncedSearch, setDebouncedSearch] = useState(initialSearch);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  // Debounce search query
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
   // Sync state to URL without reloading
   useEffect(() => {
     const params = new URLSearchParams();
-    if (selectedCats.length > 0) params.set("category_slug", selectedCats[0]); // Only one category at a time for the API or comma separated? Let's use the first one or pass as array. The prompt says "?category_slug=slug". We will use the first selected.
+    if (selectedCats.length > 0) params.set("category_slug", selectedCats[0]);
     if (selectedBrands.length > 0) params.set("brand_id", selectedBrands[0]);
+    if (debouncedSearch) params.set("search", debouncedSearch);
     
-    // Replace URL to avoid infinite history pushing
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-  }, [selectedCats, selectedBrands, pathname, router]);
+  }, [selectedCats, selectedBrands, debouncedSearch, pathname, router]);
 
   const categorySlugParam = selectedCats[0] || "";
   const brandIdParam = selectedBrands[0] || "";
 
   // React Query to fetch products
   const { data: productsData, isFetching } = useQuery({
-    queryKey: ["products", categorySlugParam, brandIdParam],
+    queryKey: ["products", categorySlugParam, brandIdParam, debouncedSearch],
     queryFn: async () => {
       let url = "/api/site/products?";
       const params = new URLSearchParams();
       if (categorySlugParam) params.append("category_slug", categorySlugParam);
       if (brandIdParam) params.append("brand_id", brandIdParam);
+      if (debouncedSearch) params.append("search", debouncedSearch);
       
       const response = await fetchApi<any>(url + params.toString());
       // The API might return paginated { data: [...] } or just an array
@@ -69,6 +82,7 @@ const Products = ({ initialCategories, initialBrands }: ProductsClientProps) => 
   const clearAll = () => {
     setSelectedBrands([]);
     setSelectedCats([]);
+    setSearchQuery("");
     router.push(pathname);
   };
 
@@ -79,6 +93,19 @@ const Products = ({ initialCategories, initialBrands }: ProductsClientProps) => 
         <button onClick={clearAll} className="text-xs font-medium text-primary hover:underline">
           {t("filter.clear")}
         </button>
+      </div>
+
+      <div className="relative">
+        <Search className={cn(
+          "absolute top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground",
+          dir === "rtl" ? "right-3" : "left-3"
+        )} />
+        <Input
+          placeholder={t("filter.search")}
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className={cn(dir === "rtl" ? "pr-9" : "pl-9")}
+        />
       </div>
 
       <div>

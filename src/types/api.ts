@@ -46,13 +46,13 @@ export interface ApiProduct {
 }
 
 export interface ApiStoreSettings {
-  contact_email?: string;
-  phone_numbers?: string[];
-  whatsapp_number?: string;
-  tiktok_url?: string;
-  facebook_url?: string;
-  instagram_url?: string;
-  youtube_url?: string;
+  email?: string;
+  phone?: string;
+  whatsapp?: string; // Changed from whatsapp_number to whatsapp
+  tiktok?: string;
+  facebook?: string;
+  instagram?: string;
+  youtube?: string;
   address?: TranslatableText;
 }
 

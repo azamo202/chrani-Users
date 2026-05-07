@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useMemo, useState, ReactNode } from "react";
+import { useRouter } from "next/navigation";
 
 export type Lang = "en" | "ar" | "ku";
 
@@ -31,6 +32,7 @@ const dictionaries: Record<Lang, Dict> = {
     "filter.price": "Price Range",
     "filter.clear": "Clear filters",
     "filter.results": "results",
+    "filter.search": "Search products...",
     "product.description": "Description",
     "product.specs": "Technical Specs",
     "product.features": "Features",
@@ -39,12 +41,22 @@ const dictionaries: Record<Lang, Dict> = {
     "product.model": "Model",
     "product.vat": "incl. VAT",
     "product.related": "You may also like",
+    "product.whatsappInquiry": "Hello, I would like to inquire about the product:",
+    "compare.title": "Compare Products",
+    "compare.highlight": "Highlight differences",
+    "compare.clear": "Clear all",
+    "compare.empty": "No products to compare.",
+    "compare.add": "Add products",
+    "compare.selected": "Selected",
+    "compare.now": "Compare Now",
+    "compare.short": "Compare",
     "support.title": "Support & Warranty Center",
     "support.subtitle": "Manuals, video tutorials, and your nearest service centers.",
     "support.downloads": "User Manuals",
-    "support.videos": "Video Tutorials",
+    "support.videos": "Useful Videos",
     "support.centers": "Service Centers",
     "support.download": "Download PDF",
+    "support.search": "Search in support...",
     "about.title": "About CHRANI COMPANY FOR GENERAL TRADING IMP. & EXP. LTD",
     "about.subtitle": "Crafting premium living since 1985.",
     "about.history": "Our History",
@@ -84,7 +96,13 @@ const dictionaries: Record<Lang, Dict> = {
     "footer.rights": "All rights reserved.",
     "warranty": "10-yr warranty",
     "delivery": "Free delivery",
-    "service": "Premium service"
+    "service": "Premium service",
+    "newslitter.title": "Join our newsletter",
+    "newslitter.subtitle": "Get updates on new products and offers",
+    "newslitter.placeholder": "Enter your email",
+    "newslitter.subscribe": "Subscribe",
+    "newslitter.success": "Thank you for subscribing!",
+    "newslitter.error": "Something went wrong, please try again."
   },
 
   ar: {
@@ -112,6 +130,7 @@ const dictionaries: Record<Lang, Dict> = {
     "filter.price": "نطاق السعر",
     "filter.clear": "مسح الفلاتر",
     "filter.results": "نتيجة",
+    "filter.search": "البحث عن المنتجات...",
     "product.description": "الوصف",
     "product.specs": "المواصفات الفنية",
     "product.features": "المميزات",
@@ -120,12 +139,22 @@ const dictionaries: Record<Lang, Dict> = {
     "product.model": "الموديل",
     "product.vat": "شامل الضريبة",
     "product.related": "قد يعجبك أيضاً",
+    "product.whatsappInquiry": "مرحباً، أود الاستفسار عن المنتج:",
+    "compare.title": "مقارنة المنتجات",
+    "compare.highlight": "إبراز الاختلافات",
+    "compare.clear": "مسح الكل",
+    "compare.empty": "لا توجد منتجات للمقارنة.",
+    "compare.add": "إضافة منتجات",
+    "compare.selected": "محدد",
+    "compare.now": "قارن الآن",
+    "compare.short": "قارن",
     "support.title": "مركز الدعم والضمان",
     "support.subtitle": "أدلة، فيديوهات تعليمية، وأقرب مراكز الصيانة.",
     "support.downloads": "أدلة الاستخدام",
-    "support.videos": "فيديوهات تعليمية",
+    "support.videos": "فيديوهات تهمك",
     "support.centers": "مراكز الخدمة",
     "support.download": "تحميل PDF",
+    "support.search": "البحث في الدعم...",
     "about.title": "عن شركة چراني للتجارة العامة استيراد و تصدير المحدودة",
     "about.subtitle": "نصنع الفخامة منذ 1985.",
     "about.history": "تاريخنا",
@@ -163,9 +192,15 @@ const dictionaries: Record<Lang, Dict> = {
     "footer.quickLinks": "روابط سريعة",
     "footer.contact": "اتصل",
     "footer.rights": "جميع الحقوق محفوظة.",
-     "warranty": "ضمان لمدة 10 سنوات",
+    "warranty": "ضمان لمدة 10 سنوات",
     "delivery": "توصيل مجاني",
     "service": "خدمة مميزة",
+    "newslitter.title": "اشترك في النشرة الإخبارية",
+    "newslitter.subtitle": "احصل على تحديثات حول المنتجات الجديدة والعروض",
+    "newslitter.placeholder": "أدخل بريدك الإلكتروني",
+    "newslitter.subscribe": "اشترك",
+    "newslitter.success": "شكراً لاشتراكك!",
+    "newslitter.error": "حدث خطأ، يرجى المحاولة مرة أخرى."
 
   },
   ku: {
@@ -196,6 +231,7 @@ const dictionaries: Record<Lang, Dict> = {
     "filter.price": "نرخ",
     "filter.clear": "پاککردنەوە",
     "filter.results": "ئەنجام",
+    "filter.search": "گەڕان بۆ بەرهەمەکان...",
     "product.description": "وەسف",
     "product.specs": "تایبەتمەندی تەکنیکی",
     "product.features": "تایبەتمەندیەکان",
@@ -204,12 +240,22 @@ const dictionaries: Record<Lang, Dict> = {
     "product.model": "مۆدێل",
     "product.vat": "لەگەڵ باج",
     "product.related": "لەوانەیە ئەمەت بەدڵ بێت",
+    "product.whatsappInquiry": "سڵاو، دەمەوێت پرسیار لەسەر ئەم بەرهەمە بکەم:",
+    "compare.title": "بەراوردکردنی بەرهەمەکان",
+    "compare.highlight": "جیاوازییەکان نیشان بدە",
+    "compare.clear": "هەمووی بسڕەوە",
+    "compare.empty": "هیچ بەرهەمێک نییە بۆ بەراوردکردن.",
+    "compare.add": "بەرهەم زیاد بکە",
+    "compare.selected": "دیاریکراوە",
+    "compare.now": "بەراورد بکە",
+    "compare.short": "بەراورد",
     "support.title": "ناوەندی پاڵپشتی و گەرەنتی",
     "support.subtitle": "ڕێبەر، ڤیدیۆ، و ناوەندی خزمەتگوزاری.",
     "support.downloads": "ڕێبەری بەکارهێنان",
-    "support.videos": "ڤیدیۆی فێرکاری",
+    "support.videos": "ڤیدیۆ گرنگەکان",
     "support.centers": "ناوەندی خزمەتگوزاری",
     "support.download": "PDF دابگرە",
+    "support.search": "گەڕان لە پاڵپشتی...",
     "about.title": "دەربارەی کۆمپانیای چرانی بۆ بازرگانی گشتی و ھاوردە و ھەناردە / سنوردار",
     "about.subtitle": "دروستکردنی ژیانی پرێمیۆم لە 1985 ەوە.",
     "about.history": "مێژوومان",
@@ -247,6 +293,13 @@ const dictionaries: Record<Lang, Dict> = {
     "footer.quickLinks": "بەستەرەکان",
     "footer.contact": "پەیوەندی",
     "footer.rights": "هەموو مافەکان پارێزراون.",
+    "newslitter.title": "خۆت تۆمار بکە بۆ نامەی هەواڵ",
+    "newslitter.subtitle": "نوێکارییەکان و ئۆفەرەکان وەرگرە",
+    "newslitter.placeholder": "ئیمەیڵەکەت بنووسە",
+    "newslitter.subscribe": "تۆماربوون",
+    "newslitter.success": "سوپاس بۆ تۆماربوونت!",
+    "newslitter.error": "هەڵەیەک ڕوویدا، تکایە دووبارە هەوڵ بدە"
+
   },
 };
 
@@ -263,6 +316,7 @@ const I18nContext = createContext<I18nCtx | null>(null);
 
 export const I18nProvider = ({ children, initialLang = "en" }: { children: ReactNode; initialLang?: Lang }) => {
   const [lang, setLangState] = useState<Lang>(initialLang);
+  const router = useRouter();
 
   const dir: "ltr" | "rtl" = lang === "ar" || lang === "ku" ? "rtl" : "ltr";
 
@@ -275,6 +329,7 @@ export const I18nProvider = ({ children, initialLang = "en" }: { children: React
     localStorage.setItem("chrani-lang", l);
     document.cookie = `chrani-lang=${l}; path=/; max-age=31536000`; // حفظ في الكوكيز ليتعرف عليها السيرفر
     setLangState(l);
+    router.refresh(); // إجبار السيرفر على إعادة تحديث البيانات باللغة الجديدة
   };
 
   const value = useMemo<I18nCtx>(() => ({

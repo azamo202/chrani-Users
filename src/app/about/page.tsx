@@ -60,20 +60,6 @@ const About = () => {
         </div>
       </section>
 
-      <section className="container-wide py-16 lg:py-24">
-        <div className="grid gap-8 sm:grid-cols-3">
-          {[
-            { n: t("about.stats.years.n"), l: t("about.stats.years.l") },
-            { n: t("about.stats.homes.n"), l: t("about.stats.homes.l") },
-            { n: t("about.stats.satisfaction.n"), l: t("about.stats.satisfaction.l") },
-          ].map((s) => (
-            <div key={s.l} className="border-t-2 border-primary pt-6">
-              <p className="font-display text-5xl font-bold">{s.n}</p>
-              <p className="mt-2 text-sm uppercase tracking-wider text-muted-foreground">{s.l}</p>
-            </div>
-          ))}
-        </div>
-      </section>
     </>
   );
 };

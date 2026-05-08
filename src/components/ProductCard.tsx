@@ -40,20 +40,20 @@ export const ProductCard = ({ product, className }: Props) => {
     <Link
       href={`/products/${product.id}`}
       className={cn(
-        "group relative flex flex-col overflow-hidden rounded-xl border border-border/60 bg-card transition-all hover-lift",
+        "group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border/40 bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg",
         className
       )}
     >
-      <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+      <div className="relative w-full shrink-0 aspect-square sm:aspect-[4/3] overflow-hidden bg-muted/40">
         <img
           src={primaryImage}
           alt={product.name[lang] || product.name['en']}
           loading="lazy"
           className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
-        <div className="absolute left-3 top-3 flex gap-2">
+        <div className="absolute start-3 top-3 flex gap-2">
           {product.is_active && (
-            <span className="rounded-full bg-primary px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-primary-foreground">
+            <span className="rounded-full bg-primary px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-primary-foreground shadow-sm">
               New
             </span>
           )}
@@ -61,7 +61,7 @@ export const ProductCard = ({ product, className }: Props) => {
         <button
           onClick={handleCompare}
           className={cn(
-            "absolute right-3 top-3 rounded-full p-2 transition-all duration-300 hover:scale-110",
+            "absolute end-3 top-3 rounded-full p-2 transition-all duration-300 hover:scale-110",
             compared
               ? "bg-primary text-primary-foreground shadow-md"
               : "bg-background/80 text-muted-foreground opacity-0 backdrop-blur-md hover:bg-background hover:text-foreground group-hover:opacity-100"
@@ -71,19 +71,17 @@ export const ProductCard = ({ product, className }: Props) => {
           <GitCompare className="h-4 w-4" />
         </button>
       </div>
-      <div className="flex flex-1 flex-col gap-2 p-5">
-        <p className="text-xs uppercase tracking-wider text-muted-foreground">{product.brand?.name}</p>
-        <h3 className="font-display text-lg font-semibold leading-tight text-foreground line-clamp-2">
+      <div className="flex flex-1 flex-col p-4 sm:p-5 text-start">
+        <p className="mb-1 text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">{product.brand?.name}</p>
+        <h3 className="font-display text-sm sm:text-lg font-bold leading-snug text-foreground line-clamp-2">
           {product.name[lang] || product.name['en']}
         </h3>
-        <p className="text-sm text-muted-foreground line-clamp-2">{product.description?.[lang] || product.description?.['en']}</p>
-        <div className="mt-auto flex items-center justify-between pt-3">
-          <span className="font-display text-lg font-bold text-transparent selection:text-transparent">
-            {/* Price removed as per requirements */}
-          </span>
-          <span className="flex items-center gap-1 text-xs font-medium text-primary opacity-0 transition group-hover:opacity-100">
-            View <ArrowRight className="h-3.5 w-3.5 rtl:rotate-180" />
-          </span>
+        <p className="mt-1.5 text-xs sm:text-sm text-muted-foreground line-clamp-2">{product.description?.[lang] || product.description?.['en']}</p>
+        
+        <div className="mt-auto flex justify-end pt-4">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/5 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-md sm:h-10 sm:w-10">
+            <ArrowRight className="h-4 w-4 rtl:rotate-180" />
+          </div>
         </div>
       </div>
     </Link>

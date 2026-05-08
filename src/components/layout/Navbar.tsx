@@ -36,15 +36,31 @@ export const Navbar = () => {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/85 backdrop-blur-lg">
-      <div className="container-wide flex h-16 items-center justify-between gap-4 lg:h-20">
-        <Link href="/" className="flex items-center gap-2.5" aria-label="Chrani Catalog">
-          <img src={logo} alt="Chrani" className="h-9 w-9 lg:h-10 lg:w-10" />
-          <div className="flex flex-col leading-none">
-            <span className="font-display text-xl font-bold tracking-tight lg:text-2xl">Chrani</span>
-            <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Catalog</span>
-          </div>
-        </Link>
+      <div className="container-wide grid h-16 grid-cols-3 items-center lg:flex lg:h-20 lg:justify-between lg:gap-4">
+        {/* Mobile Hamburger (Start) */}
+        <div className="flex justify-start lg:hidden">
+          <button
+            type="button"
+            className="rounded-md p-2 -ms-2"
+            onClick={() => setOpen((o) => !o)}
+            aria-label="Toggle menu"
+          >
+            {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
 
+        {/* Logo (Center on mobile, Start on Desktop) */}
+        <div className="flex justify-center lg:justify-start">
+          <Link href="/" className="flex items-center gap-2.5" aria-label="Chrani Catalog">
+            <img src={logo} alt="Chrani" className="h-8 w-8 sm:h-9 sm:w-9 lg:h-10 lg:w-10" />
+            <div className="flex flex-col leading-none text-start">
+              <span className="font-display text-lg font-bold tracking-tight sm:text-xl lg:text-2xl">Chrani</span>
+              <span className="text-[9px] uppercase tracking-[0.2em] text-muted-foreground sm:text-[10px]">Catalog</span>
+            </div>
+          </Link>
+        </div>
+
+        {/* Desktop Nav */}
         <nav className="hidden items-center gap-1 lg:flex">
           {links.map((link) => (
             <NavLink
@@ -70,30 +86,23 @@ export const Navbar = () => {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
+        {/* Lang Switcher (End) */}
+        <div className="flex justify-end items-center gap-2">
           <DropdownMenu>
-            <DropdownMenuTrigger className="flex items-center gap-1.5 rounded-full border border-border/60 px-3 py-1.5 text-sm font-medium hover:border-primary/40 hover:text-primary transition-colors">
+            <DropdownMenuTrigger className="flex items-center gap-1.5 rounded-full border border-border/60 px-2 sm:px-3 py-1.5 text-xs sm:text-sm font-medium hover:border-primary/40 hover:text-primary transition-colors">
               <Globe className="h-4 w-4" />
               <span className="hidden sm:inline">{currentLang.native}</span>
+              <span className="sm:hidden">{currentLang.code.toUpperCase()}</span>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               {langOptions.map((opt) => (
                 <DropdownMenuItem key={opt.code} onClick={() => setLang(opt.code)} className="cursor-pointer">
-                  <span className="flex-1">{opt.native}</span>
-                  {lang === opt.code && <Check className="h-4 w-4 text-primary" />}
+                  <span className="flex-1 text-start">{opt.native}</span>
+                  {lang === opt.code && <Check className="ms-4 h-4 w-4 text-primary" />}
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
-
-          <button
-            type="button"
-            className="rounded-md p-2 lg:hidden"
-            onClick={() => setOpen((o) => !o)}
-            aria-label="Toggle menu"
-          >
-            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
         </div>
       </div>
 

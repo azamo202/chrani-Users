@@ -16,6 +16,9 @@ export interface ApiCategory {
   slug: string;
   description?: TranslatableText;
   image?: string;
+  parent_id?: number | null;
+  parent?: ApiCategory;
+  children?: ApiCategory[];
 }
 
 export interface ApiBrand {

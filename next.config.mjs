@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-/** @type {import('next').NextConfig} */
+/** @type {import("next").NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   images: {
@@ -22,9 +22,6 @@ const nextConfig = {
         hostname: 'images.unsplash.com',
       }
     ],
-  },
-  turbopack: {
-    root: __dirname,
   },
 };
 

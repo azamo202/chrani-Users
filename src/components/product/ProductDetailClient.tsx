@@ -27,6 +27,7 @@ export const ProductDetailClient = ({ product, related = [], settings }: Product
   const productDescription = product.description?.[lang] || product.description?.['en'] || "";
   const brandName = product.brand?.name || "";
   const categoryName = product.category?.name[lang] || product.category?.name['en'] || "";
+  const parentCategoryName = product.category?.parent?.name?.[lang] || product.category?.parent?.name?.['en'] || "";
 
   const whatsappNumber = settings?.whatsapp || "+9647504454864";
   // إزالة أي رموز غير رقمية (مثل علامة الزائد + أو المسافات) لضمان عمل رابط الواتساب
@@ -78,7 +79,7 @@ export const ProductDetailClient = ({ product, related = [], settings }: Product
         {/* INFO */}
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
-            {brandName} {brandName && categoryName && "·"} {categoryName}
+            {brandName} {brandName && (parentCategoryName || categoryName) && "·"} {parentCategoryName && `${parentCategoryName} / `}{categoryName}
           </p>
           <h1 className="mt-3 font-display text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl">
             {productName}

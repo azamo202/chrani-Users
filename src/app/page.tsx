@@ -8,8 +8,8 @@ export default async function Home() {
   
   try {
     const [sectionsData, categoriesData] = await Promise.all([
-      fetchApi<ApiHomeSection[]>("/api/site/home-sections", { next: { revalidate: 3600 } }),
-      fetchApi<ApiCategory[]>("/api/site/categories", { next: { revalidate: 3600 } }),
+      fetchApi<ApiHomeSection[]>("/api/site/home-sections", { next: { revalidate: 60 } }),
+      fetchApi<ApiCategory[]>("/api/site/categories", { next: { revalidate: 60 } }),
     ]);
     sections = sectionsData;
     categories = categoriesData;

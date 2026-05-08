@@ -5,6 +5,7 @@ import { ArrowRight, ShieldCheck, Truck, Sparkles } from "lucide-react";
 import { useI18n } from "@/i18n/I18nProvider";
 import { ProductCard } from "@/components/ProductCard";
 import { ApiHomeSection, ApiCategory } from "@/types/api";
+import { cn } from "@/lib/utils";
 
 interface HomePageClientProps {
   sections: ApiHomeSection[];
@@ -13,15 +14,6 @@ interface HomePageClientProps {
 
 export const HomePageClient = ({ sections, categories }: HomePageClientProps) => {
   const { t, lang } = useI18n();
-  
-  // Try to find sections by their type or sort order.
-  // Assuming 'featured' and 'new_arrivals' are the section types or titles.
-  const categoriesSection = sections.find(s => s.type === "categories" || s.title?.en?.toLowerCase().includes("categories"));
-  const featuredSection = sections.find(s => s.type === "featured" || s.title?.en?.toLowerCase().includes("featured")) || sections[0];
-  const newArrivalsSection = sections.find(s => s.type === "new_arrivals" || s.title?.en?.toLowerCase().includes("new")) || sections[1];
-
-  const featured = featuredSection?.products || [];
-  const newArrivals = newArrivalsSection?.products || [];
 
   return (
     <>
@@ -34,7 +26,7 @@ export const HomePageClient = ({ sections, categories }: HomePageClientProps) =>
               "radial-gradient(circle at 20% 30%, hsl(354 78% 46% / 0.45), transparent 55%), radial-gradient(circle at 85% 70%, hsl(354 78% 46% / 0.25), transparent 50%)",
           }}
         />
-        <div className="container-wide relative grid items-center gap-12 py-20 lg:grid-cols-2 lg:py-32">
+        <div className="container-wide relative grid items-center gap-12 py-16 lg:grid-cols-2 lg:py-24">
           <div className="animate-fade-up">
             <p className="text-lg md:text-xl font-semibold uppercase tracking-[0.3em] text-primary">
               {" "}
@@ -92,13 +84,31 @@ export const HomePageClient = ({ sections, categories }: HomePageClientProps) =>
 
       {/* CATEGORIES */}
       {categories.length > 0 && (
-        <section className="container-wide py-20">
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <section className="container-wide py-12 lg:py-20">
+          <div className="flex items-end justify-between gap-6 mb-10">
+            <div className="text-start">
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
+                {t("home.categories.eyebrow")}
+              </p>
+              <h2 className="mt-2 font-display text-3xl font-bold sm:text-4xl">
+                {t("home.categories.main")}
+              </h2>
+            </div>
+            <Link
+              href="/products"
+              className="hidden items-center gap-1 text-sm font-medium text-primary hover:underline sm:flex"
+            >
+              {t("cta.viewAll")}{" "}
+              <ArrowRight className="h-4 w-4 rtl:rotate-180" />
+            </Link>
+          </div>
+
+          <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-8 sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:overflow-visible sm:pb-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {categories.map((cat) => (
               <Link
                 key={cat.id}
                 href={`/products?category_slug=${cat.slug}`}
-                className="group relative block aspect-[3/4] overflow-hidden rounded-2xl"
+                className="group relative block w-[45vw] shrink-0 snap-center aspect-[4/5] sm:w-auto sm:aspect-[3/4] overflow-hidden rounded-3xl shadow-sm hover:shadow-xl transition-all duration-500"
               >
                 <img
                   src={cat.image || "https://placehold.co/600x800/f3f4f6/6b7280?text=Category"}
@@ -106,10 +116,16 @@ export const HomePageClient = ({ sections, categories }: HomePageClientProps) =>
                   loading="lazy"
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-brand-black/85 via-brand-black/20 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 p-6 text-white">
-                  <h3 className="font-display text-2xl font-bold">{cat.name[lang] || cat.name['en']}</h3>
-                  <p className="mt-1 text-sm text-white/75">{cat.description?.[lang] || cat.description?.['en']}</p>
+                <div className="absolute inset-0 bg-gradient-to-t from-brand-black/90 via-brand-black/20 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-100" />
+                <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 text-white transition-transform duration-500 group-hover:-translate-y-2">
+                  <h3 className="font-display text-2xl font-bold tracking-wide sm:text-3xl">{cat.name[lang] || cat.name['en']}</h3>
+                  <p className="mt-2 text-sm text-white/80 line-clamp-2 transform opacity-0 transition-all duration-500 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0">
+                    {cat.description?.[lang] || cat.description?.['en'] || (lang === 'ar' ? 'استكشف منتجات هذا التصنيف' : 'Explore products in this category')}
+                  </p>
+                  <div className="mt-4 flex items-center gap-2 text-xs font-semibold text-primary transform opacity-0 transition-all duration-500 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 rtl:translate-x-4 rtl:group-hover:translate-x-0">
+                    <span>{t("cta.browse")}</span>
+                    <ArrowRight className="h-3 w-3 rtl:rotate-180" />
+                  </div>
                 </div>
               </Link>
             ))}
@@ -117,64 +133,55 @@ export const HomePageClient = ({ sections, categories }: HomePageClientProps) =>
         </section>
       )}
 
-      {/* FEATURED */}
-      {featuredSection && featured.length > 0 && (
-        <section className="bg-muted/40 py-20 lg:py-28">
-          <div className="container-wide">
-            <div className="flex items-end justify-between gap-6">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
-                  03 — Curated
-                </p>
-                <h2 className="mt-2 font-display text-3xl font-bold sm:text-4xl">
-                  {featuredSection.title[lang] || featuredSection.title['en']}
-                </h2>
-              </div>
-              <Link
-                href="/products"
-                className="hidden items-center gap-1 text-sm font-medium text-primary hover:underline sm:flex"
-              >
-                {t("cta.viewAll")}{" "}
-                <ArrowRight className="h-4 w-4 rtl:rotate-180" />
-              </Link>
-            </div>
-
-            <div className="mt-10 flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4 sm:grid sm:grid-cols-2 sm:overflow-visible sm:pb-0 lg:grid-cols-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-              {featured.map((p) => (
-                <div key={p.id} className="w-[85vw] shrink-0 snap-center sm:w-auto">
-                  <ProductCard product={p} />
+      {/* DYNAMIC SECTIONS */}
+      {sections
+        .filter((s) => s.is_active && s.products && s.products.length > 0)
+        .sort((a, b) => a.sort_order - b.sort_order)
+        .map((section, index) => (
+          <section
+            key={section.id}
+            className={cn(
+              "py-12 lg:py-20",
+              index % 2 === 0 ? "bg-muted/40" : "container-wide"
+            )}
+          >
+            <div className={cn(index % 2 === 0 ? "container-wide" : "")}>
+              <div className="flex items-end justify-between gap-6">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
+                    {`${(index + 3).toString().padStart(2, "0")} — ${
+                      (section.type || "section").toUpperCase()
+                    }`}
+                  </p>
+                  <h2 className="mt-2 font-display text-3xl font-bold sm:text-4xl">
+                    {section.title[lang] || section.title["en"]}
+                  </h2>
                 </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* NEW ARRIVALS */}
-      {newArrivalsSection && newArrivals.length > 0 && (
-        <section className="container-wide py-20 lg:py-28">
-          <div className="flex items-end justify-between gap-6">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
-                04 — Fresh
-              </p>
-              <h2 className="mt-2 font-display text-3xl font-bold sm:text-4xl">
-                {newArrivalsSection.title[lang] || newArrivalsSection.title['en']}
-              </h2>
-            </div>
-          </div>
-          <div className="mt-10 flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4 sm:grid sm:grid-cols-2 sm:overflow-visible sm:pb-0 lg:grid-cols-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {newArrivals.map((p) => (
-              <div key={p.id} className="w-[85vw] shrink-0 snap-center sm:w-auto">
-                <ProductCard product={p} />
+                <Link
+                  href="/products"
+                  className="hidden items-center gap-1 text-sm font-medium text-primary hover:underline sm:flex"
+                >
+                  {t("cta.viewAll")}{" "}
+                  <ArrowRight className="h-4 w-4 rtl:rotate-180" />
+                </Link>
               </div>
-            ))}
-          </div>
-        </section>
-      )}
+
+              <div className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 sm:grid sm:grid-cols-2 sm:overflow-visible sm:pb-0 lg:grid-cols-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                {section.products.map((p) => (
+                  <div
+                    key={p.id}
+                    className="w-[48vw] shrink-0 snap-center sm:w-auto"
+                  >
+                    <ProductCard product={p} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        ))}
 
       {/* CTA STRIP */}
-      <section className="container-wide pb-20">
+      <section className="container-wide pb-12 lg:pb-16">
         <div className="relative overflow-hidden rounded-2xl bg-brand-black px-8 py-14 text-white lg:px-16 lg:py-20">
           <div className="absolute -right-20 -top-20 h-80 w-80 rounded-full bg-primary/30 blur-3xl" />
           <div className="relative flex flex-col items-start gap-6 lg:flex-row lg:items-center lg:justify-between">

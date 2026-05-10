@@ -53,7 +53,10 @@ export const ProductCard = ({ product, className }: Props) => {
         />
         <div className="absolute start-3 top-3 flex gap-2">
           {product.is_active && (
-            <span className="rounded-full bg-primary px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-primary-foreground shadow-sm">
+            <span className={cn(
+              "rounded-full bg-primary px-2.5 py-1 text-[10px] font-bold uppercase text-primary-foreground shadow-sm",
+              lang === "en" ? "tracking-wider" : "tracking-normal"
+            )}>
               New
             </span>
           )}
@@ -72,7 +75,10 @@ export const ProductCard = ({ product, className }: Props) => {
         </button>
       </div>
       <div className="flex flex-1 flex-col p-4 sm:p-5 text-start">
-        <p className="mb-1 text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">{product.brand?.name}</p>
+        <p className={cn(
+          "mb-1 text-[10px] sm:text-xs font-bold uppercase text-muted-foreground",
+          lang === "en" ? "tracking-[0.2em]" : "tracking-normal"
+        )}>{product.brand?.name}</p>
         <h3 className="font-display text-sm sm:text-lg font-bold leading-snug text-foreground line-clamp-2">
           {product.name[lang] || product.name['en']}
         </h3>

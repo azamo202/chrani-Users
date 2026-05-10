@@ -7,6 +7,7 @@ import { useI18n } from "@/i18n/I18nProvider";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProductCard } from "@/components/ProductCard";
 import { ApiProduct, ApiStoreSettings } from "@/types/api";
+import { cn } from "@/lib/utils";
 
 interface ProductDetailClientProps {
   product: ApiProduct;
@@ -37,7 +38,7 @@ export const ProductDetailClient = ({ product, related = [], settings }: Product
   );
   const whatsappHref = `https://wa.me/${cleanWhatsappNumber}?text=${whatsappText}`;
 
-  const imageUrls = product.images.length > 0 
+  const imageUrls = product.images.length > 0
     ? product.images.sort((a, b) => Number(b.is_primary) - Number(a.is_primary)).map(i => i.url)
     : ["/fallback-image.png"];
 
@@ -65,9 +66,8 @@ export const ProductDetailClient = ({ product, related = [], settings }: Product
                 <button
                   key={src + i}
                   onClick={() => setActiveImage(i)}
-                  className={`overflow-hidden rounded-lg border-2 transition ${
-                    i === activeImage ? "border-primary" : "border-transparent hover:border-border"
-                  }`}
+                  className={`overflow-hidden rounded-lg border-2 transition ${i === activeImage ? "border-primary" : "border-transparent hover:border-border"
+                    }`}
                 >
                   <img src={src} alt="" className="aspect-square w-full object-cover" />
                 </button>
@@ -78,7 +78,10 @@ export const ProductDetailClient = ({ product, related = [], settings }: Product
 
         {/* INFO */}
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
+          <p className={cn(
+            "text-xs font-semibold uppercase text-primary",
+            lang === "en" ? "tracking-[0.3em]" : "tracking-normal"
+          )}>
             {brandName} {brandName && (parentCategoryName || categoryName) && "·"} {parentCategoryName && `${parentCategoryName} / `}{categoryName}
           </p>
           <h1 className="mt-3 font-display text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl">
@@ -98,72 +101,58 @@ export const ProductDetailClient = ({ product, related = [], settings }: Product
             {t("cta.inquire")}
           </a>
 
-          <div className="mt-8 grid grid-cols-3 gap-4 border-t border-border pt-6">
-            {[
-              { icon: ShieldCheck, label: t("warranty") },
-              { icon: Truck, label: t("delivery") },
-              { icon: Award, label: t("service") },
-            ].map((item) => (
-              <div key={item.label} className="flex flex-col items-center gap-1.5 text-center">
-                <item.icon className="h-5 w-5 text-primary" />
-                <span className="text-xs font-medium text-muted-foreground">{item.label}</span>
-              </div>
-            ))}
+          <div className="mt-8 border-t border-border pt-6">
+            <Tabs defaultValue="specs" className="w-full" dir={dir}>
+              <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="description" className="text-xs">{t("product.description")}</TabsTrigger>
+                <TabsTrigger value="features" className="text-xs">{t("product.features")}</TabsTrigger>
+                <TabsTrigger value="specs" className="text-xs">{t("product.specs")}</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="description" className="mt-6">
+                <div className="prose prose-sm max-w-full text-muted-foreground text-start">
+                  <p>{productDescription}</p>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="features" className="mt-6">
+                <ul className="grid gap-2">
+                  {product.features?.map((f, idx) => (
+                    <li key={idx} className="flex items-start gap-2 rounded-lg border border-border p-3">
+                      <span className="mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                      <span className="text-xs">{f}</span>
+                    </li>
+                  ))}
+                  {!product.features?.length && (
+                    <li className="text-xs text-muted-foreground p-2">No features available.</li>
+                  )}
+                </ul>
+              </TabsContent>
+
+              <TabsContent value="specs" className="mt-6">
+                <div className="space-y-4">
+                  {product.specifications ? (
+                    Object.entries(product.specifications).map(([groupName, specs]) => (
+                      <div key={groupName} className="rounded-xl border border-border overflow-hidden">
+                        <h3 className="bg-muted/30 px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-primary">{groupName}</h3>
+                        <div className="divide-y divide-border/50">
+                          {specs.map((spec, idx) => (
+                            <div key={idx} className="flex items-center justify-between gap-4 px-4 py-2">
+                              <dt className="text-[11px] font-medium text-muted-foreground">{spec.key}</dt>
+                              <dd className="text-[11px] font-semibold text-end">{spec.value}</dd>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-xs text-muted-foreground">No specifications available.</div>
+                  )}
+                </div>
+              </TabsContent>
+            </Tabs>
           </div>
         </div>
-      </section>
-
-      {/* TABS */}
-      <section className="container-wide pb-16">
-        <Tabs defaultValue="description" className="mt-8" dir={dir}>
-          <TabsList className="grid w-full max-w-xl grid-cols-3">
-            <TabsTrigger value="description">{t("product.description")}</TabsTrigger>
-            <TabsTrigger value="features">{t("product.features")}</TabsTrigger>
-            <TabsTrigger value="specs">{t("product.specs")}</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="description" className="mt-8">
-            <div className="prose max-w-3xl text-base leading-relaxed text-muted-foreground text-start">
-              <p>{productDescription}</p>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="features" className="mt-8">
-            <ul className="grid max-w-3xl gap-3 sm:grid-cols-2">
-              {product.features?.map((f, idx) => (
-                <li key={idx} className="flex items-start gap-3 rounded-lg border border-border p-4">
-                  <span className="mt-1 inline-block h-2 w-2 shrink-0 rounded-full bg-primary" />
-                  <span className="text-sm">{f}</span>
-                </li>
-              ))}
-              {!product.features?.length && (
-                <li className="text-sm text-muted-foreground p-4">No features available.</li>
-              )}
-            </ul>
-          </TabsContent>
-
-          <TabsContent value="specs" className="mt-8">
-            <div className="max-w-3xl divide-y divide-border rounded-xl border border-border">
-              {product.specifications ? (
-                Object.entries(product.specifications).map(([groupName, specs]) => (
-                  <div key={groupName} className="pb-4">
-                    <h3 className="bg-muted/30 px-5 py-2 text-xs font-bold uppercase tracking-widest text-primary">{groupName}</h3>
-                    <div className="divide-y divide-border/50">
-                      {specs.map((spec, idx) => (
-                        <div key={idx} className="flex items-center justify-between gap-4 px-5 py-3">
-                          <dt className="text-sm font-medium text-muted-foreground">{spec.key}</dt>
-                          <dd className="text-sm font-semibold text-end">{spec.value}</dd>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="p-5 text-sm text-muted-foreground">No specifications available.</div>
-              )}
-            </div>
-          </TabsContent>
-        </Tabs>
       </section>
 
       {/* RELATED */}

@@ -1,7 +1,6 @@
 "use client";
 
 import { createContext, useContext, useEffect, useMemo, useState, ReactNode } from "react";
-import { useRouter } from "next/navigation";
 
 export type Lang = "en" | "ar" | "ku";
 
@@ -9,6 +8,8 @@ type Dict = Record<string, string>;
 const dictionaries: Record<Lang, Dict> = {
   en: {
     "company.name": "CHRANI COMPANY FOR GENERAL TRADING IMP. & EXP. LTD",
+    "logo.name": "CHRANI",
+    "logo.subtitle": "CATALOG",
     "nav.home": "Home",
     "nav.products": "Products",
     "nav.support": "Support",
@@ -62,19 +63,19 @@ const dictionaries: Record<Lang, Dict> = {
     "support.centers": "Service Centers",
     "support.download": "Download PDF",
     "support.search": "Search in support...",
-    "about.title": "About CHRANI COMPANY FOR GENERAL TRADING IMP. & EXP. LTD",
-    "about.subtitle": "Crafting premium living since 1985.",
+    "about.title": "About Us",
+    "about.subtitle": "Quality appliances for Iraqi homes since 2002.",
     "about.history": "Our History",
     "about.vision": "Our Vision",
     "about.mission": "Our Mission",
-    "about.history.title": "Four decades of refined craft.",
-    "about.history.p1": "Founded in 1985, Chrani began as a small workshop assembling premium kitchen appliances by hand. From those careful beginnings grew an obsession with detail that still shapes every product we make.",
-    "about.history.p2": "Today, our catalog spans refrigeration, laundry, cooking, and climate — all built around the same principle: quiet, lasting excellence that disappears into the rhythm of your home.",
-    "about.history.p3": "We work with artisans, engineers, and designers across three continents to ensure every appliance carrying the Chrani mark earns its place.",
-    "about.vision.body": "To become the most trusted name in premium home appliances across the region — synonymous with design integrity and lasting quality.",
-    "about.mission.body": "Engineer appliances that elevate everyday life: quieter, more efficient, more beautiful, and built to last for generations.",
+    "about.history.title": "About Us",
+    "about.history.body": "Chrani Company started in April 2002 in Duhok, Iraq. Today, we are one of the top names for home appliances in Iraq. The company is led by its owner and Chairman, Mr. Saeed Chrani. Since 2002, we have brought the world’s best technology to Iraqi homes. With many stores and partners across the country, we ensure our products are always within reach. We don’t just sell appliances; we also create our own high-quality brands: iLK and iNOX. We work with the best factories across the world to ensure every product is excellent. We trust our quality, which is why we offer strong warranties for up to 5 years. At Chrani Company, our goal is simple: to provide our customers with the best appliances and great service.",
+    "about.vision.body": "To become the preeminent player in the Iraqi appliance industry by expanding our dealer’s network, leveraging the deep customer confidence we have earned over the last two decades.",
+    "about.mission.body": "To deliver high-quality home appliances at accessible price points, ensuring that premium technology is affordable for all segments of the community, supported by dependable after-sales service.",
     "about.values": "Our Values",
-    "about.values.body": "Craft over compromise. Service over sales. Honesty in every detail — from the showroom to the warranty desk.",
+    "about.values.title": "Driving Excellence",
+    "about.values.subtitle": "The core principles that guide our commitment to your home.",
+    "about.values.body": "Our business is built on a foundation of integrity and quality, ensuring every product is developed with transparency and excellence. We prioritize customer satisfaction by making your comfort our ultimate measure of success, while continuously embracing innovation to stay ahead of the latest technological trends.",
     "about.stats.years.n": "40+",
     "about.stats.years.l": "Years of craft",
     "about.stats.homes.n": "120k",
@@ -112,6 +113,8 @@ const dictionaries: Record<Lang, Dict> = {
 
   ar: {
     "company.name": "شركة چراني للتجارة العامة استيراد و تصدير المحدودة",
+    "logo.name": "چراني",
+    "logo.subtitle": "الكتالوج",
     "nav.home": "الرئيسية",
     "nav.products": "المنتجات",
     "nav.support": "الدعم",
@@ -165,19 +168,19 @@ const dictionaries: Record<Lang, Dict> = {
     "support.centers": "مراكز الخدمة",
     "support.download": "تحميل PDF",
     "support.search": "البحث في الدعم...",
-    "about.title": "عن شركة چراني للتجارة العامة استيراد و تصدير المحدودة",
-    "about.subtitle": "نصنع الفخامة منذ 1985.",
+    "about.title": "من نحن",
+    "about.subtitle": "أجهزة منزلية عالية الجودة للمنازل العراقية منذ عام 2002.",
     "about.history": "تاريخنا",
     "about.vision": "رؤيتنا",
     "about.mission": "رسالتنا",
-    "about.history.title": "أربعة عقود من الحرفية الراقية.",
-    "about.history.p1": "تأسست شراني في عام 1985 كورشة صغيرة لتجميع أجهزة المطبخ الفاخرة يدوياً. ومن تلك البدايات الدقيقة، نما شغفنا بالتفاصيل الذي لا يزال يشكل كل منتج نصنعه.",
-    "about.history.p2": "اليوم، يشمل كتالوجنا الثلاجات، الغسالات، أجهزة الطهي، والتكييف — وكلها مبنية على نفس المبدأ: هدوء، تفوق يدوم، واندماج تام مع إيقاع منزلك.",
-    "about.history.p3": "نعمل مع حرفيين ومهندسين ومصممين عبر ثلاث قارات لضمان أن كل جهاز يحمل علامة شراني يستحق مكانه بجدارة.",
-    "about.vision.body": "أن نصبح الاسم الأكثر ثقة في الأجهزة المنزلية الفاخرة في المنطقة — مرادفاً لسلامة التصميم والجودة التي تدوم.",
-    "about.mission.body": "هندسة أجهزة ترتقي بالحياة اليومية: أكثر هدوءاً، أكثر كفاءة، أكثر جمالاً، ومصممة لتدوم لأجيال.",
+    "about.history.title": "تاريخنا",
+    "about.history.body": "تأسست شركة چراني في نيسان عام 2002 بمدينة دهوك في العراق. واليوم، نعتز بكوننا أحد الأسماء الرائدة في مجال الأجهزة المنزلية على مستوى العراق، تحت قيادة مالكها ورئيس مجلس إدارتها السيد سعيد چراني. منذ انطلاقتنا في عام 2002، حرصنا على جلب أفضل التقنيات العالمية إلى المنازل العراقية. ومن خلال شبكة واسعة من المتاجر والشركاء في كافة أنحاء البلاد، نضمن وصول منتجاتنا إلى عملائنا أينما كانوا. نحن لا نكتفي ببيع الأجهزة فحسب، بل قمنا بابتكار علاماتنا التجارية الخاصة ذات الجودة العالية iLK و iNOX حيث نتعاون مع نخبة المصانع العالمية لضمان تميز وجودة كل منتج نقدمه. ولأننا نثق تماماً بجودة منتجاتنا، فإننا نقدم ضمانات قوية تصل إلى 5 سنوات. في شركة چراني، هدفنا بسيط وواضح: تزويد عملائنا بأفضل الأجهزة المنزلية مع خدمة استثنائية.",
+    "about.vision.body": "أن نصبح اللاعب الأبرز في صناعة الأجهزة المنزلية على مستوى العراق، من خلال توسيع شبكة وكلائنا، مستندين إلى الثقة العميقة التي اكتسبناها من عملائنا على مدار العشرين عاماً الماضية.",
+    "about.mission.body": "توفير أجهزة منزلية عالية الجودة بأسعار مناسبة، لضمان وصول التكنولوجيا المتطورة إلى جميع فئات المجتمع، مدعومة بخدمات ما بعد البيع الموثوقة.",
     "about.values": "قيمنا",
-    "about.values.body": "الحرفية فوق المساومة. الخدمة فوق المبيعات. الصدق في كل تفصيل — من صالة العرض إلى مكتب الضمان.",
+    "about.values.title": "الريادة في التميز",
+    "about.values.subtitle": "المبادئ الأساسية التي توجه التزامنا تجاه منزلك.",
+    "about.values.body": "تستند أعمالنا إلى ركيزة أساسية من النزاهة والجودة، حيث نلتزم بتطوير كل منتج بمنتهى الشفافية والتميز، واضعين رضا العملاء وراحتهم كمعيار أسمى لنجاحنا، مع السعي الدائم لتبني الابتكار ومواكبة أحدث الصيحات التكنولوجية لنبقى دائماً في الصدارة.",
     "about.stats.years.n": "+40",
     "about.stats.years.l": "سنوات من الحرفية",
     "about.stats.homes.n": "120 ألف",
@@ -215,6 +218,8 @@ const dictionaries: Record<Lang, Dict> = {
   },
   ku: {
     "company.name": "کۆمپانیای چرانی بۆ بازرگانی گشتی و ھاوردە و ھەناردە / سنوردار",
+    "logo.name": "چراني",
+    "logo.subtitle": "کاتالۆگ",
     "warranty": "گرەنتی ١٠ ساڵە",
     "delivery": "گەیاندنی خۆڕایی",
     "service": "خزمەتگوزاری نایاب",
@@ -271,19 +276,19 @@ const dictionaries: Record<Lang, Dict> = {
     "support.centers": "ناوەندی خزمەتگوزاری",
     "support.download": "PDF دابگرە",
     "support.search": "گەڕان لە پاڵپشتی...",
-    "about.title": "دەربارەی کۆمپانیای چرانی بۆ بازرگانی گشتی و ھاوردە و ھەناردە / سنوردار",
-    "about.subtitle": "دروستکردنی ژیانی پرێمیۆم لە 1985 ەوە.",
+    "about.title": "دەربارەی ئێمە",
+    "about.subtitle": "ئامێری ناوماڵ بە کوالێتی بەرز بۆ ماڵە عێراقییەکان لە ساڵی ٢٠٠٢ ەوە.",
     "about.history": "مێژوومان",
     "about.vision": "بینینمان",
     "about.mission": "ئامانجمان",
-    "about.history.title": "چوار دەیە لە پیشەگەری نایاب.",
-    "about.history.p1": "چرانی لە ساڵی 1985 وەک وۆرکشۆپێکی بچووک بۆ کۆکردنەوەی ئامێرە پرێمیۆمەکانی چێشتخانە بە دەست دامەزرا. لەو سەرەتا وردانەوە، خولیایەک بۆ وردەکاری دروستبوو کە تا ئێستاش شێوەی هەموو بەرهەمێکمان دیاری دەکات.",
-    "about.history.p2": "ئەمڕۆ، کاتالۆگەکەمان ساردکەرەوە، ئامێری جلشۆردن، چێشتلێنان و کەشوهەوا دەگرێتەوە — هەموویان لەسەر هەمان بنەما دروستکراون: بێدەنگی، نایابی بەردەوام کە لەگەڵ ڕیتمی ماڵەکەت تێکەڵ دەبێت.",
-    "about.history.p3": "ئێمە لەگەڵ پیشەوەران، ئەندازیاران، و دیزاینەران لە سێ کیشوەر کاردەکەین بۆ دڵنیابوون لەوەی هەر ئامێرێک کە نیشانەی چرانی هەڵگرتووە شایەنی جێگەکەی خۆیەتی.",
-    "about.vision.body": "ببینە متمانەپێکراوترین ناو لە ئامێرە پرێمیۆمەکانی ماڵەوە لە ناوچەکەدا — هاوواتا لەگەڵ یەکپارچەیی دیزاین و کوالێتی بەردەوام.",
-    "about.mission.body": "ئەندازیاری ئامێرەکان بۆ بەرزکردنەوەی ئاستی ژیانی ڕۆژانە: بێدەنگتر، کاراتر، جوانتر، و دروستکراو بۆ ئەوەی بۆ نەوەکان بمێنێتەوە.",
+    "about.history.title": "دەربارەی ئێمە",
+    "about.history.body": "کۆمپانیای چرانی لە نیسانی ساڵی ٢٠٠٢ لە شاری دهۆک لە عێراق دامەزراوە. ئەمڕۆ، شانازی دەکەین کە یەکێکن لە ناوە هەرە دیار و پێشەنگەکان لە بواری ئامێرەکانی ناوماڵ لەسەر ئاستی عێراق، بە سەرکردایەتی خاوەن و سەرۆکی کۆمپانیا بەڕێز سعید چرانی .لە سەرەتای دەستپێکردنمانەوە لە ساڵی ٢٠٠٢، هەوڵمانداوە باشترین تەکنەلۆژیای جیهانی بگەیەنینە ناو ماڵە عێراقییەکان. لە ڕێگەی تۆڕێکی بەرفراوان لە پێشانگا و هاوبەشەکانمان لە سەرتاسەری وڵات، دڵنیایی دەدەین کە بەرهەمەکانمان دەگەنە دەستی کڕیاران لە هەر شوێنێک بن. ئێمە تەنها ئامێر نافرۆشین، بەڵکو براندە تایبەتەکانی خۆمان بە کوالێتییەکی بەرز داهێناوە کە ئەوانیش iLK و iNOXـن. ئێمە لەگەڵ باشترین کارگەکانی جیهان کاردەکەین بۆ دەستەبەرکردنی ناوازەیی و کوالێتی هەر بەرهەمێک کە پێشکەشی دەکەین. لەبەر ئەوەی متمانەی تەواومان بە کوالێتی بەرهەمەکانمان هەیە، گەرەنتییەکی بەهێز پێشکەش دەکەین کە دەگاتە ٥ ساڵ. لە کۆمپانیای چرانی، ئامانجمان سادە و ڕوونە: دابینکردنی باشترین ئامێرەکانی ناوماڵ بۆ کڕیارانمان لەگەڵ خزمەتگوزارییەکی ناوازە.",
+    "about.vision.body": "بۆ ئەوەی ببینە کارەکتەری سەرەکی لە پیشەسازی ئامێرە کارەباییەکان لەسەر ئاستی عێراق، لە ڕێگەی فراوانکردنی تۆڕی بریکارەکانمان، بە پشتبەستن بەو متمانە قووڵەی کە لە ماوەی بیست ساڵی ڕابردوودا لە کڕیارەکانمانەوە بەدەستمان هێناوە.",
+    "about.mission.body": "دابینکردنی ئامێری ناوماڵ بە کوالێتییەکی بەرز و بە نرخێکی گونجاو، بۆ دەستەبەرکردنی ئەوەی کە تەکنەلۆژیای پێشکەوتوو بۆ هەموو چین و توێژەکانی کۆمەڵگە بێتەدی، ئەمەش بە پاڵپشتی خزمەتگوزارییەکی باوەڕپێکراوی دوای فرۆشتن.",
     "about.values": "بەهاکانمان",
-    "about.values.body": "پیشەگەری لە سەرووی سازشکردنەوە. خزمەتگوزاری لە سەرووی فرۆشتنەوە. ڕاستگۆیی لە هەموو وردەکارییەکدا — لە پێشانگاوە تا مێزی گرەنتی.",
+    "about.values.title": "پێشەنگی لە نایاببوون",
+    "about.values.subtitle": "ئەو بنەما سەرەکیانەی کە ڕێنوێنی پابەندبوونی ئێمە دەکەن بۆ ماڵەکەت.",
+    "about.values.body": "کارەکەمان لەسەر بنەمای دەسپاکی و کوالێتی بنیات نراوە، و دڵنیایی دەدەین کە هەر بەرهەمێک بە شەفافییەت و نایابی پەرەی پێدراوە؛ ئێمە ڕەزامەندی کڕیارەکانمان لە پێشینەی کارەکانمان دادەنێین و ئاسوودەیی ئێوە دەکەینە پێوەری سەرەکی بۆ سەرکەوتنمان، لە هەمان کاتدا بەردەوام باوەش بۆ داهێنان دەگرینەوە بۆ ئەوەی لەگەڵ نوێترین تەکنەلۆژیاکان هەمیشە لە پێشەنگدا بین.",
     "about.stats.years.n": "+40",
     "about.stats.years.l": "ساڵ لە پیشەگەری",
     "about.stats.homes.n": "120 هەزار",
@@ -331,7 +336,6 @@ const I18nContext = createContext<I18nCtx | null>(null);
 
 export const I18nProvider = ({ children, initialLang = "en" }: { children: ReactNode; initialLang?: Lang }) => {
   const [lang, setLangState] = useState<Lang>(initialLang);
-  const router = useRouter();
 
   const dir: "ltr" | "rtl" = lang === "ar" || lang === "ku" ? "rtl" : "ltr";
 
@@ -344,7 +348,9 @@ export const I18nProvider = ({ children, initialLang = "en" }: { children: React
     localStorage.setItem("chrani-lang", l);
     document.cookie = `chrani-lang=${l}; path=/; max-age=31536000`; // حفظ في الكوكيز ليتعرف عليها السيرفر
     setLangState(l);
-    router.refresh(); // إجبار السيرفر على إعادة تحديث البيانات باللغة الجديدة
+    if (typeof window !== "undefined") {
+      window.location.reload();
+    }
   };
 
   const value = useMemo<I18nCtx>(() => ({
@@ -354,7 +360,11 @@ export const I18nProvider = ({ children, initialLang = "en" }: { children: React
     t: (key: string) => dictionaries[lang][key] ?? dictionaries.en[key] ?? key,
   }), [lang, dir]);
 
-  return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
+  return (
+    <I18nContext.Provider value={value}>
+      {children}
+    </I18nContext.Provider>
+  );
 };
 
 export const useI18n = () => {

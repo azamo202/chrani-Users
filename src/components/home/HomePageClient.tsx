@@ -28,7 +28,10 @@ export const HomePageClient = ({ sections, categories }: HomePageClientProps) =>
         />
         <div className="container-wide relative grid items-center gap-12 py-16 lg:grid-cols-2 lg:py-24">
           <div className="animate-fade-up">
-            <p className="text-lg md:text-xl font-semibold uppercase tracking-[0.3em] text-primary">
+            <p className={cn(
+              "text-lg md:text-xl font-semibold uppercase text-primary",
+              lang === "en" ? "tracking-[0.3em]" : "tracking-normal"
+            )}>
               {" "}
               {t("home.hero.eyebrow")}
             </p>
@@ -87,7 +90,10 @@ export const HomePageClient = ({ sections, categories }: HomePageClientProps) =>
         <section className="container-wide py-12 lg:py-20">
           <div className="flex items-end justify-between gap-6 mb-10">
             <div className="text-start">
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
+              <p className={cn(
+                "text-xs font-semibold uppercase text-primary",
+                lang === "en" ? "tracking-[0.3em]" : "tracking-normal"
+              )}>
                 {t("home.categories.eyebrow")}
               </p>
               <h2 className="mt-2 font-display text-3xl font-bold sm:text-4xl">
@@ -148,7 +154,10 @@ export const HomePageClient = ({ sections, categories }: HomePageClientProps) =>
             <div className={cn(index % 2 === 0 ? "container-wide" : "")}>
               <div className="flex items-end justify-between gap-6">
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">
+                  <p className={cn(
+                    "text-xs font-semibold uppercase text-primary",
+                    lang === "en" ? "tracking-[0.3em]" : "tracking-normal"
+                  )}>
                     {`${(index + 3).toString().padStart(2, "0")} — ${
                       (section.type || "section").toUpperCase()
                     }`}

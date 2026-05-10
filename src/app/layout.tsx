@@ -8,6 +8,7 @@ import { Footer } from "@/components/layout/Footer";
 import { CompareFloatingBar } from "@/components/compare/CompareFloatingBar";
 import { fetchApi } from "@/lib/api";
 import { ApiStoreSettings } from "@/types/api";
+import { Suspense } from "react";
 
 // We maintain the same font classes the user had in tailwind config if needed,
 // or simply let Tailwind handle it since we will just import global CSS.

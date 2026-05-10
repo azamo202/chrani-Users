@@ -27,8 +27,8 @@ export const Navbar = () => {
   const links = [
     { to: "/", label: t("nav.home") },
     { to: "/products", label: t("nav.products") },
-    { to: "/support", label: t("nav.support") },
     { to: "/about", label: t("nav.about") },
+    { to: "/support", label: t("nav.support") },
     { to: "/contact", label: t("nav.contact") },
   ];
 
@@ -54,8 +54,11 @@ export const Navbar = () => {
           <Link href="/" className="flex items-center gap-2.5" aria-label="Chrani Catalog">
             <img src={logo} alt="Chrani" className="h-8 w-8 sm:h-9 sm:w-9 lg:h-10 lg:w-10" />
             <div className="flex flex-col leading-none text-start">
-              <span className="font-display text-lg font-bold tracking-tight sm:text-xl lg:text-2xl">Chrani</span>
-              <span className="text-[9px] uppercase tracking-[0.2em] text-muted-foreground sm:text-[10px]">Catalog</span>
+              <span className="font-display text-lg font-bold tracking-tight sm:text-xl lg:text-2xl">{t("logo.name")}</span>
+              <span className={cn(
+                "text-[9px] uppercase text-muted-foreground sm:text-[10px]",
+                lang === "en" ? "tracking-[0.2em]" : "tracking-normal"
+              )}>{t("logo.subtitle")}</span>
             </div>
           </Link>
         </div>

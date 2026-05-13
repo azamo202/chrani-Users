@@ -50,7 +50,7 @@ export interface ApiProduct {
 
 export interface ApiStoreSettings {
   email?: string;
-  phone?: string;
+  phone?: string | string[];
   whatsapp?: string; // Changed from whatsapp_number to whatsapp
   tiktok?: string;
   facebook?: string;
@@ -61,10 +61,12 @@ export interface ApiStoreSettings {
 
 export interface ApiMaintenanceCenter {
   id: number;
+  name: TranslatableText;
   city: TranslatableText;
   address: TranslatableText;
-  phone: string;
+  phone: string | string[];
   working_hours?: TranslatableText;
+  location_link?: string;
 }
 
 export interface ApiVideo {

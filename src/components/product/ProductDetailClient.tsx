@@ -78,12 +78,21 @@ export const ProductDetailClient = ({ product, related = [], settings }: Product
 
         {/* INFO */}
         <div>
-          <p className={cn(
-            "text-xs font-semibold uppercase text-primary",
-            lang === "en" ? "tracking-[0.3em]" : "tracking-normal"
-          )}>
-            {brandName} {brandName && (parentCategoryName || categoryName) && "·"} {parentCategoryName && `${parentCategoryName} / `}{categoryName}
-          </p>
+          <div className="flex items-center gap-3 mb-2">
+            {product.brand?.logo && (
+              <img 
+                src={product.brand.logo} 
+                alt={brandName} 
+                className="h-8 w-auto object-contain" 
+              />
+            )}
+            <p className={cn(
+              "text-sm font-semibold text-primary",
+              lang === "en" ? "tracking-wider" : "tracking-normal"
+            )}>
+              {brandName} {brandName && (parentCategoryName || categoryName) && "·"} {parentCategoryName && `${parentCategoryName} / `}{categoryName}
+            </p>
+          </div>
           <h1 className="mt-3 font-display text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl">
             {productName}
           </h1>

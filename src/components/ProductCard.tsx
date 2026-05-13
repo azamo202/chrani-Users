@@ -75,10 +75,21 @@ export const ProductCard = ({ product, className }: Props) => {
         </button>
       </div>
       <div className="flex flex-1 flex-col p-4 sm:p-5 text-start">
-        <p className={cn(
-          "mb-1 text-[10px] sm:text-xs font-bold uppercase text-muted-foreground",
-          lang === "en" ? "tracking-[0.2em]" : "tracking-normal"
-        )}>{product.brand?.name}</p>
+        <div className="mb-2 flex items-center gap-2">
+          {product.brand?.logo && (
+            <img 
+              src={product.brand.logo} 
+              alt={product.brand.name} 
+              className="h-4 w-auto object-contain opacity-80"
+            />
+          )}
+          <p className={cn(
+            "text-[10px] sm:text-xs font-bold text-muted-foreground",
+            lang === "en" ? "tracking-wider" : "tracking-normal"
+          )}>
+            {product.brand?.name}
+          </p>
+        </div>
         <h3 className="font-display text-sm sm:text-lg font-bold leading-snug text-foreground line-clamp-2">
           {product.name[lang] || product.name['en']}
         </h3>

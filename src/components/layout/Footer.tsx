@@ -150,18 +150,18 @@ export const Footer = ({ settings }: FooterProps) => {
             {t("footer.contact")}
           </h4>
           <ul className="mt-5 space-y-3 text-sm text-white/60">
-            {settings?.phone && (
-              <li className="flex items-start gap-2">
-                <Phone className="h-4 w-4 mt-0.5 text-primary" />
-
+            {(Array.isArray(settings?.phone) ? settings?.phone : [settings?.phone]).filter(Boolean).map((num, i) => (
+              <li key={`phone-${i}`} className="flex items-start gap-2">
+                <Phone className="h-4 w-4 mt-0.5 text-primary flex-shrink-0" />
                 <a
-                  href={`tel:${settings.phone}`}
-                  className="hover:text-primary transition"
+                  href={`tel:${num.replace(/\s/g, "")}`}
+                  className="hover:text-primary transition text-start"
+                  dir="ltr"
                 >
-                  {settings.phone}
+                  {num}
                 </a>
               </li>
-            )}
+            ))}
             {settings?.address && (
               <li className="flex items-start gap-2">
                 <MapPin className="h-4 w-4 mt-0.5 text-primary" />{" "}
@@ -193,7 +193,7 @@ export const Footer = ({ settings }: FooterProps) => {
       <div className="border-t border-white/10">
         <div className="container-wide flex flex-col items-center justify-between gap-2 py-6 text-xs text-white/50 sm:flex-row">
           <p>
-            © {new Date().getFullYear()} Chrani Catalog. {t("footer.rights")}
+            {t("footer.rights")}
           </p>
           <p>Premium Home Appliances</p>
         </div>

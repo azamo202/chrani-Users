@@ -26,7 +26,7 @@ export const HomePageClient = ({ sections, categories }: HomePageClientProps) =>
               "radial-gradient(circle at 20% 30%, hsl(354 78% 46% / 0.45), transparent 55%), radial-gradient(circle at 85% 70%, hsl(354 78% 46% / 0.25), transparent 50%)",
           }}
         />
-        <div className="container-wide relative grid items-center gap-12 py-16 lg:grid-cols-2 lg:py-24">
+        <div className="container-wide relative grid items-center gap-12 pt-8 pb-16 lg:grid-cols-2 lg:pt-12 lg:pb-24">
           <div className="animate-fade-up">
             <p className={cn(
               "text-lg md:text-xl font-semibold uppercase text-primary",
@@ -76,11 +76,14 @@ export const HomePageClient = ({ sections, categories }: HomePageClientProps) =>
 
           <div className="relative animate-fade-in hidden md:block">
             <div className="absolute -inset-8 rounded-full bg-primary/20 blur-3xl" />
-            <img
-              src="/3.webp"
-              alt="Premium kitchen showcase"
-              className="relative w-full rounded-2xl object-cover shadow-elegant aspect-[4/5]"
-            />
+            <div className="relative overflow-hidden rounded-2xl shadow-elegant">
+              <img
+                src="/WhatsApp Image 2026-05-13 at 9.17.28 AM (1).webp"
+                alt="Chrani Showroom Showcase"
+                className="w-full object-cover aspect-square"
+              />
+              <div className="absolute inset-0 bg-primary/20 mix-blend-overlay" />
+            </div>
           </div>
         </div>
       </section>
@@ -90,12 +93,7 @@ export const HomePageClient = ({ sections, categories }: HomePageClientProps) =>
         <section className="container-wide py-12 lg:py-20">
           <div className="flex items-end justify-between gap-6 mb-10">
             <div className="text-start">
-              <p className={cn(
-                "text-xs font-semibold uppercase text-primary",
-                lang === "en" ? "tracking-[0.3em]" : "tracking-normal"
-              )}>
-                {t("home.categories.eyebrow")}
-              </p>
+
               <h2 className="mt-2 font-display text-3xl font-bold sm:text-4xl">
                 {t("home.categories.main")}
               </h2>
@@ -154,14 +152,7 @@ export const HomePageClient = ({ sections, categories }: HomePageClientProps) =>
             <div className={cn(index % 2 === 0 ? "container-wide" : "")}>
               <div className="flex items-end justify-between gap-6">
                 <div>
-                  <p className={cn(
-                    "text-xs font-semibold uppercase text-primary",
-                    lang === "en" ? "tracking-[0.3em]" : "tracking-normal"
-                  )}>
-                    {`${(index + 3).toString().padStart(2, "0")} — ${
-                      (section.type || "section").toUpperCase()
-                    }`}
-                  </p>
+
                   <h2 className="mt-2 font-display text-3xl font-bold sm:text-4xl">
                     {section.title[lang] || section.title["en"]}
                   </h2>

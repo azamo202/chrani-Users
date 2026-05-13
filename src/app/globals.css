@@ -100,7 +100,10 @@
     font-feature-settings: "ss01", "cv11";
   }
 
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     @apply font-display tracking-tight;
   }
 
@@ -122,6 +125,7 @@
   .hover-lift {
     transition: var(--transition-smooth);
   }
+
   .hover-lift:hover {
     transform: translateY(-4px);
     box-shadow: var(--shadow-elegant);

@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { FileText, Download, MapPin, Phone, Clock, Search } from "lucide-react";
+import { FileText, Download, MapPin, Phone, Clock, Search, Map } from "lucide-react";
 import { useI18n } from "@/i18n/I18nProvider";
 import { ApiMaintenanceCenter, ApiVideo, ApiDownload } from "@/types/api";
+import { PhoneNumbersDisplay } from "@/components/PhoneNumbersDisplay";
 
 interface SupportClientProps {
   manuals: ApiDownload[];
@@ -68,15 +69,35 @@ export const SupportClient = ({ manuals, tutorials, serviceCenters, initialSearc
           <div className="mt-8 grid gap-5 md:grid-cols-2">
             {serviceCenters.map((c) => (
               <div key={c.id} className="rounded-xl border border-border bg-card p-6 transition hover:shadow-card">
-                <h3 className="font-display text-xl font-bold">{c.city[lang] || c.city['en']}</h3>
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <h3 className="font-display text-xl font-bold">
+                      {c.name?.[lang] || c.name?.['en'] || c.city[lang] || c.city['en']}
+                    </h3>
+                    <div className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-0.5 text-sm font-bold text-primary">
+                      <Map className="h-3.5 w-3.5" />
+                      <span>{c.city[lang] || c.city['en']}</span>
+                    </div>
+                  </div>
+                  {c.location_link && (
+                    <a 
+                      href={c.location_link} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary transition hover:bg-primary hover:text-white"
+                      title={t("support.view_on_map")}
+                    >
+                      <MapPin className="h-4 w-4" />
+                    </a>
+                  )}
+                </div>
                 <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
                   <li className="flex items-start gap-2.5">
                     <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
                     <span>{c.address[lang] || c.address['en']}</span>
                   </li>
-                  <li className="flex items-start gap-2.5">
-                    <Phone className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
-                    <a href={`tel:${c.phone.replace(/\s/g, "")}`} className="hover:text-primary">{c.phone}</a>
+                  <li className="pt-2">
+                    <PhoneNumbersDisplay phone={c.phone} />
                   </li>
                   {c.working_hours && (
                     <li className="flex items-start gap-2.5">

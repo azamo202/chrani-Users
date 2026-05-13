@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { fetchApi } from "@/lib/api";
 import { ApiStoreSettings } from "@/types/api";
+import { PhoneNumbersDisplay } from "@/components/PhoneNumbersDisplay";
 
 const TiktokIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -71,34 +72,30 @@ const Contact = () => {
             { 
               icon: Phone, 
               label: t("contact.phone"), 
-              value: settings?.phone || "009647504454864", 
-              href: settings?.phone ? `tel:${settings.phone}` : "tel:009647504454864" 
+              content: <PhoneNumbersDisplay phone={settings?.phone || "009647504454864"} className="mt-2" />
             },
             { 
               icon: MapPin, 
               label: t("contact.address"), 
-              value: settings?.address?.[lang] || settings?.address?.en || t("contact.address.value"), 
-              href: "https://maps.app.goo.gl/HZ7o3eedDS4vdPSRA" 
+              content: (
+                <a 
+                  href="https://maps.app.goo.gl/HZ7o3eedDS4vdPSRA" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-1 block font-medium hover:text-primary"
+                >
+                  {settings?.address?.[lang] || settings?.address?.en || t("contact.address.value")}
+                </a>
+              )
             },
           ].map((c) => (
-            <div key={c.label} className="flex items-start gap-4 rounded-xl border border-border bg-card p-5">
-              <div className="grid h-11 w-11 place-items-center rounded-lg bg-primary/10 text-primary">
+            <div key={c.label} className="flex items-start gap-4 rounded-xl border border-border bg-card p-5 overflow-hidden">
+              <div className="grid h-11 w-11 flex-shrink-0 place-items-center rounded-lg bg-primary/10 text-primary">
                 <c.icon className="h-5 w-5" />
               </div>
-              <div>
+              <div className="flex-1 min-w-0">
                 <p className="text-xs uppercase tracking-wider text-muted-foreground">{c.label}</p>
-                {c.href ? (
-                  <a 
-                    href={c.href} 
-                    target={c.href.startsWith("http") ? "_blank" : undefined}
-                    rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                    className="mt-1 block font-medium hover:text-primary"
-                  >
-                    {c.value}
-                  </a>
-                ) : (
-                  <p className="mt-1 font-medium">{c.value}</p>
-                )}
+                {c.content}
               </div>
             </div>
           ))}

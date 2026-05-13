@@ -6,6 +6,8 @@ interface PageProps {
   searchParams: Promise<{ search?: string }>;
 }
 
+import { Suspense } from "react";
+
 export default async function Support({ searchParams }: PageProps) {
   const { search } = await searchParams;
   const searchQuery = search ? `?search=${encodeURIComponent(search)}` : "";
@@ -29,11 +31,13 @@ export default async function Support({ searchParams }: PageProps) {
   }
 
   return (
-    <SupportClient 
-      manuals={manuals} 
-      tutorials={tutorials} 
-      serviceCenters={serviceCenters} 
-      initialSearch={search || ""}
-    />
+    <Suspense fallback={<div className="container py-20 text-center">Loading support...</div>}>
+      <SupportClient 
+        manuals={manuals} 
+        tutorials={tutorials} 
+        serviceCenters={serviceCenters} 
+        initialSearch={search || ""}
+      />
+    </Suspense>
   );
 }

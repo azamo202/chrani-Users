@@ -52,12 +52,12 @@ export const ProductCard = ({ product, className }: Props) => {
           className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
         <div className="absolute start-3 top-3 flex gap-2">
-          {product.is_active && (
+          {product.brand?.name && (
             <span className={cn(
-              "rounded-full bg-primary px-2.5 py-1 text-[10px] font-bold uppercase text-primary-foreground shadow-sm",
+              "rounded-full bg-primary px-2.5 py-1 text-[10px] font-bold font-display text-primary-foreground shadow-sm",
               lang === "en" ? "tracking-wider" : "tracking-normal"
             )}>
-              New
+              {product.brand.name}
             </span>
           )}
         </div>

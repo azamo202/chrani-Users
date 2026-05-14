@@ -7,20 +7,7 @@ const About = () => {
   const { t } = useI18n();
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-brand-black text-white py-24 lg:py-32">
-        {/* Subtle Background Pattern/Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-brand-black via-brand-black to-brand-gray/20 opacity-80" />
-        <div className="absolute top-0 right-0 -translate-y-12 translate-x-1/3 opacity-10 blur-3xl rounded-full w-96 h-96 bg-primary" />
-        <div className="container-wide relative z-10 flex flex-col items-center text-center">
-          <h1 className="max-w-4xl font-display text-4xl font-bold leading-tight sm:text-5xl lg:text-7xl">
-            {t("about.title")}
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg text-white/60 leading-relaxed font-light">
-            {t("about.subtitle")}
-          </p>
-        </div>
-      </section>
+
 
       {/* History Section */}
       <section className="container-wide py-20 lg:py-32">
@@ -28,7 +15,7 @@ const About = () => {
           <div className="order-2 lg:order-1 relative group rounded-3xl overflow-hidden shadow-2xl">
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10" />
             <img
-              src="/image.png"
+              src="/WhatsApp Image 2026-05-14 at 7.53.29 AM.jpeg"
               alt="Premium Home Appliances"
               className="w-full aspect-video lg:aspect-[4/3] object-cover transition-transform duration-700 group-hover:scale-105"
             />
@@ -41,12 +28,34 @@ const About = () => {
               {t("about.history.title")}
             </h2>
             <div className="h-1 w-20 bg-primary rounded-full" />
-            <div className="text-lg leading-relaxed text-muted-foreground font-light">
+            <div className="text-lg leading-relaxed text-muted-foreground font-light text-justify">
               <p>
                 {t("about.history.body")}
               </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Certificates Section */}
+      <section className="container-wide py-20 lg:py-32 border-t border-border">
+        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+          <h2 className="font-display text-3xl font-bold sm:text-4xl text-foreground">
+            {t("about.certificates.title")}
+          </h2>
+          <div className="h-1 w-20 bg-primary mx-auto rounded-full" />
+        </div>
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            "/WhatsApp Image 2026-05-14 at 7.53.28 AM (3).jpeg",
+            "/WhatsApp Image 2026-05-14 at 7.53.28 AM (2).jpeg",
+            "/WhatsApp Image 2026-05-14 at 7.53.28 AM (1).jpeg",
+          ].map((src, i) => (
+            <div key={i} className="group relative rounded-2xl overflow-hidden shadow-lg border border-border/50 bg-card transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl">
+              <img src={src} alt="Certificate" className="w-full h-auto object-cover" />
+              <div className="absolute inset-0 bg-primary/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+            </div>
+          ))}
         </div>
       </section>
 

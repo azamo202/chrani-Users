@@ -180,7 +180,7 @@ export default function ComparePage() {
                       {imgUrl && <img src={imgUrl} alt={product.name[lang] || product.name['en']} className="h-full w-full object-contain p-2 mix-blend-multiply dark:mix-blend-normal" />}
                     </div>
                     <div className="mt-4 text-center">
-                      <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                      <p className="font-display text-[10px] font-bold tracking-wider text-muted-foreground">
                         {product.brand?.name}
                       </p>
                       <h3 className="mt-1 font-display text-sm font-semibold leading-tight line-clamp-2">

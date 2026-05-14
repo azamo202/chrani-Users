@@ -117,7 +117,7 @@ const Products = ({ initialCategories, initialBrands }: ProductsClientProps) => 
   const Sidebar = (
     <aside className="space-y-8">
       <div className="flex items-center justify-between">
-        <h3 className="font-display text-lg font-bold">Filters</h3>
+        <h3 className="font-display text-lg font-bold">{t("filter.title")}</h3>
         <button onClick={clearAll} className="text-xs font-medium text-primary hover:underline">
           {t("filter.clear")}
         </button>
@@ -228,7 +228,7 @@ const Products = ({ initialCategories, initialBrands }: ProductsClientProps) => 
                 className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-5 py-2.5 text-sm font-semibold text-primary transition-colors hover:bg-primary/20 lg:hidden"
                 onClick={() => setMobileOpen(true)}
               >
-                <SlidersHorizontal className="h-4 w-4" /> Filters
+                <SlidersHorizontal className="h-4 w-4" /> {t("filter.title")}
               </button>
               <div className="hidden lg:block"></div>
               <p className="text-sm font-medium text-muted-foreground text-end px-2">
@@ -248,7 +248,7 @@ const Products = ({ initialCategories, initialBrands }: ProductsClientProps) => 
               </div>
             ) : filtered.length === 0 ? (
               <div className="rounded-2xl border border-dashed py-20 text-center bg-card shadow-sm">
-                <p className="text-muted-foreground">No products match these filters.</p>
+                <p className="text-muted-foreground">{t("products.empty")}</p>
                 <button onClick={clearAll} className="mt-4 text-sm font-medium text-primary hover:underline">
                   {t("filter.clear")}
                 </button>
@@ -285,7 +285,7 @@ const Products = ({ initialCategories, initialBrands }: ProductsClientProps) => 
           )}
         >
           <div className="mb-4 flex items-center justify-between">
-            <h3 className="font-display text-lg font-bold">Filters</h3>
+            <h3 className="font-display text-lg font-bold">{t("filter.title")}</h3>
             <button onClick={() => setMobileOpen(false)}>
               <X className="h-5 w-5" />
             </button>
@@ -298,8 +298,9 @@ const Products = ({ initialCategories, initialBrands }: ProductsClientProps) => 
 };
 
 export const ProductsClient = (props: ProductsClientProps) => {
+  const { t } = useI18n();
   return (
-    <Suspense fallback={<div className="p-8 text-center text-muted-foreground">Loading Catalog...</div>}>
+    <Suspense fallback={<div className="p-8 text-center text-muted-foreground">{t("products.loading")}</div>}>
       <Products {...props} />
     </Suspense>
   );

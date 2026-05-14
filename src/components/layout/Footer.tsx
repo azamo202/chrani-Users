@@ -54,7 +54,7 @@ export const Footer = ({ settings }: FooterProps) => {
 
   return (
     <footer className="mt-24 bg-brand-black text-white">
-      <div className="container-wide grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-4">
+      <div className="container-wide grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-3">
         <div>
           <Link href="/" className="flex items-center gap-2.5">
             <img src={logo} alt="Chrani" className="h-10 w-10" />
@@ -171,24 +171,27 @@ export const Footer = ({ settings }: FooterProps) => {
           </ul>
         </div>
 
-        <div>
-          <h4 className="font-display text-sm font-semibold uppercase tracking-wider text-white">
-            {t("newslitter.title")}
-          </h4>
-          <p className="mt-5 text-sm text-white/60">
-            {t("newslitter.subtitle")}
-          </p>
-          <form className="mt-4 flex" onSubmit={(e) => e.preventDefault()}>
-            <input
-              type="email"
-              placeholder={t("newslitter.placeholder")}
-              className="min-w-0 flex-1 rounded-l-md bg-white/10 px-3 py-2.5 text-sm placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-primary"
-            />
-            <button className="rounded-r-md bg-primary px-4 text-sm font-medium hover:bg-primary-glow transition">
-              →
-            </button>
-          </form>
-        </div>
+        {/* Newsletter Section - Hidden for now */}
+        {false && (
+          <div>
+            <h4 className="font-display text-sm font-semibold uppercase tracking-wider text-white">
+              {t("newslitter.title")}
+            </h4>
+            <p className="mt-5 text-sm text-white/60">
+              {t("newslitter.subtitle")}
+            </p>
+            <form className="mt-4 flex" onSubmit={(e) => e.preventDefault()}>
+              <input
+                type="email"
+                placeholder={t("newslitter.placeholder")}
+                className="min-w-0 flex-1 rounded-l-md bg-white/10 px-3 py-2.5 text-sm placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+              <button className="rounded-r-md bg-primary px-4 text-sm font-medium hover:bg-primary-glow transition">
+                →
+              </button>
+            </form>
+          </div>
+        )}
       </div>
       <div className="border-t border-white/10">
         <div className="container-wide flex flex-col items-center justify-between gap-2 py-6 text-xs text-white/50 sm:flex-row">

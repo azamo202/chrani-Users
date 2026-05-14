@@ -4,6 +4,7 @@ import { ApiProduct, ApiStoreSettings } from "@/types/api";
 import { ProductDetailClient } from "@/components/product/ProductDetailClient";
 import { notFound } from "next/navigation";
 import { cookies } from "next/headers";
+import { SITE_URL } from "@/lib/constants";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -115,7 +116,7 @@ export default async function ProductDetail({ params }: PageProps) {
     },
     "offers": {
       "@type": "Offer",
-      "url": `https://chrani.com/products/${product.id}`,
+      "url": `${SITE_URL}/products/${product.id}`,
       "priceCurrency": "USD",
       "price": "0",
       "availability": "https://schema.org/InStock",
@@ -134,19 +135,19 @@ export default async function ProductDetail({ params }: PageProps) {
         "@type": "ListItem",
         "position": 1,
         "name": lang === "ar" ? "الرئيسية" : lang === "ku" ? "ماڵەوە" : "Home",
-        "item": "https://chrani.com"
+        "item": SITE_URL
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": lang === "ar" ? "المنتجات" : lang === "ku" ? "بەرهەمەکان" : "Products",
-        "item": "https://chrani.com/products"
+        "item": `${SITE_URL}/products`
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": product.name[lang] || product.name["en"],
-        "item": `https://chrani.com/products/${product.id}`
+        "item": `${SITE_URL}/products/${product.id}`
       }
     ]
   };

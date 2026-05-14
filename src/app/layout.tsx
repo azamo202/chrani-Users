@@ -9,6 +9,7 @@ import { CompareFloatingBar } from "@/components/compare/CompareFloatingBar";
 import { fetchApi } from "@/lib/api";
 import { ApiStoreSettings } from "@/types/api";
 import { Suspense } from "react";
+import { SITE_URL } from "@/lib/constants";
 
 // We maintain the same font classes the user had in tailwind config if needed,
 // or simply let Tailwind handle it since we will just import global CSS.
@@ -39,7 +40,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 
   return {
-    metadataBase: new URL("https://chrani.com"),
+    metadataBase: new URL(SITE_URL),
     title: {
       template: `%s | ${companyNames[lang]}`,
       default: companyNames[lang],
@@ -57,7 +58,7 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title: companyNames[lang],
       description: description[lang],
-      url: "https://chrani.com",
+      url: SITE_URL,
       siteName: "Chrani Catalog",
       locale: lang === "ar" ? "ar_IQ" : lang === "ku" ? "ku_IQ" : "en_US",
       type: "website",
@@ -111,8 +112,8 @@ export default async function RootLayout({
     "@type": "Organization",
     "name": "Chrani Company",
     "alternateName": "شركة چراني",
-    "url": "https://chrani.com",
-    "logo": "https://chrani.com/chrani-logo.png",
+    "url": SITE_URL,
+    "logo": `${SITE_URL}/chrani-logo.png`,
     "contactPoint": {
       "@type": "ContactPoint",
       "telephone": storeSettings?.phone || "+9647504454864",

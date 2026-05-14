@@ -2,8 +2,10 @@ import { MetadataRoute } from 'next';
 import { fetchApi } from '@/lib/api';
 import { ApiProduct, ApiCategory } from '@/types/api';
 
+import { SITE_URL } from '@/lib/constants';
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://chrani.com';
+  const baseUrl = SITE_URL;
 
   // Basic pages
   const routes = ['', '/products', '/about', '/support', '/contact'].map((route) => ({

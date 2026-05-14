@@ -46,6 +46,8 @@ export interface ApiProduct {
   specifications?: Record<string, Array<{ key: string; value: string }>>;
   features?: string[];
   attributes?: Array<{ type: string; value: string }>;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface ApiStoreSettings {

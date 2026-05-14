@@ -15,16 +15,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     // Products
-    const products = await fetchApi<ApiProduct[]>('/api/site/products');
+    const productsRes = await fetchApi<any>('/api/site/products');
+    const products: ApiProduct[] = Array.isArray(productsRes) ? productsRes : productsRes?.data || [];
+    
     const productEntries = products.map((p) => ({
       url: `${baseUrl}/products/${p.id}`,
-      lastModified: new Date(p.updated_at || new Date()),
+      lastModified: p.updated_at ? new Date(p.updated_at) : new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.7,
     }));
 
     // Categories
-    const categories = await fetchApi<ApiCategory[]>('/api/site/categories');
+    const categoriesRes = await fetchApi<any>('/api/site/categories');
+    const categories: ApiCategory[] = Array.isArray(categoriesRes) ? categoriesRes : categoriesRes?.data || [];
+
     const categoryEntries = categories.map((c) => ({
       url: `${baseUrl}/products?category_slug=${c.slug}`,
       lastModified: new Date(),

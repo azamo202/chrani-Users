@@ -78,7 +78,7 @@ export const HomePageClient = ({ sections, categories }: HomePageClientProps) =>
             <div className="absolute -inset-8 rounded-full bg-primary/20 blur-3xl" />
             <div className="relative overflow-hidden rounded-2xl shadow-elegant">
               <img
-                src="/WhatsApp Image 2026-05-13 at 9.17.28 AM (1).webp"
+                src="/thisis.jpeg"
                 alt="Chrani Showroom Showcase"
                 className="w-full object-cover aspect-square"
               />

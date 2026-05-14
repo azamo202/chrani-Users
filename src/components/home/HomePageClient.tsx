@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, ShieldCheck, Truck, Sparkles } from "lucide-react";
+import { ArrowRight, ShieldCheck, Wind, Sparkles } from "lucide-react";
 import { useI18n } from "@/i18n/I18nProvider";
 import { ProductCard } from "@/components/ProductCard";
 import { ApiHomeSection, ApiCategory } from "@/types/api";
@@ -59,9 +59,9 @@ export const HomePageClient = ({ sections, categories }: HomePageClientProps) =>
 
             <div className="mt-14 grid grid-cols-3 gap-6 border-t border-white/10 pt-8">
               {[
+                { icon: Sparkles, label: t("excellence") },
+                { icon: Wind, label: t("elegance") },
                 { icon: ShieldCheck, label: t("warranty") },
-                { icon: Truck, label: t("delivery") },
-                { icon: Sparkles, label: t("service") },
               ].map((item) => (
                 <div
                   key={item.label}

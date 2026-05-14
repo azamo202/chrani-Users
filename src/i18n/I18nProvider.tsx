@@ -119,8 +119,8 @@ const dictionaries: Record<Lang, Dict> = {
 
   ar: {
     "company.name": "شركة چراني للتجارة العامة استيراد وتصدير المحدودة",
-    "logo.name": "چراني",
-    "logo.full_name": "شركة چراني للتجارة العامة استيراد وتصدير المحدودة",
+    "logo.name": "جراني",
+    "logo.full_name": "شركة جراني للتجارة العامة استيراد وتصدير المحدودة",
     "logo.subtitle": "الكتالوج",
     "nav.home": "الرئيسية",
     "nav.products": "المنتجات",

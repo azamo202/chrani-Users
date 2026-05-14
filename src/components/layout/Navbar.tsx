@@ -36,36 +36,32 @@ export const Navbar = () => {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/85 backdrop-blur-lg">
-      <div className="container-wide grid h-16 grid-cols-3 items-center lg:flex lg:h-20 lg:justify-between lg:gap-4">
-        {/* Mobile Hamburger (Start) */}
-        <div className="flex justify-start lg:hidden">
-          <button
-            type="button"
-            className="rounded-md p-2 -ms-2"
-            onClick={() => setOpen((o) => !o)}
-            aria-label="Toggle menu"
-          >
-            {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
-        </div>
-
-        {/* Logo (Center on mobile, Start on Desktop) */}
-        <div className="flex justify-center lg:justify-start">
+      <div className="container-wide flex h-16 items-center justify-between lg:h-20 lg:gap-4">
+        {/* Logo Section (Desktop: Start, Mobile: Far Right/Start) */}
+        <div className="flex items-center">
           <Link href="/" className="flex items-center gap-2.5" aria-label="Chrani Catalog">
             <img src={logo} alt="Chrani" className="h-8 w-8 sm:h-9 sm:w-9 lg:h-10 lg:w-10" />
-            <div className="flex flex-col leading-none text-start">
+            <div className="flex flex-col text-start leading-none">
+              {/* Desktop View: Original Full Name */}
               <span className="hidden lg:block font-display text-base font-bold tracking-tight xl:text-lg">
                 {t("logo.full_name")}
               </span>
-              <span className="lg:hidden font-display text-lg font-bold tracking-tight sm:text-xl">
-                {t("logo.name")}
-              </span>
+              
+              {/* Mobile View: Professional Split Name */}
+              <div className="lg:hidden flex flex-col">
+                <span className="font-display text-[14px] font-bold tracking-tight text-foreground sm:text-[16px]">
+                  {t("logo.name")}
+                </span>
+                <span className="mt-0.5 text-[8px] font-medium text-muted-foreground leading-tight max-w-[120px] sm:max-w-[160px] whitespace-normal">
+                  {t("logo.full_name")}
+                </span>
+              </div>
             </div>
           </Link>
         </div>
 
-        {/* Desktop Nav */}
-        <nav className="hidden items-center gap-1 lg:flex">
+        {/* Desktop Nav (Center) */}
+        <nav className="hidden flex-1 items-center justify-center gap-1 lg:flex">
           {links.map((link) => (
             <NavLink
               key={link.to}
@@ -90,8 +86,8 @@ export const Navbar = () => {
           ))}
         </nav>
 
-        {/* Lang Switcher (End) */}
-        <div className="flex justify-end items-center gap-2">
+        {/* Right Side (Desktop: Lang, Mobile: Lang + Hamburger) */}
+        <div className="flex items-center gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger className="flex items-center gap-1.5 rounded-full border border-border/60 px-2 sm:px-3 py-1.5 text-xs sm:text-sm font-medium hover:border-primary/40 hover:text-primary transition-colors">
               <Globe className="h-4 w-4" />
@@ -107,6 +103,15 @@ export const Navbar = () => {
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
+
+          <button
+            type="button"
+            className="rounded-md p-2 -me-2 lg:hidden"
+            onClick={() => setOpen((o) => !o)}
+            aria-label="Toggle menu"
+          >
+            {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
         </div>
       </div>
 

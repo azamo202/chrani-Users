@@ -34,7 +34,7 @@ export const ProductDetailClient = ({ product, related = [], settings }: Product
   // إزالة أي رموز غير رقمية (مثل علامة الزائد + أو المسافات) لضمان عمل رابط الواتساب
   const cleanWhatsappNumber = whatsappNumber.replace(/[^0-9]/g, "");
   const whatsappText = encodeURIComponent(
-    `${t("product.whatsappInquiry")}\n${currentUrl}\n\n${productName}\n${t("product.model")}: ${product.model_number}\n\n${productDescription}`
+    `${t("product.whatsappInquiry")}\n${currentUrl}\n\n${productName}\n${t("product.model")}: ${product.model_number}`
   );
   const whatsappHref = `https://wa.me/${cleanWhatsappNumber}?text=${whatsappText}`;
 

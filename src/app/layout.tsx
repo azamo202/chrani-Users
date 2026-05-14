@@ -26,9 +26,60 @@ export async function generateMetadata(): Promise<Metadata> {
     ku: "کۆمپانیای چرانی بۆ بازرگانی گشتی و ھاوردە و ھەناردە / سنوردار",
   };
 
+  const description = {
+    en: "Premium home appliances in Iraq. Explore our collection of refrigerators, washing machines, and air conditioners from Chrani, iLK, and iNOX.",
+    ar: "أفضل الأجهزة المنزلية في العراق. اكتشف مجموعة الثلاجات، الغسالات، والمكيفات من شركة چراني وعلامات iLK و iNOX.",
+    ku: "باشترین ئامێرەکانی ناوماڵ لە عێراق. کۆمەڵەی سەلاجە، غەسالە، و سپلیت لە کۆمپانیای چرانی و براندەکانی iLK و iNOX.",
+  };
+
+  const keywords = {
+    en: "home appliances Iraq, refrigerators, washing machines, air conditioners, Chrani company, iLK appliances, iNOX brands",
+    ar: "اجهزة منزلية العراق، ثلاجات، غسالات، مكيفات، شركة چراني، ماركة iLK، علامة iNOX، اجهزة كهربائية دهوك",
+    ku: "ئامێرەکانی ناوماڵ، سەلاجە، غەسالە، سپلیت، کۆمپانیای چرانی، براندی iLK، براندی iNOX",
+  };
+
   return {
-    title: companyNames[lang] || companyNames.en,
-    description: "Product catalog",
+    metadataBase: new URL("https://chrani.com"),
+    title: {
+      template: `%s | ${companyNames[lang]}`,
+      default: companyNames[lang],
+    },
+    description: description[lang],
+    keywords: keywords[lang],
+    alternates: {
+      canonical: "/",
+      languages: {
+        "en-US": "/?lang=en",
+        "ar-IQ": "/?lang=ar",
+        "ku-IQ": "/?lang=ku",
+      },
+    },
+    openGraph: {
+      title: companyNames[lang],
+      description: description[lang],
+      url: "https://chrani.com",
+      siteName: "Chrani Catalog",
+      locale: lang === "ar" ? "ar_IQ" : lang === "ku" ? "ku_IQ" : "en_US",
+      type: "website",
+      images: [
+        {
+          url: "/chrani-logo.png",
+          width: 800,
+          height: 800,
+          alt: companyNames[lang],
+        },
+      ],
+    },
+    twitter: {
+      card: "summary",
+      title: companyNames[lang],
+      description: description[lang],
+      images: ["/chrani-logo.png"],
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
   };
 }
 
@@ -55,8 +106,34 @@ export default async function RootLayout({
     console.error("Failed to fetch store settings:", error);
   }
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Chrani Company",
+    "alternateName": "شركة چراني",
+    "url": "https://chrani.com",
+    "logo": "https://chrani.com/chrani-logo.png",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": storeSettings?.phone || "+9647504454864",
+      "contactType": "customer service",
+      "areaServed": "IQ",
+      "availableLanguage": ["Arabic", "Kurdish", "English"]
+    },
+    "sameAs": [
+      "https://facebook.com/chranicompany",
+      "https://instagram.com/chranicompany"
+    ]
+  };
+
   return (
     <html lang={lang} dir={dir} suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body>
         <Providers locale={lang}>
           <div className="flex min-h-screen flex-col">

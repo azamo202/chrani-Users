@@ -52,8 +52,8 @@ export const Navbar = () => {
                 <span className="font-display text-[14px] font-bold tracking-tight text-foreground sm:text-[16px]">
                   {t("logo.name")}
                 </span>
-                <span className="mt-0.5 text-[8px] font-medium text-muted-foreground leading-tight max-w-[120px] sm:max-w-[160px] whitespace-normal">
-                  {t("logo.full_name")}
+                <span className="mt-1 text-[10px] font-medium text-muted-foreground leading-tight max-w-[200px] sm:max-w-[240px] whitespace-normal">
+                  {t("logo.subtitle")}
                 </span>
               </div>
             </div>

@@ -112,21 +112,21 @@ export const HomePageClient = ({ sections, categories }: HomePageClientProps) =>
               <Link
                 key={cat.id}
                 href={`/products?category_slug=${cat.slug}`}
-                className="group relative block w-[45vw] shrink-0 snap-center aspect-[4/5] sm:w-auto sm:aspect-[3/4] overflow-hidden rounded-3xl shadow-sm hover:shadow-xl transition-all duration-500"
+                className="group relative block w-[70vw] shrink-0 snap-center aspect-[4/5] sm:w-auto sm:aspect-[3/4] overflow-hidden rounded-2xl bg-muted shadow-sm transition-all duration-500 hover:shadow-xl sm:hover:-translate-y-1"
               >
                 <img
-                  src={cat.image || "https://placehold.co/600x800/f3f4f6/6b7280?text=Category"}
+                  src={cat.image || "https://placehold.co/600x800/f3f4f6/6b7280"}
                   alt={cat.name[lang] || cat.name['en'] || "Category"}
                   loading="lazy"
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-brand-black/90 via-brand-black/20 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-100" />
-                <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 text-white transition-transform duration-500 group-hover:-translate-y-2">
-                  <h3 className="font-display text-2xl font-bold tracking-wide sm:text-3xl">{cat.name[lang] || cat.name['en']}</h3>
-                  <p className="mt-2 text-sm text-white/80 line-clamp-2 transform opacity-0 transition-all duration-500 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0">
-                    {cat.description?.[lang] || cat.description?.['en'] || (lang === 'ar' ? 'استكشف منتجات هذا التصنيف' : 'Explore products in this category')}
-                  </p>
-                  <div className="mt-4 flex items-center gap-2 text-xs font-semibold text-primary transform opacity-0 transition-all duration-500 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 rtl:translate-x-4 rtl:group-hover:translate-x-0">
+                <div className="absolute inset-0 bg-gradient-to-t from-brand-black/90 via-brand-black/20 to-transparent opacity-60 transition-opacity duration-500 group-hover:opacity-100" />
+                
+                <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6 text-white">
+                  <h3 className="font-display text-xl font-bold tracking-wide sm:text-2xl line-clamp-1">
+                    {cat.name[lang] || cat.name['en']}
+                  </h3>
+                  <div className="mt-2 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-primary opacity-0 transition-all duration-500 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0">
                     <span>{t("cta.browse")}</span>
                     <ArrowRight className="h-3 w-3 rtl:rotate-180" />
                   </div>

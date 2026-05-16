@@ -111,7 +111,7 @@ export const ProductDetailClient = ({ product, related = [], settings }: Product
           </a>
 
           <div className="mt-8 border-t border-border pt-6">
-            <Tabs defaultValue="specs" className="w-full" dir={dir}>
+            <Tabs defaultValue="description" className="w-full" dir={dir}>
               <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="description" className="text-xs">{t("product.description")}</TabsTrigger>
                 <TabsTrigger value="features" className="text-xs">{t("product.features")}</TabsTrigger>
@@ -119,8 +119,8 @@ export const ProductDetailClient = ({ product, related = [], settings }: Product
               </TabsList>
 
               <TabsContent value="description" className="mt-6">
-                <div className="prose prose-sm max-w-full text-muted-foreground text-start">
-                  <p>{productDescription}</p>
+                <div className="prose prose-sm max-w-full text-muted-foreground text-justify leading-loose">
+                  <p className="whitespace-pre-line">{productDescription}</p>
                 </div>
               </TabsContent>
 

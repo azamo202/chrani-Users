@@ -57,8 +57,8 @@ export const Footer = ({ settings }: FooterProps) => {
       <div className="container-wide grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-3">
         <div>
           <Link href="/" className="flex items-center gap-2.5">
-            <img src={logo} alt="Chrani" className="h-10 w-10" />
-            <span className="font-display text-2xl font-bold">Chrani</span>
+            <img src={logo} alt={t("logo.name")} className="h-10 w-10" />
+            <span className="font-display text-2xl font-bold">{t("logo.name")}</span>
           </Link>
           <p className="mt-4 max-w-xs text-sm text-white/60">
             {t("footer.tagline")}

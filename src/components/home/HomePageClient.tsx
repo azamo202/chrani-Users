@@ -26,7 +26,7 @@ export const HomePageClient = ({ sections, categories }: HomePageClientProps) =>
               "radial-gradient(circle at 20% 30%, hsl(354 78% 46% / 0.45), transparent 55%), radial-gradient(circle at 85% 70%, hsl(354 78% 46% / 0.25), transparent 50%)",
           }}
         />
-        <div className="container-wide relative grid items-center gap-12 pt-8 pb-16 lg:grid-cols-2 lg:pt-12 lg:pb-24">
+        <div className="container-wide relative grid items-center gap-12 pt-8 pb-8 lg:grid-cols-2 lg:pt-12 lg:pb-12">
           <div className="animate-fade-up">
             <p className={cn(
               "text-lg md:text-xl font-semibold uppercase text-primary",
@@ -90,8 +90,8 @@ export const HomePageClient = ({ sections, categories }: HomePageClientProps) =>
 
       {/* CATEGORIES */}
       {categories.length > 0 && (
-        <section className="container-wide py-12 lg:py-20">
-          <div className="flex items-end justify-between gap-6 mb-10">
+        <section className="container-wide py-6 lg:py-10">
+          <div className="flex items-end justify-between gap-6 mb-4">
             <div className="text-start">
 
               <h2 className="mt-2 font-display text-3xl font-bold sm:text-4xl">
@@ -145,7 +145,7 @@ export const HomePageClient = ({ sections, categories }: HomePageClientProps) =>
           <section
             key={section.id}
             className={cn(
-              "py-12 lg:py-20",
+              "py-6 lg:py-10",
               index % 2 === 0 ? "bg-muted/40" : "container-wide"
             )}
           >
@@ -166,7 +166,7 @@ export const HomePageClient = ({ sections, categories }: HomePageClientProps) =>
                 </Link>
               </div>
 
-              <div className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 sm:grid sm:grid-cols-2 sm:overflow-visible sm:pb-0 lg:grid-cols-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <div className="mt-4 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 sm:grid sm:grid-cols-2 sm:overflow-visible sm:pb-0 lg:grid-cols-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 {section.products.map((p) => (
                   <div
                     key={p.id}
@@ -181,7 +181,7 @@ export const HomePageClient = ({ sections, categories }: HomePageClientProps) =>
         ))}
 
       {/* CTA STRIP */}
-      <section className="container-wide pb-12 lg:pb-16">
+      <section className="container-wide pb-6 lg:pb-10">
         <div className="relative overflow-hidden rounded-2xl bg-brand-black px-8 py-14 text-white lg:px-16 lg:py-20">
           <div className="absolute -right-20 -top-20 h-80 w-80 rounded-full bg-primary/30 blur-3xl" />
           <div className="relative flex flex-col items-start gap-6 lg:flex-row lg:items-center lg:justify-between">

@@ -16,16 +16,6 @@ export const PhoneNumbersDisplay = ({ phone, className, chipClassName }: PhoneNu
   if (numbers.length === 0 || (numbers.length === 1 && !numbers[0])) return null;
 
   const getNetworkStyle = (num: string) => {
-    const cleanNum = num.replace(/\s/g, "");
-    if (cleanNum.startsWith("077") || cleanNum.startsWith("+96477")) {
-      return "border-red-200 bg-red-50 text-red-700 hover:bg-red-100 dark:border-red-900/30 dark:bg-red-900/20 dark:text-red-400";
-    }
-    if (cleanNum.startsWith("078") || cleanNum.startsWith("+96478")) {
-      return "border-orange-200 bg-orange-50 text-orange-700 hover:bg-orange-100 dark:border-orange-900/30 dark:bg-orange-900/20 dark:text-orange-400";
-    }
-    if (cleanNum.startsWith("075") || cleanNum.startsWith("+96475")) {
-      return "border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100 dark:border-amber-900/30 dark:bg-amber-900/20 dark:text-amber-400";
-    }
     return "border-primary/20 bg-primary/5 text-primary hover:bg-primary/10";
   };
 

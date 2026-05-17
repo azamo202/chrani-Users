@@ -41,6 +41,51 @@ export const SupportClient = ({ manuals, tutorials, serviceCenters, initialSearc
     return () => clearTimeout(delayDebounceFn);
   }, [searchTerm, router, pathname, searchParams]);
 
+  // Client-side case-insensitive filtering
+  const filteredManuals = manuals.filter((m) => {
+    if (!searchTerm) return true;
+    const term = searchTerm.toLowerCase().trim();
+    const titleEn = (m.title?.en || "").toLowerCase();
+    const titleAr = (m.title?.ar || "").toLowerCase();
+    const titleKu = (m.title?.ku || "").toLowerCase();
+    return titleEn.includes(term) || titleAr.includes(term) || titleKu.includes(term);
+  });
+
+  const filteredTutorials = tutorials.filter((v) => {
+    if (!searchTerm) return true;
+    const term = searchTerm.toLowerCase().trim();
+    const titleEn = (v.title?.en || "").toLowerCase();
+    const titleAr = (v.title?.ar || "").toLowerCase();
+    const titleKu = (v.title?.ku || "").toLowerCase();
+    return titleEn.includes(term) || titleAr.includes(term) || titleKu.includes(term);
+  });
+
+  const filteredServiceCenters = serviceCenters.filter((c) => {
+    if (!searchTerm) return true;
+    const term = searchTerm.toLowerCase().trim();
+    const nameEn = (c.name?.en || "").toLowerCase();
+    const nameAr = (c.name?.ar || "").toLowerCase();
+    const nameKu = (c.name?.ku || "").toLowerCase();
+    const cityEn = (c.city?.en || "").toLowerCase();
+    const cityAr = (c.city?.ar || "").toLowerCase();
+    const cityKu = (c.city?.ku || "").toLowerCase();
+    const addressEn = (c.address?.en || "").toLowerCase();
+    const addressAr = (c.address?.ar || "").toLowerCase();
+    const addressKu = (c.address?.ku || "").toLowerCase();
+    
+    return (
+      nameEn.includes(term) ||
+      nameAr.includes(term) ||
+      nameKu.includes(term) ||
+      cityEn.includes(term) ||
+      cityAr.includes(term) ||
+      cityKu.includes(term) ||
+      addressEn.includes(term) ||
+      addressAr.includes(term) ||
+      addressKu.includes(term)
+    );
+  });
+
   return (
     <>
       <section className="border-b border-border/60 bg-muted/30">
@@ -63,11 +108,11 @@ export const SupportClient = ({ manuals, tutorials, serviceCenters, initialSearc
       </section>
 
       {/* Service Centers */}
-      {serviceCenters.length > 0 && (
+      {filteredServiceCenters.length > 0 && (
         <section className="container-wide py-16">
           <h2 className="font-display text-2xl font-bold sm:text-3xl">{t("support.centers")}</h2>
           <div className="mt-8 grid gap-5 md:grid-cols-2">
-            {serviceCenters.map((c) => (
+            {filteredServiceCenters.map((c) => (
               <div key={c.id} className="rounded-xl border border-border bg-card p-6 transition hover:shadow-card">
                 <div className="flex items-start justify-between gap-4">
                   <div>
@@ -113,12 +158,12 @@ export const SupportClient = ({ manuals, tutorials, serviceCenters, initialSearc
       )}
 
       {/* Manuals */}
-      {manuals.length > 0 && (
+      {filteredManuals.length > 0 && (
         <section className="bg-muted/40 py-16">
           <div className="container-wide">
             <h2 className="font-display text-2xl font-bold sm:text-3xl">{t("support.downloads")}</h2>
             <div className="mt-8 grid gap-4 md:grid-cols-2">
-              {manuals.map((m) => (
+              {filteredManuals.map((m) => (
                 <a
                   key={m.id}
                   href={m.file_url}
@@ -142,11 +187,11 @@ export const SupportClient = ({ manuals, tutorials, serviceCenters, initialSearc
       )}
 
       {/* Videos */}
-      {tutorials.length > 0 && (
+      {filteredTutorials.length > 0 && (
         <section className="container-wide py-16">
           <h2 className="font-display text-2xl font-bold sm:text-3xl">{t("support.videos")}</h2>
           <div className="mt-8 grid gap-6 lg:grid-cols-3">
-            {tutorials.map((v) => (
+            {filteredTutorials.map((v) => (
               <div key={v.id} className="overflow-hidden rounded-xl border border-border bg-card">
                 <div className="aspect-video">
                   <iframe

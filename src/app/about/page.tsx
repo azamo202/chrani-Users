@@ -7,8 +7,6 @@ const About = () => {
   const { t } = useI18n();
   return (
     <div className="flex flex-col min-h-screen bg-background">
-
-
       {/* History Section */}
       <section className="container-wide py-20 lg:py-32">
         <div className="grid gap-12 lg:gap-16 lg:grid-cols-2 items-center">

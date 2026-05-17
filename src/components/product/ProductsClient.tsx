@@ -86,14 +86,13 @@ const Products = ({ initialCategories, initialBrands }: ProductsClientProps) => 
 
   // React Query to fetch products
   const { data: productsData, isFetching } = useQuery({
-    queryKey: ["products", selectedCats[0], selectedBrands[0], debouncedSearch],
+    queryKey: ["products", selectedCats[0], selectedBrands[0]],
     queryFn: async () => {
       let url = "/api/site/products?";
       const params = new URLSearchParams();
       
       if (selectedCats[0]) params.append("category_slug", selectedCats[0]);
       if (selectedBrands[0]) params.append("brand_id", selectedBrands[0]);
-      if (debouncedSearch) params.append("search", debouncedSearch);
       
       const response = await fetchApi<any>(url + params.toString());
       const productsList: ApiProduct[] = Array.isArray(response) ? response : (response.data || []);
@@ -102,7 +101,38 @@ const Products = ({ initialCategories, initialBrands }: ProductsClientProps) => 
     staleTime: 60000,
   });
 
-  const filtered = productsData || [];
+  const filtered = React.useMemo(() => {
+    const list = productsData || [];
+    if (!debouncedSearch) return list;
+    const term = debouncedSearch.toLowerCase().trim();
+    return list.filter((p) => {
+      const nameEn = (p.name?.en || "").toLowerCase();
+      const nameAr = (p.name?.ar || "").toLowerCase();
+      const nameKu = (p.name?.ku || "").toLowerCase();
+      const model = (p.model_number || "").toLowerCase();
+      const brand = (p.brand?.name || "").toLowerCase();
+      const categoryEn = (p.category?.name?.en || "").toLowerCase();
+      const categoryAr = (p.category?.name?.ar || "").toLowerCase();
+      const categoryKu = (p.category?.name?.ku || "").toLowerCase();
+      const descriptionEn = (p.description?.en || "").toLowerCase();
+      const descriptionAr = (p.description?.ar || "").toLowerCase();
+      const descriptionKu = (p.description?.ku || "").toLowerCase();
+      
+      return (
+        nameEn.includes(term) ||
+        nameAr.includes(term) ||
+        nameKu.includes(term) ||
+        model.includes(term) ||
+        brand.includes(term) ||
+        categoryEn.includes(term) ||
+        categoryAr.includes(term) ||
+        categoryKu.includes(term) ||
+        descriptionEn.includes(term) ||
+        descriptionAr.includes(term) ||
+        descriptionKu.includes(term)
+      );
+    });
+  }, [productsData, debouncedSearch]);
 
   const toggle = (list: string[], v: string) =>
     list.includes(v) ? [] : [v];

@@ -10,7 +10,6 @@ import { Suspense } from "react";
 
 export default async function Support({ searchParams }: PageProps) {
   const { search } = await searchParams;
-  const searchQuery = search ? `?search=${encodeURIComponent(search)}` : "";
 
   let manuals: ApiDownload[] = [];
   let tutorials: ApiVideo[] = [];
@@ -18,9 +17,9 @@ export default async function Support({ searchParams }: PageProps) {
 
   try {
     const [manualsData, tutorialsData, centersData] = await Promise.all([
-      fetchApi<ApiDownload[]>(`/api/site/downloads${searchQuery}`, { cache: "no-store" }).catch(() => []),
-      fetchApi<ApiVideo[]>(`/api/site/videos${searchQuery}`, { cache: "no-store" }).catch(() => []),
-      fetchApi<ApiMaintenanceCenter[]>(`/api/site/maintenance-centers${searchQuery}`, { cache: "no-store" }).catch(() => []),
+      fetchApi<ApiDownload[]>("/api/site/downloads", { cache: "no-store" }).catch(() => []),
+      fetchApi<ApiVideo[]>("/api/site/videos", { cache: "no-store" }).catch(() => []),
+      fetchApi<ApiMaintenanceCenter[]>("/api/site/maintenance-centers", { cache: "no-store" }).catch(() => []),
     ]);
 
     manuals = manualsData;

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Alexandria, Inter } from "next/font/google";
 import { Providers } from "./Providers";
 import { cookies } from "next/headers";
 import "./globals.css";
@@ -11,8 +11,19 @@ import { ApiStoreSettings } from "@/types/api";
 import { Suspense } from "react";
 import { SITE_URL } from "@/lib/constants";
 
-// We maintain the same font classes the user had in tailwind config if needed,
-// or simply let Tailwind handle it since we will just import global CSS.
+const fontArabic = Alexandria({
+  subsets: ["arabic"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-arabic",
+  display: "swap",
+});
+
+const fontSans = Inter({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-sans",
+  display: "swap",
+});
 
 export async function generateMetadata(): Promise<Metadata> {
   const cookieStore = await cookies();
@@ -24,19 +35,19 @@ export async function generateMetadata(): Promise<Metadata> {
   const companyNames = {
     en: "CHRANI COMPANY FOR GENERAL TRADING IMP. & EXP. LTD",
     ar: "شركة چراني للتجارة العامة استيراد و تصدير المحدودة",
-    ku: "کۆمپانیای چرانی بۆ بازرگانی گشتی و ھاوردە و ھەناردە / سنوردار",
+    ku: "کۆمپانیای چراني بۆ بازرگانی گشتی و ھاوردە و ھەناردە / سنوردار",
   };
 
   const description = {
     en: "Premium home appliances in Iraq. Explore our collection of refrigerators, washing machines, and air conditioners from Chrani, iLK, and iNOX.",
     ar: "أفضل الأجهزة المنزلية في العراق. اكتشف مجموعة الثلاجات، الغسالات، والمكيفات من شركة چراني وعلامات iLK و iNOX.",
-    ku: "باشترین ئامێرەکانی ناوماڵ لە عێراق. کۆمەڵەی سەلاجە، غەسالە، و سپلیت لە کۆمپانیای چرانی و براندەکانی iLK و iNOX.",
+    ku: "باشترین ئامێرەکانی ناوماڵ لە عێراق. کۆمەڵەی سەلاجە، غەسالە، و سپلیت لە کۆمپانیای چراني و براندەکانی iLK و iNOX.",
   };
 
   const keywords = {
     en: "home appliances Iraq, refrigerators, washing machines, air conditioners, Chrani company, iLK appliances, iNOX brands",
     ar: "اجهزة منزلية العراق، ثلاجات، غسالات، مكيفات، شركة چراني، ماركة iLK، علامة iNOX، اجهزة كهربائية دهوك",
-    ku: "ئامێرەکانی ناوماڵ، سەلاجە، غەسالە، سپلیت، کۆمپانیای چرانی، براندی iLK، براندی iNOX",
+    ku: "ئامێرەکانی ناوماڵ، سەلاجە، غەسالە، سپلیت، کۆمپانیای چراني، براندی iLK، براندی iNOX",
   };
 
   return {
@@ -128,14 +139,14 @@ export default async function RootLayout({
   };
 
   return (
-    <html lang={lang} dir={dir} suppressHydrationWarning>
+    <html lang={lang} dir={dir} className={`${fontArabic.variable} ${fontSans.variable}`} suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body>
+      <body className="font-sans">
         <Providers locale={lang}>
           <div className="flex min-h-screen flex-col">
             <Navbar />

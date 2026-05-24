@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next';
+export const dynamic = 'force-static';
 import { fetchApi } from '@/lib/api';
 import { ApiProduct, ApiCategory } from '@/types/api';
 
@@ -17,7 +18,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     // Products
-    const productsRes = await fetchApi<any>('/api/site/products');
+    const productsRes = await fetchApi<any>('/api/site/products?per_page=1000');
     const products: ApiProduct[] = Array.isArray(productsRes) ? productsRes : productsRes?.data || [];
     
     const productEntries = products.map((p) => ({

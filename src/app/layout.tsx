@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import { Alexandria, Inter } from "next/font/google";
 import { Providers } from "./Providers";
-import { cookies } from "next/headers";
+import { getLang } from "@/lib/lang";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -11,26 +10,8 @@ import { ApiStoreSettings } from "@/types/api";
 import { Suspense } from "react";
 import { SITE_URL } from "@/lib/constants";
 
-const fontArabic = Alexandria({
-  subsets: ["arabic"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-arabic",
-  display: "swap",
-});
-
-const fontSans = Inter({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-sans",
-  display: "swap",
-});
-
 export async function generateMetadata(): Promise<Metadata> {
-  const cookieStore = await cookies();
-  const lang = (cookieStore.get("chrani-lang")?.value || "en") as
-    | "en"
-    | "ar"
-    | "ku";
+  const lang = await getLang();
 
   const companyNames = {
     en: "CHRANI COMPANY FOR GENERAL TRADING IMP. & EXP. LTD",
@@ -100,11 +81,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const cookieStore = await cookies();
-  const lang = (cookieStore.get("chrani-lang")?.value || "en") as
-    | "en"
-    | "ar"
-    | "ku";
+  const lang = await getLang();
   const dir = lang === "ar" || lang === "ku" ? "rtl" : "ltr";
 
   let storeSettings: ApiStoreSettings | null = null;
@@ -139,7 +116,7 @@ export default async function RootLayout({
   };
 
   return (
-    <html lang={lang} dir={dir} className={`${fontArabic.variable} ${fontSans.variable}`} suppressHydrationWarning>
+    <html lang={lang} dir={dir} suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"

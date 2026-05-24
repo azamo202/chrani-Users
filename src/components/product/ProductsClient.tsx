@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { fetchApi } from "@/lib/api";
+import { API_BASE_URL } from "@/lib/constants";
 import { ApiCategory, ApiBrand, ApiProduct } from "@/types/api";
 import {
   Accordion,
@@ -42,6 +43,7 @@ const Products = ({ initialCategories, initialBrands }: ProductsClientProps) => 
   const [debouncedSearch, setDebouncedSearch] = useState(initialSearch);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [expandedCats, setExpandedCats] = useState<string[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
   // Build category tree
   const categoryTree = React.useMemo(() => {
@@ -74,6 +76,11 @@ const Products = ({ initialCategories, initialBrands }: ProductsClientProps) => 
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
+  // Reset page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedCats, selectedBrands, debouncedSearch]);
+
   // Sync state to URL without reloading
   useEffect(() => {
     const params = new URLSearchParams();
@@ -86,53 +93,26 @@ const Products = ({ initialCategories, initialBrands }: ProductsClientProps) => 
 
   // React Query to fetch products
   const { data: productsData, isFetching } = useQuery({
-    queryKey: ["products", selectedCats[0], selectedBrands[0]],
+    queryKey: ["products", selectedCats[0], selectedBrands[0], debouncedSearch, currentPage],
     queryFn: async () => {
-      let url = "/api/site/products?";
       const params = new URLSearchParams();
       
       if (selectedCats[0]) params.append("category_slug", selectedCats[0]);
       if (selectedBrands[0]) params.append("brand_id", selectedBrands[0]);
+      if (debouncedSearch) params.append("search", debouncedSearch);
+      params.append("page", currentPage.toString());
+      params.append("per_page", "12");
       
-      const response = await fetchApi<any>(url + params.toString());
-      const productsList: ApiProduct[] = Array.isArray(response) ? response : (response.data || []);
-      return productsList;
+      const res = await fetch(`${API_BASE_URL}/api/site/products?` + params.toString());
+      if (!res.ok) throw new Error("Failed to fetch products");
+      return res.json();
     },
     staleTime: 60000,
   });
 
-  const filtered = React.useMemo(() => {
-    const list = productsData || [];
-    if (!debouncedSearch) return list;
-    const term = debouncedSearch.toLowerCase().trim();
-    return list.filter((p) => {
-      const nameEn = (p.name?.en || "").toLowerCase();
-      const nameAr = (p.name?.ar || "").toLowerCase();
-      const nameKu = (p.name?.ku || "").toLowerCase();
-      const model = (p.model_number || "").toLowerCase();
-      const brand = (p.brand?.name || "").toLowerCase();
-      const categoryEn = (p.category?.name?.en || "").toLowerCase();
-      const categoryAr = (p.category?.name?.ar || "").toLowerCase();
-      const categoryKu = (p.category?.name?.ku || "").toLowerCase();
-      const descriptionEn = (p.description?.en || "").toLowerCase();
-      const descriptionAr = (p.description?.ar || "").toLowerCase();
-      const descriptionKu = (p.description?.ku || "").toLowerCase();
-      
-      return (
-        nameEn.includes(term) ||
-        nameAr.includes(term) ||
-        nameKu.includes(term) ||
-        model.includes(term) ||
-        brand.includes(term) ||
-        categoryEn.includes(term) ||
-        categoryAr.includes(term) ||
-        categoryKu.includes(term) ||
-        descriptionEn.includes(term) ||
-        descriptionAr.includes(term) ||
-        descriptionKu.includes(term)
-      );
-    });
-  }, [productsData, debouncedSearch]);
+  const filtered = productsData?.data || [];
+  const totalResults = productsData?.meta?.total ?? filtered.length;
+  const lastPage = productsData?.meta?.last_page || 1;
 
   const toggle = (list: string[], v: string) =>
     list.includes(v) ? [] : [v];
@@ -141,7 +121,84 @@ const Products = ({ initialCategories, initialBrands }: ProductsClientProps) => 
     setSelectedBrands([]);
     setSelectedCats([]);
     setSearchQuery("");
+    setCurrentPage(1);
     router.push(pathname);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const renderPagination = () => {
+    if (lastPage <= 1) return null;
+
+    const pages = [];
+    const startPage = Math.max(1, currentPage - 2);
+    const endPage = Math.min(lastPage, currentPage + 2);
+
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+
+    return (
+      <div className="mt-12 flex items-center justify-center gap-2" dir="ltr">
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition hover:border-primary hover:text-primary disabled:pointer-events-none disabled:opacity-40"
+        >
+          <ChevronRight className={cn("h-5 w-5", dir === "rtl" ? "" : "rotate-180")} />
+        </button>
+
+        {startPage > 1 && (
+          <>
+            <button
+              onClick={() => handlePageChange(1)}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-sm font-semibold transition hover:border-primary hover:text-primary"
+            >
+              1
+            </button>
+            {startPage > 2 && <span className="text-muted-foreground px-1">...</span>}
+          </>
+        )}
+
+        {pages.map((p) => (
+          <button
+            key={p}
+            onClick={() => handlePageChange(p)}
+            className={cn(
+              "inline-flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold transition-all",
+              currentPage === p
+                ? "bg-primary text-primary-foreground shadow-md shadow-primary/25"
+                : "border border-border bg-card hover:border-primary hover:text-primary"
+            )}
+          >
+            {p}
+          </button>
+        ))}
+
+        {endPage < lastPage && (
+          <>
+            {endPage < lastPage - 1 && <span className="text-muted-foreground px-1">...</span>}
+            <button
+              onClick={() => handlePageChange(lastPage)}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-sm font-semibold transition hover:border-primary hover:text-primary"
+            >
+              {lastPage}
+            </button>
+          </>
+        )}
+
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === lastPage}
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition hover:border-primary hover:text-primary disabled:pointer-events-none disabled:opacity-40"
+        >
+          <ChevronRight className={cn("h-5 w-5", dir === "rtl" ? "rotate-180" : "")} />
+        </button>
+      </div>
+    );
   };
 
   const Sidebar = (
@@ -262,7 +319,7 @@ const Products = ({ initialCategories, initialBrands }: ProductsClientProps) => 
               </button>
               <div className="hidden lg:block"></div>
               <p className="text-sm font-medium text-muted-foreground text-end px-2">
-                <span className="font-bold text-foreground text-base">{filtered.length}</span> {t("filter.results")}
+                <span className="font-bold text-foreground text-base">{totalResults}</span> {t("filter.results")}
               </p>
             </div>
 
@@ -284,11 +341,14 @@ const Products = ({ initialCategories, initialBrands }: ProductsClientProps) => 
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-2 gap-3 sm:gap-6 xl:grid-cols-3">
-                {filtered.map((p) => (
-                  <ProductCard key={p.id} product={p} />
-                ))}
-              </div>
+              <>
+                <div className="grid grid-cols-2 gap-3 sm:gap-6 xl:grid-cols-3">
+                  {filtered.map((p) => (
+                    <ProductCard key={p.id} product={p} />
+                  ))}
+                </div>
+                {renderPagination()}
+              </>
             )}
           </div>
         </div>

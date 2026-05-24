@@ -8,18 +8,16 @@ interface PageProps {
 
 import { Suspense } from "react";
 
-export default async function Support({ searchParams }: PageProps) {
-  const { search } = await searchParams;
-
+export default async function Support() {
   let manuals: ApiDownload[] = [];
   let tutorials: ApiVideo[] = [];
   let serviceCenters: ApiMaintenanceCenter[] = [];
 
   try {
     const [manualsData, tutorialsData, centersData] = await Promise.all([
-      fetchApi<ApiDownload[]>("/api/site/downloads", { cache: "no-store" }).catch(() => []),
-      fetchApi<ApiVideo[]>("/api/site/videos", { cache: "no-store" }).catch(() => []),
-      fetchApi<ApiMaintenanceCenter[]>("/api/site/maintenance-centers", { cache: "no-store" }).catch(() => []),
+      fetchApi<ApiDownload[]>("/api/site/downloads", { next: { revalidate: 3600 } }).catch(() => []),
+      fetchApi<ApiVideo[]>("/api/site/videos", { next: { revalidate: 3600 } }).catch(() => []),
+      fetchApi<ApiMaintenanceCenter[]>("/api/site/maintenance-centers", { next: { revalidate: 3600 } }).catch(() => []),
     ]);
 
     manuals = manualsData;
@@ -35,7 +33,7 @@ export default async function Support({ searchParams }: PageProps) {
         manuals={manuals} 
         tutorials={tutorials} 
         serviceCenters={serviceCenters} 
-        initialSearch={search || ""}
+        initialSearch=""
       />
     </Suspense>
   );

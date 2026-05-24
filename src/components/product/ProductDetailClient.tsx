@@ -169,9 +169,11 @@ export const ProductDetailClient = ({ product, related = [], settings }: Product
         <section className="bg-muted/40 py-16">
           <div className="container-wide">
             <h2 className="font-display text-2xl font-bold sm:text-3xl">{t("product.related")}</h2>
-            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-8 flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory sm:grid sm:gap-6 sm:grid-cols-2 lg:grid-cols-3 sm:overflow-x-visible sm:pb-0">
               {related.map((p) => (
-                <ProductCard key={p.id} product={p} />
+                <div key={p.id} className="w-[280px] shrink-0 snap-start sm:w-auto sm:shrink sm:snap-align-none">
+                  <ProductCard product={p} />
+                </div>
               ))}
             </div>
           </div>

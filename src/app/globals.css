@@ -106,11 +106,6 @@
   h4 {
     @apply font-display tracking-tight;
   }
-
-  /* RTL adjustments */
-  [dir="rtl"] body {
-    font-family: 'Inter', 'Tajawal', system-ui, sans-serif;
-  }
 }
 
 @layer utilities {

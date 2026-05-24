@@ -358,6 +358,13 @@ export const I18nProvider = ({ children, initialLang = "en" }: { children: React
   const dir: "ltr" | "rtl" = lang === "ar" || lang === "ku" ? "rtl" : "ltr";
 
   useEffect(() => {
+    const savedLang = localStorage.getItem("chrani-lang") as Lang | null;
+    if (savedLang && savedLang !== lang) {
+      setLangState(savedLang);
+    }
+  }, []);
+
+  useEffect(() => {
     document.documentElement.lang = lang;
     document.documentElement.dir = dir;
   }, [lang, dir]);

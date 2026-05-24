@@ -1,9 +1,8 @@
 import { Metadata } from "next";
-import { cookies } from "next/headers";
+import { getLang } from "@/lib/lang";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const cookieStore = await cookies();
-  const lang = cookieStore.get("chrani-lang")?.value || "en";
+  const lang = await getLang();
 
   const titles = {
     en: "About Us | Chrani Company",
@@ -24,5 +23,5 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function AboutLayout({ children }: { children: React.ReactNode }) {
-  return children;
+  return <>{children}</>;
 }

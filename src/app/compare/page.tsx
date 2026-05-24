@@ -31,7 +31,7 @@ export default function ComparePage() {
     queryFn: async () => {
       if (selectedProducts.length === 0) return { data: [] };
       const qs = selectedProducts.map(p => `ids[]=${p.id}`).join("&");
-      const res = await fetch(`https://chranicatalog-premium.onrender.com/api/site/products/compare?${qs}&locale=${lang}&lang=${lang}`, {
+      const res = await fetch(`http://api.chranico.com/api/site/products/compare?${qs}&locale=${lang}&lang=${lang}`, {
         headers: { "Accept-Language": lang }
       });
       if (!res.ok) throw new Error("Failed to fetch compare data");

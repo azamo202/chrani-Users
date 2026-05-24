@@ -15,6 +15,14 @@ const nextConfig = {
       },
       {
         protocol: 'http',
+        hostname: 'api.chranico.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'api.chranico.com',
+      },
+      {
+        protocol: 'http',
         hostname: '127.0.0.1',
       },
       {

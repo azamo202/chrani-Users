@@ -7,8 +7,14 @@ const __dirname = path.dirname(__filename);
 /** @type {import("next").NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+
+  output: 'export',
+
+  trailingSlash: true,
+
   images: {
     unoptimized: true,
+
     remotePatterns: [
       {
         protocol: 'https',
@@ -29,7 +35,7 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'images.unsplash.com',
-      }
+      },
     ],
   },
 };

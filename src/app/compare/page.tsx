@@ -9,6 +9,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/i18n/I18nProvider";
 import { Skeleton } from "@/components/ui/skeleton";
+import { API_BASE_URL } from "@/lib/constants";
 
 interface ApiProduct {
   id: number;
@@ -31,7 +32,7 @@ export default function ComparePage() {
     queryFn: async () => {
       if (selectedProducts.length === 0) return { data: [] };
       const qs = selectedProducts.map(p => `ids[]=${p.id}`).join("&");
-      const res = await fetch(`http://api.chranico.com/api/site/products/compare?${qs}&locale=${lang}&lang=${lang}`, {
+      const res = await fetch(`${API_BASE_URL}/api/site/products/compare?${qs}&locale=${lang}&lang=${lang}`, {
         headers: { "Accept-Language": lang }
       });
       if (!res.ok) throw new Error("Failed to fetch compare data");

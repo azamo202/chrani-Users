@@ -60,7 +60,6 @@ const Contact = () => {
     <>
       <section className="border-b border-border/60 bg-muted/30">
         <div className="container-wide py-12 lg:py-16">
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">{t("nav.contact")}</p>
           <h1 className="mt-2 font-display text-4xl font-bold sm:text-5xl">{t("contact.title")}</h1>
           <p className="mt-3 max-w-2xl text-muted-foreground">{t("contact.subtitle")}</p>
         </div>

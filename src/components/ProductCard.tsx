@@ -44,12 +44,12 @@ export const ProductCard = ({ product, className }: Props) => {
         className
       )}
     >
-      <div className="relative w-full shrink-0 aspect-square sm:aspect-[4/3] overflow-hidden bg-muted/40">
+      <div className="relative w-full shrink-0 aspect-square overflow-hidden bg-muted/40 p-4 flex items-center justify-center">
         <img
           src={primaryImage}
           alt={product.name[lang] || product.name['en']}
           loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          className="h-full w-full object-contain mix-blend-multiply dark:mix-blend-normal transition-transform duration-700 group-hover:scale-105"
         />
         <div className="absolute start-3 top-3 flex gap-2">
           {product.brand?.name && (

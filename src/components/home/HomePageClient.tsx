@@ -107,30 +107,24 @@ export const HomePageClient = ({ sections, categories }: HomePageClientProps) =>
             </Link>
           </div>
 
-          <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-8 sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:overflow-visible sm:pb-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 sm:grid sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 sm:overflow-visible sm:pb-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {categories.map((cat) => (
               <Link
                 key={cat.id}
                 href={`/products?category_slug=${cat.slug}`}
-                className="group relative block w-[70vw] shrink-0 snap-center aspect-[4/5] sm:w-auto sm:aspect-[3/4] overflow-hidden rounded-2xl bg-muted shadow-sm transition-all duration-500 hover:shadow-xl sm:hover:-translate-y-1"
+                className="group relative flex flex-col items-center gap-3 w-[45vw] shrink-0 snap-center sm:w-auto"
               >
-                <img
-                  src={cat.image || "https://placehold.co/600x800/f3f4f6/6b7280"}
-                  alt={cat.name[lang] || cat.name['en'] || "Category"}
-                  loading="lazy"
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-brand-black/90 via-brand-black/20 to-transparent opacity-60 transition-opacity duration-500 group-hover:opacity-100" />
-                
-                <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6 text-white">
-                  <h3 className="font-display text-xl font-bold tracking-wide sm:text-2xl line-clamp-1">
-                    {cat.name[lang] || cat.name['en']}
-                  </h3>
-                  <div className="mt-2 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-primary opacity-0 transition-all duration-500 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0">
-                    <span>{t("cta.browse")}</span>
-                    <ArrowRight className="h-3 w-3 rtl:rotate-180" />
-                  </div>
+                <div className="relative w-full aspect-square overflow-hidden rounded-2xl bg-card border border-border/40 shadow-sm transition-all duration-300 group-hover:shadow-md group-hover:border-primary/40 p-5 sm:p-6 flex items-center justify-center">
+                  <img
+                    src={cat.image || "https://placehold.co/600x600/f3f4f6/6b7280?text=Category"}
+                    alt={cat.name[lang] || cat.name['en'] || "Category"}
+                    loading="lazy"
+                    className="h-full w-full object-contain mix-blend-multiply dark:mix-blend-normal transition-transform duration-500 group-hover:scale-110"
+                  />
                 </div>
+                <h3 className="font-display text-sm sm:text-base font-bold text-center text-foreground group-hover:text-primary transition-colors line-clamp-1">
+                  {cat.name[lang] || cat.name['en']}
+                </h3>
               </Link>
             ))}
           </div>

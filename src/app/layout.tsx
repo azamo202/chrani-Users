@@ -19,23 +19,29 @@ export async function generateMetadata(): Promise<Metadata> {
     ku: "کۆمپانیای چراني بۆ بازرگانی گشتی و ھاوردە و ھەناردە / سنوردار",
   };
 
+  const defaultTitles = {
+    en: "Chrani Company | Premium Home Appliances Iraq",
+    ar: "شركة چراني (چرانى) | Chrani | الأجهزة المنزلية الممتازة في العراق",
+    ku: "کۆمپانیای چرانی (چرانى) | Chrani | ئامێرەکانی ناوماڵ لە عێراق",
+  };
+
   const description = {
-    en: "Premium home appliances in Iraq. Explore our collection of refrigerators, washing machines, and air conditioners from Chrani, iLK, and iNOX.",
-    ar: "أفضل الأجهزة المنزلية في العراق. اكتشف مجموعة الثلاجات، الغسالات، والمكيفات من شركة چراني وعلامات iLK و iNOX.",
-    ku: "باشترین ئامێرەکانی ناوماڵ لە عێراق. کۆمەڵەی سەلاجە، غەسالە، و سپلیت لە کۆمپانیای چراني و براندەکانی iLK و iNOX.",
+    en: "Premium home appliances in Iraq. Explore our collection of refrigerators, washing machines, and air conditioners from Chrani (چراني / چرانى), iLK, and iNOX.",
+    ar: "أفضل الأجهزة المنزلية في العراق من شركة چراني (چرانى / Chrani). اكتشف مجموعة الثلاجات، الغسالات، والمكيفات من علامات iLK و iNOX.",
+    ku: "باشترین ئامێرەکانی ناوماڵ لە عێراق لە کۆمپانیای چرانی (چرانى / Chrani). کۆمەڵەی سەلاجە، غەسالە، و سپلیت لە براندەکانی iLK و iNOX.",
   };
 
   const keywords = {
-    en: "home appliances Iraq, refrigerators, washing machines, air conditioners, Chrani company, iLK appliances, iNOX brands",
-    ar: "اجهزة منزلية العراق، ثلاجات، غسالات، مكيفات، شركة چراني، ماركة iLK، علامة iNOX، اجهزة كهربائية دهوك",
-    ku: "ئامێرەکانی ناوماڵ، سەلاجە، غەسالە، سپلیت، کۆمپانیای چراني، براندی iLK، براندی iNOX",
+    en: "Chrani, Chrani Company, چراني, چرانى, home appliances Iraq, refrigerators, washing machines, air conditioners, iLK appliances, iNOX brands",
+    ar: "چراني, چرانى, Chrani, شركة چراني, شركة چرانى, اجهزة منزلية العراق، ثلاجات، غسالات، مكيفات، ماركة iLK، علامة iNOX، اجهزة كهربائية دهوك",
+    ku: "چراني, چرانى, چرانی, Chrani, کۆمپانیای چراني, کۆمپانیای چرانی, ئامێرەکانی ناوماڵ، سەلاجە، غەسالە، سپلیت، براندی iLK, براندی iNOX",
   };
 
   return {
     metadataBase: new URL(SITE_URL),
     title: {
       template: `%s | ${companyNames[lang]}`,
-      default: companyNames[lang],
+      default: defaultTitles[lang],
     },
     description: description[lang],
     keywords: keywords[lang],
@@ -48,7 +54,7 @@ export async function generateMetadata(): Promise<Metadata> {
       },
     },
     openGraph: {
-      title: companyNames[lang],
+      title: defaultTitles[lang],
       description: description[lang],
       url: SITE_URL,
       siteName: "Chrani Catalog",
@@ -65,7 +71,7 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     twitter: {
       card: "summary",
-      title: companyNames[lang],
+      title: defaultTitles[lang],
       description: description[lang],
       images: ["/chrani-logo.png"],
     },
@@ -99,7 +105,7 @@ export default async function RootLayout({
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "Chrani Company",
-    "alternateName": "شركة چراني",
+    "alternateName": ["شركة چراني", "شركة چرانى", "کۆمپانیای چرانی", "Chrani", "چراني", "چرانى", "Chrani Company"],
     "url": SITE_URL,
     "logo": `${SITE_URL}/chrani-logo.png`,
     "contactPoint": {

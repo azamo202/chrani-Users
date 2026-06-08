@@ -114,15 +114,15 @@ export const HomePageClient = ({ sections, categories }: HomePageClientProps) =>
                 href={`/products?category_slug=${cat.slug}`}
                 className="group relative flex flex-col items-center gap-3 w-[45vw] shrink-0 snap-center sm:w-auto"
               >
-                <div className="relative w-full aspect-square overflow-hidden rounded-2xl bg-card border border-border/40 shadow-sm transition-all duration-300 group-hover:shadow-md group-hover:border-primary/40 p-5 sm:p-6 flex items-center justify-center">
+                <div className="relative w-full aspect-square overflow-hidden rounded-2xl bg-card border border-border/40 shadow-sm transition-all duration-300 sm:group-hover:shadow-md sm:group-hover:border-primary/40 p-5 sm:p-6 flex items-center justify-center">
                   <img
                     src={cat.image || "https://placehold.co/600x600/f3f4f6/6b7280?text=Category"}
                     alt={cat.name[lang] || cat.name['en'] || "Category"}
                     loading="lazy"
-                    className="h-full w-full object-contain mix-blend-multiply dark:mix-blend-normal transition-transform duration-500 group-hover:scale-110"
+                    className="h-full w-full object-contain mix-blend-multiply dark:mix-blend-normal transition-transform duration-500 sm:group-hover:scale-110"
                   />
                 </div>
-                <h3 className="font-display text-sm sm:text-base font-bold text-center text-foreground group-hover:text-primary transition-colors line-clamp-1">
+                <h3 className="font-display text-sm sm:text-base font-bold text-center text-foreground sm:group-hover:text-primary transition-colors line-clamp-1">
                   {cat.name[lang] || cat.name['en']}
                 </h3>
               </Link>

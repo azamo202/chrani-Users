@@ -15,9 +15,9 @@ export default async function Support() {
 
   try {
     const [manualsData, tutorialsData, centersData] = await Promise.all([
-      fetchApi<ApiDownload[]>("/api/site/downloads", { next: { revalidate: 3600 } }).catch(() => []),
-      fetchApi<ApiVideo[]>("/api/site/videos", { next: { revalidate: 3600 } }).catch(() => []),
-      fetchApi<ApiMaintenanceCenter[]>("/api/site/maintenance-centers", { next: { revalidate: 3600 } }).catch(() => []),
+      fetchApi<ApiDownload[]>("/api/site/downloads", { next: { revalidate: 3600, tags: ["downloads"] } }).catch(() => []),
+      fetchApi<ApiVideo[]>("/api/site/videos", { next: { revalidate: 3600, tags: ["videos"] } }).catch(() => []),
+      fetchApi<ApiMaintenanceCenter[]>("/api/site/maintenance-centers", { next: { revalidate: 3600, tags: ["maintenance-centers"] } }).catch(() => []),
     ]);
 
     manuals = manualsData;

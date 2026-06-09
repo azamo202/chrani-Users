@@ -93,7 +93,7 @@ export default async function RootLayout({
   let storeSettings: ApiStoreSettings | null = null;
   try {
     const res = await fetchApi<any>("/api/site/store-settings", {
-      next: { revalidate: 3600 },
+      next: { revalidate: 3600, tags: ["store-settings"] },
     });
 
     storeSettings = res.settings;

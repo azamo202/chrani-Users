@@ -16,7 +16,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const lang = (cookieStore.get("chrani-lang")?.value || "en") as "en" | "ar" | "ku";
 
   try {
-    const product = await fetchApi<ApiProduct>(`/api/site/products/${id}?locale=${lang}&lang=${lang}`);
+    const product = await fetchApi<ApiProduct>(`/api/site/products/${id}?locale=${lang}&lang=${lang}`, {
+      next: { revalidate: 3600, tags: [`product-${id}`, `product-${id}-${lang}`, "products"] }
+    });
     const name = product.name[lang] || product.name["en"];
     const desc = product.description?.[lang] || product.description?.["en"] || "Product detail";
     const image = product.images.find(i => i.is_primary)?.url || product.images[0]?.url || "/chrani-logo.png";
@@ -54,7 +56,7 @@ export default async function ProductDetail({ params }: PageProps) {
   try {
     product = await fetchApi<ApiProduct>(`/api/site/products/${id}?locale=${lang}&lang=${lang}`, {
       headers: { "Accept-Language": lang },
-      next: { revalidate: 3600, tags: [`product-${id}-${lang}`] },
+      next: { revalidate: 3600, tags: [`product-${id}`, `product-${id}-${lang}`, "products"] },
     });
 
     // Attempt to fetch related products from the same category
@@ -64,7 +66,7 @@ export default async function ProductDetail({ params }: PageProps) {
           `/api/site/products?category_slug=${product.category.slug}&per_page=4&locale=${lang}&lang=${lang}`,
           { 
             headers: { "Accept-Language": lang },
-            next: { revalidate: 3600 } 
+            next: { revalidate: 3600, tags: ["products"] } 
           },
         );
         // The API returns paginated data inside 'data' if it's a list, or maybe ApiResponse handles it?
@@ -90,7 +92,7 @@ export default async function ProductDetail({ params }: PageProps) {
     try {
       const settingsResponse = await fetchApi<any>(`/api/site/store-settings?locale=${lang}&lang=${lang}`, {
         headers: { "Accept-Language": lang },
-        next: { revalidate: 3600 },
+        next: { revalidate: 3600, tags: ["store-settings"] },
       });
 
       settings = settingsResponse.settings;

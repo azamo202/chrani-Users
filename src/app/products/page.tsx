@@ -8,8 +8,8 @@ export default async function ProductsPage() {
 
   try {
     const [categoriesData, brandsData] = await Promise.all([
-      fetchApi<ApiCategory[]>("/api/site/categories", { next: { revalidate: 3600 } }).catch(() => []),
-      fetchApi<ApiBrand[]>("/api/site/brands", { next: { revalidate: 3600 } }).catch(() => []),
+      fetchApi<ApiCategory[]>("/api/site/categories", { next: { revalidate: 3600, tags: ["categories"] } }).catch(() => []),
+      fetchApi<ApiBrand[]>("/api/site/brands", { next: { revalidate: 3600, tags: ["brands"] } }).catch(() => []),
     ]);
 
     categories = categoriesData;

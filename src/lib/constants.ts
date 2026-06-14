@@ -11,16 +11,7 @@
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "https://chranico.com";
 
-/**
- * Backend API base URL.
- * - On the server we call the backend directly.
- * - On the client, requests go through the Next.js rewrite proxy so the real
- *   backend origin is never exposed to browsers.
- */
-const isServer = typeof window === "undefined";
-export const API_BASE_URL = isServer
-  ? (process.env.API_BASE_URL ?? "https://api.chranico.com")
-  : "";
+export const API_BASE_URL = "https://api.chranico.com";
 
 /** Shared company details referenced in structured data and UI. */
 export const COMPANY_DETAILS = {

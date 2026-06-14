@@ -25,18 +25,6 @@ const nextConfig = {
     ],
   },
 
-  // ─── API Proxy Rewrite ──────────────────────────────────────────────────────
-  // Hides the real backend URL from browsers.
-  // Both client-side and (in dev) server-side requests use this path.
-  async rewrites() {
-    return [
-      {
-        source: "/api/site/:path*",
-        destination: "https://api.chranico.com/api/site/:path*",
-      },
-    ];
-  },
-
   // ─── HTTP Response Headers ──────────────────────────────────────────────────
   // Cache-Control headers are only applied in PRODUCTION.
   // Setting them in development causes the Next.js dev server warning and

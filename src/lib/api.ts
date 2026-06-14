@@ -17,21 +17,7 @@
  *  the /api/site/* rewrite proxy regardless of environment.
  */
 
-const isServer = typeof window === "undefined";
-const isDev = process.env.NODE_ENV === "development";
-
-/**
- * Resolved base URL used by fetchApi.
- * Exported for inspection / testing only — prefer using fetchApi directly.
- */
-export const API_BASE_URL: string = (() => {
-  if (!isServer) {
-    // Browser: relative URL — goes through Next.js rewrite proxy
-    return "";
-  }
-  // Server-side: call backend directly (fastest, and avoids Next.js dev server deadlock)
-  return process.env.API_BASE_URL ?? "https://api.chranico.com";
-})();
+export const API_BASE_URL: string = "https://api.chranico.com";
 
 export interface StoreSettings {
   phone: string;

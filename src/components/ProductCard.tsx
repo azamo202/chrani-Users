@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { ApiProduct } from "@/types/api";
 import { ArrowRight, GitCompare } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, getImageUrl } from "@/lib/utils";
 import { useCompare } from "@/hooks/use-compare";
 import { useI18n } from "@/i18n/I18nProvider";
 
@@ -19,10 +19,10 @@ export const ProductCard = ({ product, className }: Props) => {
   const compared = isCompared(product.id);
 
   const primaryImage = React.useMemo(() => {
-    if (!product.images || product.images.length === 0) return "https://placehold.co/600x400/f3f4f6/6b7280?text=No+Image";
+    if (!product.images || product.images.length === 0) return getImageUrl(null);
     // Find primary without mutating the original array
     const primary = product.images.find(img => img.is_primary);
-    return primary ? primary.url : product.images[0].url;
+    return getImageUrl(primary ? primary.url : product.images[0].url);
   }, [product.images]);
 
   const handleCompare = (e: React.MouseEvent) => {
@@ -78,7 +78,7 @@ export const ProductCard = ({ product, className }: Props) => {
         <div className="mb-2 flex items-center gap-2">
           {product.brand?.logo && (
             <img 
-              src={product.brand.logo} 
+              src={getImageUrl(product.brand.logo)} 
               alt={product.brand.name} 
               className="h-4 w-auto object-contain opacity-80"
             />

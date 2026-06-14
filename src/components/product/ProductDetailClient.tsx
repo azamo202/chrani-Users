@@ -14,7 +14,7 @@ import { useI18n } from "@/i18n/I18nProvider";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProductCard } from "@/components/ProductCard";
 import { ApiProduct, ApiStoreSettings } from "@/types/api";
-import { cn } from "@/lib/utils";
+import { cn, getImageUrl } from "@/lib/utils";
 
 interface ProductDetailClientProps {
   product: ApiProduct;
@@ -60,8 +60,8 @@ export const ProductDetailClient = ({
     product.images.length > 0
       ? [...product.images]
           .sort((a, b) => Number(b.is_primary) - Number(a.is_primary))
-          .map((i) => i.url)
-      : ["/fallback-image.png"];
+          .map((i) => getImageUrl(i.url))
+      : [getImageUrl(null)];
 
   return (
     <>
@@ -123,7 +123,7 @@ export const ProductDetailClient = ({
           <div className="flex items-center gap-3 mb-2">
             {product.brand?.logo && (
               <img
-                src={product.brand.logo}
+                src={getImageUrl(product.brand.logo)}
                 alt={brandName}
                 className="h-8 w-auto object-contain"
               />

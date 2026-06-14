@@ -69,24 +69,26 @@ export const VideosClient = ({ tutorials }: VideosClientProps) => {
       {/* Results */}
       <section className="container-wide py-16">
         {filtered.length > 0 ? (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-2 gap-3 sm:gap-6 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {filtered.map((v, index) => (
               <div
                 key={v.id}
                 className="overflow-hidden rounded-xl border border-border bg-card transition hover:shadow-card"
                 style={{ animationDelay: `${index * 50}ms` }}
               >
-                <div className="aspect-video">
+                <div className="aspect-video bg-muted">
                   <iframe
                     src={`https://www.youtube.com/embed/${v.youtube_id}`}
                     title={v.title[lang] || v.title["en"]}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
-                    className="h-full w-full"
+                    className="h-full w-full border-0"
                   />
                 </div>
-                <div className="p-5">
-                  <p className="font-medium">{v.title[lang] || v.title["en"]}</p>
+                <div className="p-3 sm:p-4">
+                  <p className="text-sm font-medium line-clamp-2 sm:text-base" title={v.title[lang] || v.title["en"]}>
+                    {v.title[lang] || v.title["en"]}
+                  </p>
                 </div>
               </div>
             ))}

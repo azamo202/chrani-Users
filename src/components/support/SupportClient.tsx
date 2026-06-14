@@ -2,10 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { FileText, Download, MapPin, Phone, Clock, Search, Map } from "lucide-react";
+import { FileText, Download, MapPin, Phone, Clock, Search, Map, ArrowRight, ArrowLeft } from "lucide-react";
+import Link from "next/link";
 import { useI18n } from "@/i18n/I18nProvider";
 import { ApiMaintenanceCenter, ApiVideo, ApiDownload } from "@/types/api";
 import { PhoneNumbersDisplay } from "@/components/PhoneNumbersDisplay";
+
+const PREVIEW_LIMIT = 4;
 
 interface SupportClientProps {
   manuals: ApiDownload[];
@@ -15,12 +18,14 @@ interface SupportClientProps {
 }
 
 export const SupportClient = ({ manuals, tutorials, serviceCenters, initialSearch = "" }: SupportClientProps) => {
-  const { t, lang } = useI18n();
+  const { t, lang, dir } = useI18n();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const [searchTerm, setSearchTerm] = useState(initialSearch);
+
+  const ArrowIcon = dir === "rtl" ? ArrowLeft : ArrowRight;
 
   useEffect(() => {
     const currentSearch = searchParams.get("search") || "";
@@ -86,12 +91,17 @@ export const SupportClient = ({ manuals, tutorials, serviceCenters, initialSearc
     );
   });
 
+  // Sliced previews (max 4)
+  const previewCenters = filteredServiceCenters.slice(0, PREVIEW_LIMIT);
+  const previewManuals = filteredManuals.slice(0, PREVIEW_LIMIT);
+  const previewTutorials = filteredTutorials.slice(0, PREVIEW_LIMIT);
+
   return (
     <>
       <section className="border-b border-border/60 bg-muted/30">
         <div className="container-wide py-12 lg:py-16">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">Support</p>
-          <h1 className="mt-2 font-display text-4xl font-bold sm:text-5xl">{t("support.title")}</h1>
+          <h1 className="mt-2 font-display text-3xl font-bold sm:text-4xl lg:text-5xl">{t("support.title")}</h1>
           <p className="mt-3 max-w-2xl text-muted-foreground">{t("support.subtitle")}</p>
 
           <div className="mt-8 relative max-w-xl">
@@ -110,13 +120,20 @@ export const SupportClient = ({ manuals, tutorials, serviceCenters, initialSearc
       {/* Service Centers */}
       {filteredServiceCenters.length > 0 && (
         <section className="container-wide py-16">
-          <h2 className="font-display text-2xl font-bold sm:text-3xl">{t("support.centers")}</h2>
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 sm:gap-4">
+            <h2 className="font-display text-2xl font-bold sm:text-3xl">{t("support.centers")}</h2>
+            {filteredServiceCenters.length > PREVIEW_LIMIT && (
+              <span className="text-sm text-muted-foreground">
+                {filteredServiceCenters.length} {t("support.items_count")}
+              </span>
+            )}
+          </div>
           <div className="mt-8 grid gap-5 md:grid-cols-2">
-            {filteredServiceCenters.map((c) => (
+            {previewCenters.map((c) => (
               <div key={c.id} className="rounded-xl border border-border bg-card p-6 transition hover:shadow-card">
                 <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <h3 className="font-display text-xl font-bold">
+                  <div className="min-w-0 flex-1">
+                    <h3 className="font-display text-xl font-bold break-words whitespace-normal">
                       {c.name?.[lang] || c.name?.['en'] || c.city[lang] || c.city['en']}
                     </h3>
                     <div className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-0.5 text-sm font-bold text-primary">
@@ -154,6 +171,18 @@ export const SupportClient = ({ manuals, tutorials, serviceCenters, initialSearc
               </div>
             ))}
           </div>
+          {filteredServiceCenters.length > PREVIEW_LIMIT && (
+            <div className="mt-8 flex justify-center">
+              <Link
+                href="/support/centers"
+                id="show-more-centers"
+                className="group inline-flex items-center gap-2.5 rounded-full border border-primary/30 bg-primary/5 px-8 py-3.5 text-sm font-semibold text-primary transition-all hover:border-primary hover:bg-primary hover:text-white hover:shadow-[0_12px_32px_-12px_hsl(354_78%_46%/0.4)]"
+              >
+                <span>{t("support.show_more")}</span>
+                <ArrowIcon className="h-4 w-4 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
+              </Link>
+            </div>
+          )}
         </section>
       )}
 
@@ -161,9 +190,16 @@ export const SupportClient = ({ manuals, tutorials, serviceCenters, initialSearc
       {filteredManuals.length > 0 && (
         <section className="bg-muted/40 py-16">
           <div className="container-wide">
-            <h2 className="font-display text-2xl font-bold sm:text-3xl">{t("support.downloads")}</h2>
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 sm:gap-4">
+              <h2 className="font-display text-2xl font-bold sm:text-3xl">{t("support.downloads")}</h2>
+              {filteredManuals.length > PREVIEW_LIMIT && (
+                <span className="text-sm text-muted-foreground">
+                  {filteredManuals.length} {t("support.items_count")}
+                </span>
+              )}
+            </div>
             <div className="mt-8 grid gap-4 md:grid-cols-2">
-              {filteredManuals.map((m) => (
+              {previewManuals.map((m) => (
                 <a
                   key={m.id}
                   href={m.file_url}
@@ -175,13 +211,25 @@ export const SupportClient = ({ manuals, tutorials, serviceCenters, initialSearc
                     <FileText className="h-5 w-5" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="truncate font-medium">{m.title[lang] || m.title['en']}</p>
+                    <p className="font-medium break-words whitespace-normal line-clamp-2">{m.title[lang] || m.title['en']}</p>
                     {m.file_size && <p className="text-xs text-muted-foreground">PDF · {m.file_size}</p>}
                   </div>
                   <Download className="h-5 w-5 text-muted-foreground transition group-hover:text-primary" />
                 </a>
               ))}
             </div>
+            {filteredManuals.length > PREVIEW_LIMIT && (
+              <div className="mt-8 flex justify-center">
+                <Link
+                  href="/support/downloads"
+                  id="show-more-downloads"
+                  className="group inline-flex items-center gap-2.5 rounded-full border border-primary/30 bg-primary/5 px-8 py-3.5 text-sm font-semibold text-primary transition-all hover:border-primary hover:bg-primary hover:text-white hover:shadow-[0_12px_32px_-12px_hsl(354_78%_46%/0.4)]"
+                >
+                  <span>{t("support.show_more")}</span>
+                  <ArrowIcon className="h-4 w-4 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
+                </Link>
+              </div>
+            )}
           </div>
         </section>
       )}
@@ -189,9 +237,16 @@ export const SupportClient = ({ manuals, tutorials, serviceCenters, initialSearc
       {/* Videos */}
       {filteredTutorials.length > 0 && (
         <section className="container-wide py-16">
-          <h2 className="font-display text-2xl font-bold sm:text-3xl">{t("support.videos")}</h2>
-          <div className="mt-8 grid gap-6 lg:grid-cols-3">
-            {filteredTutorials.map((v) => (
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 sm:gap-4">
+            <h2 className="font-display text-2xl font-bold sm:text-3xl">{t("support.videos")}</h2>
+            {filteredTutorials.length > PREVIEW_LIMIT && (
+              <span className="text-sm text-muted-foreground">
+                {filteredTutorials.length} {t("support.items_count")}
+              </span>
+            )}
+          </div>
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {previewTutorials.map((v) => (
               <div key={v.id} className="overflow-hidden rounded-xl border border-border bg-card">
                 <div className="aspect-video">
                   <iframe
@@ -208,6 +263,18 @@ export const SupportClient = ({ manuals, tutorials, serviceCenters, initialSearc
               </div>
             ))}
           </div>
+          {filteredTutorials.length > PREVIEW_LIMIT && (
+            <div className="mt-8 flex justify-center">
+              <Link
+                href="/support/videos"
+                id="show-more-videos"
+                className="group inline-flex items-center gap-2.5 rounded-full border border-primary/30 bg-primary/5 px-8 py-3.5 text-sm font-semibold text-primary transition-all hover:border-primary hover:bg-primary hover:text-white hover:shadow-[0_12px_32px_-12px_hsl(354_78%_46%/0.4)]"
+              >
+                <span>{t("support.show_more")}</span>
+                <ArrowIcon className="h-4 w-4 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
+              </Link>
+            </div>
+          )}
         </section>
       )}
     </>

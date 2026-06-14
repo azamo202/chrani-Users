@@ -36,6 +36,15 @@ const nextConfig = {
       },
     ],
   },
+
+  async rewrites() {
+    return [
+      {
+        source: '/api/site/:path*',
+        destination: 'https://api.chranico.com/api/site/:path*',
+      },
+    ];
+  },
 };
 
 export default nextConfig;

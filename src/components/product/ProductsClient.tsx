@@ -92,8 +92,8 @@ const Products = ({ initialCategories, initialBrands }: ProductsClientProps) => 
   }, [selectedCats, selectedBrands, debouncedSearch, pathname, router]);
 
   // React Query to fetch products
-  const { data: productsData, isFetching } = useQuery({
-    queryKey: ["products", selectedCats[0], selectedBrands[0], debouncedSearch, currentPage],
+  const { data: productsData, isFetching, isError } = useQuery({
+    queryKey: ["products", selectedCats[0], selectedBrands[0], debouncedSearch, currentPage, lang],
     queryFn: async () => {
       const params = new URLSearchParams();
       
@@ -102,6 +102,8 @@ const Products = ({ initialCategories, initialBrands }: ProductsClientProps) => 
       if (debouncedSearch) params.append("search", debouncedSearch);
       params.append("page", currentPage.toString());
       params.append("per_page", "12");
+      params.append("locale", lang);
+      params.append("lang", lang);
       
       const res = await fetch(`${API_BASE_URL}/api/site/products?` + params.toString());
       if (!res.ok) throw new Error("Failed to fetch products");
@@ -332,6 +334,22 @@ const Products = ({ initialCategories, initialBrands }: ProductsClientProps) => 
                     <Skeleton className="h-4 w-1/2" />
                   </div>
                 ))}
+              </div>
+            ) : isError ? (
+              <div className="rounded-2xl border border-destructive/20 bg-destructive/5 py-16 text-center shadow-sm">
+                <p className="text-destructive font-medium">
+                  {lang === "ar" 
+                    ? "فشل تحميل المنتجات. يرجى التحقق من اتصالك بالإنترنت." 
+                    : lang === "ku" 
+                      ? "بارکردنی بەرهەمەکان سەرکەوتوو نەبوو. تکایە هێڵی ئینتەرنێتەکەت بپشکنە." 
+                      : "Failed to load products. Please check your internet connection."}
+                </p>
+                <button 
+                  onClick={() => window.location.reload()} 
+                  className="mt-4 text-sm font-semibold text-primary hover:underline"
+                >
+                  {lang === "ar" ? "إعادة المحاولة" : lang === "ku" ? "دووبارە هەوڵبدەرەوە" : "Retry"}
+                </button>
               </div>
             ) : filtered.length === 0 ? (
               <div className="rounded-2xl border border-dashed py-20 text-center bg-card shadow-sm">

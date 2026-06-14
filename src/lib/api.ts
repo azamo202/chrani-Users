@@ -1,6 +1,7 @@
 import { ApiResponse } from "@/types/api";
 
-export const API_BASE_URL = "https://api.chranico.com";
+const isServer = typeof window === "undefined";
+export const API_BASE_URL = isServer ? "https://api.chranico.com" : "";
 export interface StoreSettings {
   phone: string;
   whatsapp: string;

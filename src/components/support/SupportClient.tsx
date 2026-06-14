@@ -91,10 +91,10 @@ export const SupportClient = ({ manuals, tutorials, serviceCenters, initialSearc
     );
   });
 
-  // Sliced previews (max 4)
+  // Sliced previews (max 4 for general, 6 for videos)
   const previewCenters = filteredServiceCenters.slice(0, PREVIEW_LIMIT);
   const previewManuals = filteredManuals.slice(0, PREVIEW_LIMIT);
-  const previewTutorials = filteredTutorials.slice(0, PREVIEW_LIMIT);
+  const previewTutorials = filteredTutorials.slice(0, 6);
 
   return (
     <>
@@ -239,15 +239,15 @@ export const SupportClient = ({ manuals, tutorials, serviceCenters, initialSearc
         <section className="container-wide py-16">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 sm:gap-4">
             <h2 className="font-display text-2xl font-bold sm:text-3xl">{t("support.videos")}</h2>
-            {filteredTutorials.length > PREVIEW_LIMIT && (
+            {filteredTutorials.length > 6 && (
               <span className="text-sm text-muted-foreground">
                 {filteredTutorials.length} {t("support.items_count")}
               </span>
             )}
           </div>
-          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="-mx-4 mt-8 flex gap-4 overflow-x-auto px-4 pb-6 snap-x snap-mandatory sm:mx-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:overflow-visible sm:px-0 sm:pb-0 sm:snap-none [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
             {previewTutorials.map((v) => (
-              <div key={v.id} className="overflow-hidden rounded-xl border border-border bg-card">
+              <div key={v.id} className="w-[85vw] shrink-0 snap-center overflow-hidden rounded-xl border border-border bg-card sm:w-auto sm:shrink transition hover:shadow-card">
                 <div className="aspect-video">
                   <iframe
                     src={`https://www.youtube.com/embed/${v.youtube_id}`}
@@ -263,7 +263,7 @@ export const SupportClient = ({ manuals, tutorials, serviceCenters, initialSearc
               </div>
             ))}
           </div>
-          {filteredTutorials.length > PREVIEW_LIMIT && (
+          {filteredTutorials.length > 6 && (
             <div className="mt-8 flex justify-center">
               <Link
                 href="/support/videos"

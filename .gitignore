@@ -10,7 +10,7 @@ lerna-debug.log*
 # Dependencies
 node_modules
 
-# Next.js build
+# Next.js build output
 .next
 out
 
@@ -18,10 +18,14 @@ out
 dist
 dist-ssr
 
-# Env files
+# Env files — never commit secrets
 .env
 .env.local
 .env.*.local
+# NOTE: .env.example IS committed (it contains only documentation, no real secrets)
+
+# TypeScript incremental compilation
+tsconfig.tsbuildinfo
 
 # Misc
 *.local
@@ -29,6 +33,7 @@ dist-ssr
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
+!.vscode/settings.json
 .idea
 .DS_Store
 *.suo
@@ -36,3 +41,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Testing
+coverage
+
+# Temporary / scratch files
+refactor.cjs

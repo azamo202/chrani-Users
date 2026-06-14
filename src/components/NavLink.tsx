@@ -1,42 +1,41 @@
 "use client";
 
-import Link, { LinkProps } from "next/link";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { forwardRef } from "react";
-import { cn } from "@/lib/utils";
 
-export interface NavLinkCompatProps extends Omit<LinkProps, "href" | "className"> {
-  className?: string | ((props: { isActive: boolean; isPending: boolean }) => string);
-  activeClassName?: string;
-  pendingClassName?: string;
+interface NavLinkProps {
   to: string;
   end?: boolean;
-  children?: React.ReactNode | ((props: { isActive: boolean; isPending: boolean }) => React.ReactNode);
+  className?: string | ((props: { isActive: boolean }) => string);
+  onClick?: () => void;
+  children: React.ReactNode | ((props: { isActive: boolean }) => React.ReactNode);
 }
 
-const NavLink = forwardRef<HTMLAnchorElement, NavLinkCompatProps>(
-  ({ className, activeClassName, pendingClassName, to, end, children, ...props }, ref) => {
-    const pathname = usePathname();
-    const isActive = end 
-      ? pathname === to 
-      : pathname?.startsWith(to) && (pathname === to || pathname[to.length] === '/');
-    
-    const isPending = false;
-    const evaluatedClassName = typeof className === 'function' ? className({ isActive, isPending }) : className;
-    
-    return (
-      <Link
-        ref={ref}
-        href={to}
-        className={cn(evaluatedClassName, isActive && activeClassName)}
-        {...props}
-      >
-        {typeof children === 'function' ? children({ isActive, isPending }) : children}
-      </Link>
-    );
-  },
-);
+/**
+ * NavLink — mirrors React Router's NavLink behaviour using Next.js usePathname.
+ *
+ * Props:
+ *  - to       — the href destination
+ *  - end      — if true, only active when the path matches exactly (not prefix)
+ *  - className — string or render-prop function receiving { isActive }
+ *  - children  — ReactNode or render-prop function receiving { isActive }
+ */
+export const NavLink = ({ to, end = false, className, onClick, children }: NavLinkProps) => {
+  const pathname = usePathname();
 
-NavLink.displayName = "NavLink";
+  const isActive = end
+    ? pathname === to || pathname === `${to}/`
+    : pathname === to || pathname.startsWith(`${to}/`);
 
-export { NavLink };
+  const resolvedClassName =
+    typeof className === "function" ? className({ isActive }) : className;
+
+  const resolvedChildren =
+    typeof children === "function" ? children({ isActive }) : children;
+
+  return (
+    <Link href={to} className={resolvedClassName} onClick={onClick}>
+      {resolvedChildren}
+    </Link>
+  );
+};

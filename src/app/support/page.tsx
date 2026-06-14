@@ -1,38 +1,51 @@
 import { fetchApi } from "@/lib/api";
 import { ApiMaintenanceCenter, ApiVideo, ApiDownload } from "@/types/api";
 import { SupportClient } from "@/components/support/SupportClient";
-
-interface PageProps {
-  searchParams: Promise<{ search?: string }>;
-}
-
 import { Suspense } from "react";
+import { CACHE_TTL } from "@/lib/constants";
 
 export default async function Support() {
-  let manuals: ApiDownload[] = [];
-  let tutorials: ApiVideo[] = [];
-  let serviceCenters: ApiMaintenanceCenter[] = [];
+  const [manualsResult, tutorialsResult, centersResult] = await Promise.allSettled([
+    fetchApi<ApiDownload[]>("/api/site/downloads", {
+      next: { revalidate: CACHE_TTL.supportData, tags: ["downloads"] },
+    }),
+    fetchApi<ApiVideo[]>("/api/site/videos", {
+      next: { revalidate: CACHE_TTL.supportData, tags: ["videos"] },
+    }),
+    fetchApi<ApiMaintenanceCenter[]>("/api/site/maintenance-centers", {
+      next: { revalidate: CACHE_TTL.supportData, tags: ["maintenance-centers"] },
+    }),
+  ]);
 
-  try {
-    const [manualsData, tutorialsData, centersData] = await Promise.all([
-      fetchApi<ApiDownload[]>("/api/site/downloads", { next: { revalidate: 3600, tags: ["downloads"] } }).catch(() => []),
-      fetchApi<ApiVideo[]>("/api/site/videos", { next: { revalidate: 3600, tags: ["videos"] } }).catch(() => []),
-      fetchApi<ApiMaintenanceCenter[]>("/api/site/maintenance-centers", { next: { revalidate: 3600, tags: ["maintenance-centers"] } }).catch(() => []),
-    ]);
+  const manuals =
+    manualsResult.status === "fulfilled" ? (manualsResult.value ?? []) : [];
+  const tutorials =
+    tutorialsResult.status === "fulfilled" ? (tutorialsResult.value ?? []) : [];
+  const serviceCenters =
+    centersResult.status === "fulfilled" ? (centersResult.value ?? []) : [];
 
-    manuals = manualsData;
-    tutorials = tutorialsData;
-    serviceCenters = centersData;
-  } catch (error) {
-    console.error("Failed to fetch support data:", error);
+  if (manualsResult.status === "rejected") {
+    console.error("[Support] Failed to fetch manuals:", manualsResult.reason);
+  }
+  if (tutorialsResult.status === "rejected") {
+    console.error("[Support] Failed to fetch tutorials:", tutorialsResult.reason);
+  }
+  if (centersResult.status === "rejected") {
+    console.error("[Support] Failed to fetch service centers:", centersResult.reason);
   }
 
   return (
-    <Suspense fallback={<div className="container py-20 text-center">Loading support...</div>}>
-      <SupportClient 
-        manuals={manuals} 
-        tutorials={tutorials} 
-        serviceCenters={serviceCenters} 
+    <Suspense
+      fallback={
+        <div className="container py-20 text-center text-muted-foreground">
+          Loading support...
+        </div>
+      }
+    >
+      <SupportClient
+        manuals={manuals}
+        tutorials={tutorials}
+        serviceCenters={serviceCenters}
         initialSearch=""
       />
     </Suspense>

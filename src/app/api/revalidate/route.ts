@@ -1,101 +1,118 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidateTag } from "next/cache";
 
+/**
+ * POST /api/revalidate
+ *
+ * Trigger on-demand ISR cache invalidation for one or more tags.
+ * Called by the backend (or a CI/CD pipeline) after content changes.
+ *
+ * Body:  { tags: string[] }
+ * Auth:  x-revalidate-secret header  OR  ?secret=... query param
+ */
 export async function POST(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const headerSecret = request.headers.get("x-revalidate-secret");
-    const querySecret = searchParams.get("secret");
-    const secret = headerSecret || querySecret;
+    const secret = getSecret(request);
+    const authError = validateSecret(secret);
+    if (authError) return authError;
 
-    const expectedSecret = process.env.NEXT_REVALIDATE_SECRET;
-
-    if (!expectedSecret) {
-      return NextResponse.json(
-        { error: "Revalidation secret is not configured on the server" },
-        { status: 500 }
-      );
+    // Parse body safely
+    let body: unknown;
+    try {
+      body = await request.json();
+    } catch {
+      return jsonError("Request body must be valid JSON", 400);
     }
 
-    if (secret !== expectedSecret) {
-      return NextResponse.json(
-        { error: "Unauthorized: Invalid secret token" },
-        { status: 401 }
-      );
+    if (!body || typeof body !== "object" || !("tags" in body)) {
+      return jsonError("Body must contain a 'tags' array", 400);
     }
 
-    const body = await request.json();
-    const { tags } = body;
+    const { tags } = body as { tags: unknown };
 
-    if (!tags || !Array.isArray(tags)) {
-      return NextResponse.json(
-        { error: "Bad Request: 'tags' parameter is required and must be an array" },
-        { status: 400 }
-      );
+    if (!Array.isArray(tags) || tags.length === 0) {
+      return jsonError("'tags' must be a non-empty array of strings", 400);
     }
 
     const revalidatedTags: string[] = [];
+    const invalidTags: unknown[] = [];
+
     for (const tag of tags) {
       if (typeof tag === "string" && tag.trim() !== "") {
-        revalidateTag(tag, "max");
-        revalidatedTags.push(tag);
+        revalidateTag(tag.trim(), "max");
+        revalidatedTags.push(tag.trim());
+      } else {
+        invalidTags.push(tag);
       }
     }
 
     return NextResponse.json({
       success: true,
-      revalidated: true,
-      tags: revalidatedTags,
-      now: Date.now(),
+      revalidated: revalidatedTags,
+      skipped: invalidTags,
+      timestamp: new Date().toISOString(),
     });
-  } catch (error: any) {
-    return NextResponse.json(
-      { error: error.message || "Internal Server Error" },
-      { status: 500 }
-    );
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Internal Server Error";
+    console.error("[/api/revalidate POST]", error);
+    return jsonError(message, 500);
   }
 }
 
+/**
+ * GET /api/revalidate?tag=products
+ *
+ * Convenience single-tag revalidation (useful for quick manual triggers).
+ */
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const secret = request.headers.get("x-revalidate-secret") || searchParams.get("secret");
-    const expectedSecret = process.env.NEXT_REVALIDATE_SECRET;
+    const secret = getSecret(request);
+    const authError = validateSecret(secret);
+    if (authError) return authError;
 
-    if (!expectedSecret) {
-      return NextResponse.json(
-        { error: "Revalidation secret is not configured" },
-        { status: 500 }
-      );
+    const tag = request.nextUrl.searchParams.get("tag");
+    if (!tag || tag.trim() === "") {
+      return jsonError("Missing 'tag' query parameter", 400);
     }
 
-    if (secret !== expectedSecret) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-      );
-    }
-
-    const tag = searchParams.get("tag");
-    if (!tag) {
-      return NextResponse.json(
-        { error: "Missing 'tag' parameter" },
-        { status: 400 }
-      );
-    }
-
-    revalidateTag(tag, "max");
+    revalidateTag(tag.trim(), "max");
 
     return NextResponse.json({
       success: true,
-      revalidated: true,
-      tag,
-      now: Date.now(),
+      revalidated: [tag.trim()],
+      timestamp: new Date().toISOString(),
     });
-  } catch (error: any) {
-    return NextResponse.json(
-      { error: error.message || "Internal Server Error" },
-      { status: 500 }
-    );
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Internal Server Error";
+    console.error("[/api/revalidate GET]", error);
+    return jsonError(message, 500);
   }
+}
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+function getSecret(req: NextRequest): string | null {
+  return (
+    req.headers.get("x-revalidate-secret") ??
+    req.nextUrl.searchParams.get("secret")
+  );
+}
+
+function validateSecret(provided: string | null): NextResponse | null {
+  const expected = process.env.NEXT_REVALIDATE_SECRET;
+
+  if (!expected) {
+    console.error("[/api/revalidate] NEXT_REVALIDATE_SECRET env var is not set");
+    return jsonError("Server misconfiguration: revalidation secret not configured", 500);
+  }
+
+  if (!provided || provided !== expected) {
+    return jsonError("Unauthorized: invalid or missing secret", 401);
+  }
+
+  return null; // valid
+}
+
+function jsonError(message: string, status: number): NextResponse {
+  return NextResponse.json({ error: message }, { status });
 }

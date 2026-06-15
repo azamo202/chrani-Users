@@ -14,7 +14,7 @@ import { useI18n } from "@/i18n/I18nProvider";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProductCard } from "@/components/ProductCard";
 import { ApiProduct, ApiStoreSettings } from "@/types/api";
-import { cn, getImageUrl } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
 interface ProductDetailClientProps {
   product: ApiProduct;
@@ -60,8 +60,8 @@ export const ProductDetailClient = ({
     product.images.length > 0
       ? [...product.images]
           .sort((a, b) => Number(b.is_primary) - Number(a.is_primary))
-          .map((i) => getImageUrl(i.url))
-      : [getImageUrl(null)];
+          .map((i) => i.url)
+      : ["https://placehold.co/600x400/f3f4f6/6b7280?text=No+Image"];
 
   return (
     <>
@@ -123,7 +123,7 @@ export const ProductDetailClient = ({
           <div className="flex items-center gap-3 mb-2">
             {product.brand?.logo && (
               <img
-                src={getImageUrl(product.brand.logo)}
+                src={product.brand.logo}
                 alt={brandName}
                 className="h-8 w-auto object-contain"
               />
@@ -166,7 +166,7 @@ export const ProductDetailClient = ({
           <div className="mt-6 grid grid-cols-3 gap-3">
             {[
               { icon: ShieldCheck, label: t("warranty") },
-              { icon: Truck, label: "Fast Delivery" },
+              { icon: Truck, label: t("fastDelivery") },
               { icon: Award, label: t("excellence") },
             ].map((badge) => (
               <div
@@ -200,12 +200,12 @@ export const ProductDetailClient = ({
               </TabsList>
 
               <TabsContent value="description" className="mt-6">
-                <div className="prose prose-sm max-w-full text-muted-foreground text-justify leading-loose">
+                <div className="prose prose-sm max-w-full text-muted-foreground leading-loose">
                   {productDescription ? (
                     <p className="whitespace-pre-line">{productDescription}</p>
                   ) : (
                     <p className="text-xs text-muted-foreground italic">
-                      No description available.
+                      {lang === "ar" ? "لا يوجد وصف." : lang === "ku" ? "وەسفی نییە." : "No description available."}
                     </p>
                   )}
                 </div>
@@ -214,21 +214,28 @@ export const ProductDetailClient = ({
               <TabsContent value="features" className="mt-6">
                 <ul className="grid gap-2">
                   {product.features && product.features.length > 0 ? (
-                    product.features.map((f, idx) => (
-                      <li
-                        key={idx}
-                        className="flex items-start gap-2 rounded-lg border border-border p-3"
-                      >
-                        <span
-                          className="mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-primary"
-                          aria-hidden="true"
-                        />
-                        <span className="text-xs">{f}</span>
-                      </li>
-                    ))
+                    product.features.map((f, idx) => {
+                      // API may return features as strings OR as {en,ar,ku} objects
+                      const featureText: string =
+                        typeof f === "string"
+                          ? f
+                          : (f as any)?.[lang] ?? (f as any)?.en ?? String(f);
+                      return (
+                        <li
+                          key={idx}
+                          className="flex items-start gap-2 rounded-lg border border-border p-3"
+                        >
+                          <span
+                            className="mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-primary"
+                            aria-hidden="true"
+                          />
+                          <span className="text-xs">{featureText}</span>
+                        </li>
+                      );
+                    })
                   ) : (
                     <li className="text-xs text-muted-foreground p-2">
-                      No features available.
+                      {lang === "ar" ? "لا توجد مميزات." : lang === "ku" ? "تایبەتمەندی نییە." : "No features available."}
                     </li>
                   )}
                 </ul>
@@ -239,35 +246,61 @@ export const ProductDetailClient = ({
                   {product.specifications &&
                   Object.keys(product.specifications).length > 0 ? (
                     Object.entries(product.specifications).map(
-                      ([groupName, specs]) => (
-                        <div
-                          key={groupName}
-                          className="rounded-xl border border-border overflow-hidden"
-                        >
-                          <h3 className="bg-muted/30 px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-primary">
-                            {groupName}
-                          </h3>
-                          <dl className="divide-y divide-border/50">
-                            {specs.map((spec, idx) => (
-                              <div
-                                key={idx}
-                                className="flex items-center justify-between gap-4 px-4 py-2"
-                              >
-                                <dt className="text-[11px] font-medium text-muted-foreground">
-                                  {spec.key}
-                                </dt>
-                                <dd className="text-[11px] font-semibold text-end">
-                                  {spec.value}
-                                </dd>
-                              </div>
-                            ))}
-                          </dl>
-                        </div>
-                      )
+                      ([groupName, specs]) => {
+                        // Group name may be a translatable object {en,ar,ku} or a plain string
+                        const localGroupName: string =
+                          typeof groupName === "string" &&
+                          !groupName.startsWith("{") // plain string
+                            ? groupName
+                            : (groupName as any)?.[lang] ??
+                              (groupName as any)?.en ??
+                              groupName;
+
+                        return (
+                          <div
+                            key={groupName}
+                            className="rounded-xl border border-border overflow-hidden"
+                          >
+                            <h3 className="bg-muted/30 px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-primary">
+                              {localGroupName}
+                            </h3>
+                            <dl className="divide-y divide-border/50">
+                              {specs.map((spec, idx) => {
+                                // key & value may be translatable objects too
+                                const specKey: string =
+                                  typeof spec.key === "string"
+                                    ? spec.key
+                                    : (spec.key as any)?.[lang] ??
+                                      (spec.key as any)?.en ??
+                                      String(spec.key);
+                                const specValue: string =
+                                  typeof spec.value === "string"
+                                    ? spec.value
+                                    : (spec.value as any)?.[lang] ??
+                                      (spec.value as any)?.en ??
+                                      String(spec.value);
+                                return (
+                                  <div
+                                    key={idx}
+                                    className="flex items-center justify-between gap-4 px-4 py-2"
+                                  >
+                                    <dt className="text-[11px] font-medium text-muted-foreground">
+                                      {specKey}
+                                    </dt>
+                                    <dd className="text-[11px] font-semibold text-end">
+                                      {specValue}
+                                    </dd>
+                                  </div>
+                                );
+                              })}
+                            </dl>
+                          </div>
+                        );
+                      }
                     )
                   ) : (
                     <div className="text-xs text-muted-foreground">
-                      No specifications available.
+                      {lang === "ar" ? "لا توجد مواصفات." : lang === "ku" ? "تایبەتمەندی تەکنیکی نییە." : "No specifications available."}
                     </div>
                   )}
                 </div>

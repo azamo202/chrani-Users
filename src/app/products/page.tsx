@@ -1,6 +1,8 @@
 import { fetchApi } from "@/lib/api";
 import { ApiCategory, ApiBrand } from "@/types/api";
 import { ProductsClient } from "@/components/product/ProductsClient";
+import { normalizeCategories } from "@/services/normalizers/categoryNormalizer";
+import { normalizeBrands } from "@/services/normalizers/brandNormalizer";
 import { CACHE_TTL } from "@/lib/constants";
 
 /**
@@ -20,9 +22,9 @@ export default async function ProductsPage() {
   ]);
 
   const categories =
-    categoriesResult.status === "fulfilled" ? (categoriesResult.value ?? []) : [];
+    categoriesResult.status === "fulfilled" ? normalizeCategories(categoriesResult.value ?? []) : [];
   const brands =
-    brandsResult.status === "fulfilled" ? (brandsResult.value ?? []) : [];
+    brandsResult.status === "fulfilled" ? normalizeBrands(brandsResult.value ?? []) : [];
 
   if (categoriesResult.status === "rejected") {
     console.error("[ProductsPage] Failed to fetch categories:", categoriesResult.reason);

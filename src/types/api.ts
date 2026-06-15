@@ -6,8 +6,8 @@ export interface TranslatableText {
 
 export interface ApiImage {
   id: number;
-  url: string;
-  is_primary: boolean;
+  url: string; // Enforced single source of truth for the image URL
+  is_primary?: boolean;
 }
 
 export interface ApiCategory {

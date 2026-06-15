@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
 
     for (const tag of tags) {
       if (typeof tag === "string" && tag.trim() !== "") {
-        revalidateTag(tag.trim(), "max");
+        revalidateTag(tag.trim());
         revalidatedTags.push(tag.trim());
       } else {
         invalidTags.push(tag);
@@ -75,7 +75,7 @@ export async function GET(request: NextRequest) {
       return jsonError("Missing 'tag' query parameter", 400);
     }
 
-    revalidateTag(tag.trim(), "max");
+    revalidateTag(tag.trim());
 
     return NextResponse.json({
       success: true,

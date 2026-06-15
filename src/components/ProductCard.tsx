@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { ApiProduct } from "@/types/api";
 import { ArrowRight, GitCompare } from "lucide-react";
-import { cn, getImageUrl } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { useCompare } from "@/hooks/use-compare";
 import { useI18n } from "@/i18n/I18nProvider";
 
@@ -19,14 +19,16 @@ export const ProductCard = ({ product, className }: Props) => {
   const compared = isCompared(product.id);
 
   const primaryImage = React.useMemo(() => {
-    if (!product.images || product.images.length === 0) return getImageUrl(null);
-    // Find primary without mutating the original array
-    const primary = product.images.find(img => img.is_primary);
-    return getImageUrl(primary ? primary.url : product.images[0].url);
-  }, [product.images]);
+    if (!product.images || product.images.length === 0) {
+      return "https://placehold.co/600x400/f3f4f6/6b7280?text=No+Image";
+    }
 
+    const primary = product.images.find(img => img.is_primary);
+
+    return (primary || product.images[0]).url;
+  }, [product.images]);
   const handleCompare = (e: React.MouseEvent) => {
-    e.preventDefault(); 
+    e.preventDefault();
     toggleProduct({
       id: product.id,
       name: product.name,
@@ -77,9 +79,9 @@ export const ProductCard = ({ product, className }: Props) => {
       <div className="flex flex-1 flex-col p-4 sm:p-5 text-start">
         <div className="mb-2 flex items-center gap-2">
           {product.brand?.logo && (
-            <img 
-              src={getImageUrl(product.brand.logo)} 
-              alt={product.brand.name} 
+            <img
+              src={product.brand.logo}
+              alt={product.brand.name}
               className="h-4 w-auto object-contain opacity-80"
             />
           )}
@@ -94,7 +96,7 @@ export const ProductCard = ({ product, className }: Props) => {
           {product.name[lang] || product.name['en']}
         </h3>
         <p className="mt-1.5 text-xs sm:text-sm text-muted-foreground line-clamp-2">{product.description?.[lang] || product.description?.['en']}</p>
-        
+
         <div className="mt-auto flex justify-end pt-4">
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/5 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-md sm:h-10 sm:w-10">
             <ArrowRight className="h-4 w-4 rtl:rotate-180" />

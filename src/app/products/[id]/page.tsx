@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { fetchApi } from "@/lib/api";
 import { ApiProduct, ApiStoreSettings } from "@/types/api";
 import { ProductDetailClient } from "@/components/product/ProductDetailClient";
+import { normalizeProduct, normalizeProducts } from "@/services/normalizers/productNormalizer";
 import { notFound } from "next/navigation";
 import { cookies } from "next/headers";
 import { SITE_URL, CACHE_TTL } from "@/lib/constants";
@@ -34,7 +35,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
           tags: [`product-${id}`, "products"],
         },
       }
-    );
+    ).then(normalizeProduct);
 
     const name = product.name[lang] ?? product.name.en ?? "Product";
     const desc =
@@ -92,7 +93,7 @@ export default async function ProductDetail({ params }: PageProps) {
           tags: [`product-${id}`, "products"],
         },
       }
-    );
+    ).then(normalizeProduct);
   } catch (error) {
     console.error(`[ProductDetail] Failed to fetch product ${id}:`, error);
     notFound();
@@ -126,7 +127,7 @@ export default async function ProductDetail({ params }: PageProps) {
     const rawList: ApiProduct[] = Array.isArray(list)
       ? list
       : (list as { data?: ApiProduct[] })?.data ?? [];
-    related = rawList.filter((p) => String(p.id) !== id).slice(0, 3);
+    related = normalizeProducts(rawList.filter((p) => String(p.id) !== id).slice(0, 3));
   } else {
     console.error(`[ProductDetail] Failed to fetch related products:`, relatedResult.reason);
   }

@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { API_BASE_URL, PAGINATION } from "@/lib/constants";
 import { ApiCategory, ApiBrand, ApiProduct } from "@/types/api";
+import { normalizeProducts } from "@/services/normalizers/productNormalizer";
 import {
   Accordion,
   AccordionContent,
@@ -212,7 +213,12 @@ const Products = ({ initialCategories, initialBrands }: ProductsClientProps) => 
 
       const res = await fetch(`${API_BASE_URL}/api/site/products?${params.toString()}`);
       if (!res.ok) throw new Error(`Failed to fetch products: ${res.status}`);
-      return res.json() as Promise<{ data: ApiProduct[]; meta?: { total: number; last_page: number } }>;
+      
+      const json = await res.json() as { data: any[]; meta?: { total: number; last_page: number } };
+      return {
+        ...json,
+        data: normalizeProducts(json.data)
+      } as { data: ApiProduct[]; meta?: { total: number; last_page: number } };
     },
     staleTime: 60_000,
   });

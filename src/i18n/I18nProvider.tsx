@@ -121,6 +121,7 @@ const dictionaries: Record<Lang, Dict> = {
     "warranty": "Reliable Warranty",
     "elegance": "Serene Elegance",
     "excellence": "Enduring Excellence",
+    "fastDelivery": "Fast Delivery",
     "newslitter.title": "Join our newsletter",
     "newslitter.subtitle": "Get updates on new products and offers",
     "newslitter.placeholder": "Enter your email",
@@ -244,6 +245,7 @@ const dictionaries: Record<Lang, Dict> = {
     "warranty": "ضمان موثوق",
     "elegance": "رفاهية هادئة",
     "excellence": "إتقان يدوم",
+    "fastDelivery": "توصيل سريع",
     "newslitter.title": "اشترك في النشرة الإخبارية",
     "newslitter.subtitle": "احصل على تحديثات حول المنتجات الجديدة والعروض",
     "newslitter.placeholder": "أدخل بريدك الإلكتروني",
@@ -260,6 +262,7 @@ const dictionaries: Record<Lang, Dict> = {
     "warranty": "گەرەنتییەکی جێی متمانە",
     "elegance": "خۆشگوزەرانییەکی ئارام",
     "excellence": "داهێنانێک بۆ هەمیشە",
+    "fastDelivery": "گەیاندنی بەرز",
     "nav.home": "ماڵەوە",
     "nav.products": "بەرهەمەکان",
     "nav.support": "پاڵپشتی",
@@ -389,16 +392,17 @@ interface I18nCtx {
 const I18nContext = createContext<I18nCtx | null>(null);
 
 export const I18nProvider = ({ children, initialLang = "en" }: { children: ReactNode; initialLang?: Lang }) => {
-  const [lang, setLangState] = useState<Lang>(initialLang);
+  // Initialize lang from localStorage immediately (client) or fall back to server-determined initialLang.
+  // This prevents the flash where useEffect fires *after* first render with a stale 'en' value.
+  const [lang, setLangState] = useState<Lang>(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("chrani-lang") as Lang | null;
+      if (saved && ["en", "ar", "ku"].includes(saved)) return saved;
+    }
+    return initialLang;
+  });
 
   const dir: "ltr" | "rtl" = lang === "ar" || lang === "ku" ? "rtl" : "ltr";
-
-  useEffect(() => {
-    const savedLang = localStorage.getItem("chrani-lang") as Lang | null;
-    if (savedLang && savedLang !== lang) {
-      setLangState(savedLang);
-    }
-  }, []);
 
   useEffect(() => {
     document.documentElement.lang = lang;

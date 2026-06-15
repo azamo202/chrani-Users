@@ -5,7 +5,7 @@ import { ArrowRight, ShieldCheck, Wind, Sparkles } from "lucide-react";
 import { useI18n } from "@/i18n/I18nProvider";
 import { ProductCard } from "@/components/ProductCard";
 import { ApiHomeSection, ApiCategory } from "@/types/api";
-import { cn, getImageUrl } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
 interface HomePageClientProps {
   sections: ApiHomeSection[];
@@ -137,7 +137,7 @@ export const HomePageClient = ({
               >
                 <div className="relative w-full aspect-square overflow-hidden rounded-2xl bg-card border border-border/40 shadow-sm transition-all duration-300 sm:group-hover:shadow-md sm:group-hover:border-primary/40 p-5 sm:p-6 flex items-center justify-center">
                   <img
-                    src={getImageUrl(cat.image)}
+                    src={cat.image || "https://placehold.co/600x400/f3f4f6/6b7280?text=No+Image"}
                     alt={cat.name[lang] ?? cat.name.en ?? "Category"}
                     loading="lazy"
                     className="h-full w-full object-contain mix-blend-multiply dark:mix-blend-normal transition-transform duration-500 sm:group-hover:scale-110"

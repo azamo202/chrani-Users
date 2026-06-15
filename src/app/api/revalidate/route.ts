@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidateTag } from "next/cache";
 
+// Next.js 16 changed the TS type of revalidateTag to require a second argument;
+// cast to the single-arg form so we can keep using it normally at runtime.
+const _revalidateTag = revalidateTag as (tag: string) => void;
+
+
 /**
  * POST /api/revalidate
  *
@@ -39,7 +44,7 @@ export async function POST(request: NextRequest) {
 
     for (const tag of tags) {
       if (typeof tag === "string" && tag.trim() !== "") {
-        revalidateTag(tag.trim());
+        _revalidateTag(tag.trim());
         revalidatedTags.push(tag.trim());
       } else {
         invalidTags.push(tag);
@@ -75,7 +80,7 @@ export async function GET(request: NextRequest) {
       return jsonError("Missing 'tag' query parameter", 400);
     }
 
-    revalidateTag(tag.trim());
+    _revalidateTag(tag.trim());
 
     return NextResponse.json({
       success: true,

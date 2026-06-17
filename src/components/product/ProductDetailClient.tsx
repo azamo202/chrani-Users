@@ -248,18 +248,35 @@ export const ProductDetailClient = ({
                     Object.entries(product.specifications).map(
                       ([groupName, specs]) => {
                         let parsedGroup: any = groupName;
-                        if (typeof groupName === "string" && groupName.startsWith("{")) {
+                        if (typeof groupName === "string") {
                           try {
-                            parsedGroup = JSON.parse(groupName);
+                            const trimmed = groupName.trim();
+                            if (trimmed.startsWith("{")) {
+                              parsedGroup = JSON.parse(trimmed);
+                            }
                           } catch (e) {}
                         }
                         
-                        const localGroupName: string =
-                          typeof parsedGroup === "string"
-                            ? parsedGroup
-                            : parsedGroup?.[lang] ??
-                              parsedGroup?.en ??
-                              String(parsedGroup);
+                        let localGroupName: string = String(groupName);
+                        if (typeof parsedGroup === "object" && parsedGroup !== null) {
+                          const langUpper = lang.toUpperCase();
+                          if (parsedGroup[lang]) {
+                            localGroupName = parsedGroup[lang];
+                          } else if (parsedGroup[langUpper]) {
+                            localGroupName = parsedGroup[langUpper];
+                          } else if (parsedGroup["en"]) {
+                            localGroupName = parsedGroup["en"];
+                          } else if (parsedGroup["EN"]) {
+                            localGroupName = parsedGroup["EN"];
+                          } else if (parsedGroup["ar"]) {
+                            localGroupName = parsedGroup["ar"];
+                          } else if (parsedGroup["AR"]) {
+                            localGroupName = parsedGroup["AR"];
+                          } else {
+                            const firstVal = Object.values(parsedGroup)[0];
+                            if (firstVal) localGroupName = String(firstVal);
+                          }
+                        }
 
                         return (
                           <div

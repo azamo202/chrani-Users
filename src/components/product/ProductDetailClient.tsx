@@ -7,7 +7,7 @@ import {
   ChevronLeft,
   MessageCircle,
   ShieldCheck,
-  Truck,
+  Leaf,
   Award,
 } from "lucide-react";
 import { useI18n } from "@/i18n/I18nProvider";
@@ -166,7 +166,7 @@ export const ProductDetailClient = ({
           <div className="mt-6 grid grid-cols-3 gap-3">
             {[
               { icon: ShieldCheck, label: t("warranty") },
-              { icon: Truck, label: t("fastDelivery") },
+              { icon: Leaf, label: t("ecoFriendly") },
               { icon: Award, label: t("excellence") },
             ].map((badge) => (
               <div
@@ -247,14 +247,19 @@ export const ProductDetailClient = ({
                   Object.keys(product.specifications).length > 0 ? (
                     Object.entries(product.specifications).map(
                       ([groupName, specs]) => {
-                        // Group name may be a translatable object {en,ar,ku} or a plain string
+                        let parsedGroup: any = groupName;
+                        if (typeof groupName === "string" && groupName.startsWith("{")) {
+                          try {
+                            parsedGroup = JSON.parse(groupName);
+                          } catch (e) {}
+                        }
+                        
                         const localGroupName: string =
-                          typeof groupName === "string" &&
-                          !groupName.startsWith("{") // plain string
-                            ? groupName
-                            : (groupName as any)?.[lang] ??
-                              (groupName as any)?.en ??
-                              groupName;
+                          typeof parsedGroup === "string"
+                            ? parsedGroup
+                            : parsedGroup?.[lang] ??
+                              parsedGroup?.en ??
+                              String(parsedGroup);
 
                         return (
                           <div

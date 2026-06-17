@@ -33,6 +33,16 @@ const Contact = () => {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (form.message.trim().length < 10) {
+      toast.error(
+        lang === "ar" ? "يجب أن لا تقل الرسالة عن 10 أحرف" : 
+        lang === "ku" ? "پێویستە نامەکە لە ١٠ پیت کەمتر نەبێت" : 
+        "Message must be at least 10 characters"
+      );
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       await fetchApi("/api/site/contact", {
@@ -142,6 +152,7 @@ const Contact = () => {
             />
             <textarea
               required
+              minLength={10}
               rows={5}
               value={form.message}
               onChange={(e) => setForm({ ...form, message: e.target.value })}

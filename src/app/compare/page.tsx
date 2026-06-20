@@ -43,27 +43,50 @@ export default function ComparePage() {
 
   const products = data?.data || [];
 
-  // Transform specs into a table-friendly format
-  // We want: Array<{ group: string, keys: Array<{ key: string, values: Record<string, string>, isDifferent: boolean }> }>
   const transformedSpecs = useMemo(() => {
     if (!products.length) return [];
 
     const groupMap = new Map<string, Map<string, Record<string, string>>>();
 
+    // Helper to safely extract localized string from either object or JSON string
+    const getLocalized = (val: any): string => {
+      if (!val) return "-";
+      if (typeof val === 'string') {
+        if (val.startsWith('{') && val.endsWith('}')) {
+          try {
+            const parsed = JSON.parse(val);
+            return parsed[lang] || parsed['en'] || Object.values(parsed)[0] || val;
+          } catch (e) {
+            return val;
+          }
+        }
+        return val;
+      }
+      if (typeof val === 'object') {
+        return val[lang] || val['en'] || Object.values(val)[0] || "-";
+      }
+      return String(val);
+    };
+
     // Collect all groups and keys
     products.forEach((product) => {
       const specs = product.specifications || {};
-      Object.entries(specs).forEach(([groupName, groupSpecs]) => {
+      Object.entries(specs).forEach(([groupNameRaw, groupSpecs]) => {
+        const groupName = getLocalized(groupNameRaw);
+        
         if (!groupMap.has(groupName)) {
           groupMap.set(groupName, new Map());
         }
         const keyMap = groupMap.get(groupName)!;
 
         groupSpecs.forEach((spec) => {
-          if (!keyMap.has(spec.key)) {
-            keyMap.set(spec.key, {});
+          const specKey = getLocalized(spec.key);
+          const specVal = getLocalized(spec.value);
+
+          if (!keyMap.has(specKey)) {
+            keyMap.set(specKey, {});
           }
-          keyMap.get(spec.key)![product.id] = spec.value;
+          keyMap.get(specKey)![product.id] = specVal;
         });
       });
     });
@@ -101,7 +124,7 @@ export default function ComparePage() {
     });
 
     return result;
-  }, [products]);
+  }, [products, lang]);
 
   if (selectedProducts.length === 0) {
     return (

@@ -125,4 +125,33 @@
     transform: translateY(-4px);
     box-shadow: var(--shadow-elegant);
   }
+
+  /* Professional text presentation for multi-lingual content (RTL/LTR) */
+  .prose-description {
+    text-align: justify;
+    text-justify: inter-word;
+    hyphens: auto;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    unicode-bidi: plaintext;
+  }
+
+  .prose-description p {
+    margin-bottom: 1.25em;
+    unicode-bidi: plaintext;
+  }
+
+  .prose-description p:last-child {
+    margin-bottom: 0;
+  }
+
+  [dir="rtl"] .prose-description {
+    line-height: 1.9; /* Extra breathing room for Arabic/Kurdish scripts */
+    letter-spacing: normal;
+  }
+
+  [dir="ltr"] .prose-description {
+    line-height: 1.75;
+    letter-spacing: 0.015em;
+  }
 }

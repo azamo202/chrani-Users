@@ -26,7 +26,7 @@ const About = () => {
               {t("about.history.title")}
             </h2>
             <div className="h-1 w-20 bg-primary rounded-full" />
-            <div className="text-lg leading-relaxed text-muted-foreground font-light text-justify">
+            <div className="prose-description text-muted-foreground font-light">
               <p>
                 {t("about.history.body")}
               </p>
@@ -91,7 +91,9 @@ const About = () => {
                     <item.icon className="h-7 w-7" />
                   </div>
                   <h3 className="mb-4 font-display text-2xl font-bold text-foreground">{item.title}</h3>
-                  <p className="text-base leading-relaxed text-muted-foreground font-light">{item.body}</p>
+                  <div className="prose-description text-muted-foreground font-light">
+                    <p>{item.body}</p>
+                  </div>
                 </div>
               </div>
             ))}

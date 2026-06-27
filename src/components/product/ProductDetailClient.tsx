@@ -200,7 +200,7 @@ export const ProductDetailClient = ({
               </TabsList>
 
               <TabsContent value="description" className="mt-6">
-                <div className="prose prose-sm max-w-full text-muted-foreground leading-loose">
+                <div className="prose-description text-[0.95rem] text-muted-foreground">
                   {productDescription ? (
                     <p className="whitespace-pre-line">{productDescription}</p>
                   ) : (

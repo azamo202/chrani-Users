@@ -95,7 +95,7 @@ export const ProductCard = ({ product, className }: Props) => {
         <h3 className="font-display text-sm sm:text-lg font-bold leading-snug text-foreground line-clamp-2">
           {product.name[lang] || product.name['en']}
         </h3>
-        <p className="mt-1.5 text-xs sm:text-sm text-muted-foreground line-clamp-2">{product.description?.[lang] || product.description?.['en']}</p>
+        <p className="mt-1.5 text-xs sm:text-sm text-muted-foreground line-clamp-2 prose-description">{product.description?.[lang] || product.description?.['en']}</p>
 
         <div className="mt-auto flex justify-end pt-4">
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/5 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-md sm:h-10 sm:w-10">

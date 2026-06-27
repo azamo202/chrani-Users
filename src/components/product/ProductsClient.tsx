@@ -53,7 +53,7 @@ const Pagination = ({ currentPage, lastPage, dir, onPageChange }: PaginationProp
         aria-label="Previous page"
         className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition hover:border-primary hover:text-primary disabled:pointer-events-none disabled:opacity-40"
       >
-        <ChevronRight className={cn("h-5 w-5", dir === "rtl" ? "" : "rotate-180")} />
+        <ChevronRight className="h-5 w-5 rotate-180" />
       </button>
 
       {startPage > 1 && (
@@ -102,7 +102,7 @@ const Pagination = ({ currentPage, lastPage, dir, onPageChange }: PaginationProp
         aria-label="Next page"
         className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition hover:border-primary hover:text-primary disabled:pointer-events-none disabled:opacity-40"
       >
-        <ChevronRight className={cn("h-5 w-5", dir === "rtl" ? "rotate-180" : "")} />
+        <ChevronRight className="h-5 w-5" />
       </button>
     </nav>
   );
